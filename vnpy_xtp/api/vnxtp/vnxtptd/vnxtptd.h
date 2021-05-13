@@ -549,23 +549,23 @@ public:
 	//i£ºÕûÊý
 	//-------------------------------------------------------------------------------------
 
-	virtual void onDisconnected(int extra, int extra) {};
+	virtual void onDisconnected(int extra, int extra_1) {};
 
 	virtual void onError(const dict &error) {};
 
 	virtual void onOrderEvent(const dict &data, const dict &error, int extra) {};
 
-	virtual void onTradeEvent(int extra) {};
+	virtual void onTradeEvent(const dict &data, int extra) {};
 
 	virtual void onCancelOrderError(const dict &data, const dict &error, int extra) {};
 
 	virtual void onQueryOrder(const dict &data, const dict &error, int reqid, bool last, int extra) {};
 
-	virtual void onQueryOrderByPage(const dict &data) {};
+	virtual void onQueryOrderByPage(const dict &data, int64_t req_count, int64_t order_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id) {};
 
 	virtual void onQueryTrade(const dict &data, const dict &error, int reqid, bool last, int extra) {};
 
-	virtual void onQueryTradeByPage(const dict &data) {};
+	virtual void onQueryTradeByPage(const dict &data, int64_t req_count, int64_t trade_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id) {};
 
 	virtual void onQueryPosition(const dict &data, const dict &error, int reqid, bool last, int extra) {};
 
@@ -599,7 +599,7 @@ public:
 
 	virtual void onQueryCreditTickerDebtInfo(const dict &data, const dict &error, int reqid, bool last, int extra) {};
 
-	virtual void onQueryCreditAssetDebtInfo(const dict &data, const dict &error, int reqid, int extra) {};
+	virtual void onQueryCreditAssetDebtInfo(double amount, const dict &error, int reqid, int extra) {};
 
 	virtual void onQueryCreditTickerAssignInfo(const dict &data, const dict &error, int reqid, bool last, int extra) {};
 
@@ -617,17 +617,17 @@ public:
 
 	virtual void onOptionCombinedOrderEvent(const dict &data, const dict &error, int extra) {};
 
-	virtual void onOptionCombinedTradeEvent(int extra) {};
+	virtual void onOptionCombinedTradeEvent(const dict &data, int extra) {};
 
 	virtual void onCancelOptionCombinedOrderError(const dict &data, const dict &error, int extra) {};
 
 	virtual void onQueryOptionCombinedOrders(const dict &data, const dict &error, int reqid, bool last, int extra) {};
 
-	virtual void onQueryOptionCombinedOrdersByPage(const dict &data) {};
+	virtual void onQueryOptionCombinedOrdersByPage(const dict &data, int64_t req_count, int64_t order_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id) {};
 
 	virtual void onQueryOptionCombinedTrades(const dict &data, const dict &error, int reqid, bool last, int extra) {};
 
-	virtual void onQueryOptionCombinedTradesByPage(const dict &data) {};
+	virtual void onQueryOptionCombinedTradesByPage(const dict &data, int64_t req_count, int64_t trade_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id) {};
 
 	virtual void onQueryOptionCombinedPosition(const dict &data, const dict &error, int reqid, bool last, int extra) {};
 

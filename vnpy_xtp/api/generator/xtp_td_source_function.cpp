@@ -1,4 +1,4 @@
-int TdApi::queryOrderByXTPID(int order_xtp_id, int session_id, int request_id)
+int TdApi::queryOrderByXTPID(long long order_xtp_id, long long session_id, int request_id)
 {
 	int myreq = int();
 	memset(&myreq, 0, sizeof(myreq));
@@ -6,7 +6,7 @@ int TdApi::queryOrderByXTPID(int order_xtp_id, int session_id, int request_id)
 	return i;
 };
 
-int TdApi::queryOrders(const dict &req, int session_id, int request_id)
+int TdApi::queryOrders(const dict &req, long long session_id, int request_id)
 {
 	XTPQueryOrderReq myreq = XTPQueryOrderReq();
 	memset(&myreq, 0, sizeof(myreq));
@@ -17,7 +17,7 @@ int TdApi::queryOrders(const dict &req, int session_id, int request_id)
 	return i;
 };
 
-int TdApi::queryUnfinishedOrders(int session_id, int request_id)
+int TdApi::queryUnfinishedOrders(long long session_id, int request_id)
 {
 	int myreq = int();
 	memset(&myreq, 0, sizeof(myreq));
@@ -25,7 +25,7 @@ int TdApi::queryUnfinishedOrders(int session_id, int request_id)
 	return i;
 };
 
-int TdApi::queryOrdersByPage(const dict &req, int session_id, int request_id)
+int TdApi::queryOrdersByPage(const dict &req, long long session_id, int request_id)
 {
 	XTPQueryOrderByPageReq myreq = XTPQueryOrderByPageReq();
 	memset(&myreq, 0, sizeof(myreq));
@@ -36,7 +36,7 @@ int TdApi::queryOrdersByPage(const dict &req, int session_id, int request_id)
 	return i;
 };
 
-int TdApi::queryTradesByXTPID(int order_xtp_id, int session_id, int request_id)
+int TdApi::queryTradesByXTPID(long long order_xtp_id, long long session_id, int request_id)
 {
 	int myreq = int();
 	memset(&myreq, 0, sizeof(myreq));
@@ -44,7 +44,7 @@ int TdApi::queryTradesByXTPID(int order_xtp_id, int session_id, int request_id)
 	return i;
 };
 
-int TdApi::queryTrades(const dict &req, int session_id, int request_id)
+int TdApi::queryTrades(const dict &req, long long session_id, int request_id)
 {
 	XTPQueryTraderReq myreq = XTPQueryTraderReq();
 	memset(&myreq, 0, sizeof(myreq));
@@ -55,7 +55,7 @@ int TdApi::queryTrades(const dict &req, int session_id, int request_id)
 	return i;
 };
 
-int TdApi::queryTradesByPage(const dict &req, int session_id, int request_id)
+int TdApi::queryTradesByPage(const dict &req, long long session_id, int request_id)
 {
 	XTPQueryTraderByPageReq myreq = XTPQueryTraderByPageReq();
 	memset(&myreq, 0, sizeof(myreq));
@@ -74,7 +74,7 @@ int TdApi::queryPosition()
 	return i;
 };
 
-int TdApi::queryAsset(int session_id, int request_id)
+int TdApi::queryAsset(long long session_id, int request_id)
 {
 	int myreq = int();
 	memset(&myreq, 0, sizeof(myreq));
@@ -82,7 +82,7 @@ int TdApi::queryAsset(int session_id, int request_id)
 	return i;
 };
 
-int TdApi::queryStructuredFund(const dict &req, int session_id, int request_id)
+int TdApi::queryStructuredFund(const dict &req, long long session_id, int request_id)
 {
 	XTPQueryStructuredFundInfoReq myreq = XTPQueryStructuredFundInfoReq();
 	memset(&myreq, 0, sizeof(myreq));
@@ -92,7 +92,7 @@ int TdApi::queryStructuredFund(const dict &req, int session_id, int request_id)
 	return i;
 };
 
-int TdApi::queryFundTransfer(const dict &req, int session_id, int request_id)
+int TdApi::queryFundTransfer(const dict &req, long long session_id, int request_id)
 {
 	XTPQueryFundTransferLogReq myreq = XTPQueryFundTransferLogReq();
 	memset(&myreq, 0, sizeof(myreq));
@@ -101,7 +101,7 @@ int TdApi::queryFundTransfer(const dict &req, int session_id, int request_id)
 	return i;
 };
 
-int TdApi::queryETF(const dict &req, int session_id, int request_id)
+int TdApi::queryETF(const dict &req, long long session_id, int request_id)
 {
 	XTPQueryETFBaseReq myreq = XTPQueryETFBaseReq();
 	memset(&myreq, 0, sizeof(myreq));
@@ -111,7 +111,7 @@ int TdApi::queryETF(const dict &req, int session_id, int request_id)
 	return i;
 };
 
-int TdApi::queryETFTickerBasket(const dict &req, int session_id, int request_id)
+int TdApi::queryETFTickerBasket(const dict &req, long long session_id, int request_id)
 {
 	XTPQueryETFComponentReq myreq = XTPQueryETFComponentReq();
 	memset(&myreq, 0, sizeof(myreq));
@@ -121,7 +121,7 @@ int TdApi::queryETFTickerBasket(const dict &req, int session_id, int request_id)
 	return i;
 };
 
-int TdApi::queryIPOInfoList(int session_id, int request_id)
+int TdApi::queryIPOInfoList(long long session_id, int request_id)
 {
 	int myreq = int();
 	memset(&myreq, 0, sizeof(myreq));
@@ -129,7 +129,7 @@ int TdApi::queryIPOInfoList(int session_id, int request_id)
 	return i;
 };
 
-int TdApi::queryIPOQuotaInfo(int session_id, int request_id)
+int TdApi::queryIPOQuotaInfo(long long session_id, int request_id)
 {
 	int myreq = int();
 	memset(&myreq, 0, sizeof(myreq));
@@ -137,7 +137,7 @@ int TdApi::queryIPOQuotaInfo(int session_id, int request_id)
 	return i;
 };
 
-int TdApi::queryOptionAuctionInfo(const dict &req, int session_id, int request_id)
+int TdApi::queryOptionAuctionInfo(const dict &req, long long session_id, int request_id)
 {
 	XTPQueryOptionAuctionInfoReq myreq = XTPQueryOptionAuctionInfoReq();
 	memset(&myreq, 0, sizeof(myreq));
@@ -147,7 +147,7 @@ int TdApi::queryOptionAuctionInfo(const dict &req, int session_id, int request_i
 	return i;
 };
 
-int TdApi::queryCreditCashRepayInfo(int session_id, int request_id)
+int TdApi::queryCreditCashRepayInfo(long long session_id, int request_id)
 {
 	int myreq = int();
 	memset(&myreq, 0, sizeof(myreq));
@@ -155,7 +155,7 @@ int TdApi::queryCreditCashRepayInfo(int session_id, int request_id)
 	return i;
 };
 
-int TdApi::queryCreditFundInfo(int session_id, int request_id)
+int TdApi::queryCreditFundInfo(long long session_id, int request_id)
 {
 	int myreq = int();
 	memset(&myreq, 0, sizeof(myreq));
@@ -163,7 +163,7 @@ int TdApi::queryCreditFundInfo(int session_id, int request_id)
 	return i;
 };
 
-int TdApi::queryCreditDebtInfo(int session_id, int request_id)
+int TdApi::queryCreditDebtInfo(long long session_id, int request_id)
 {
 	int myreq = int();
 	memset(&myreq, 0, sizeof(myreq));
@@ -171,7 +171,7 @@ int TdApi::queryCreditDebtInfo(int session_id, int request_id)
 	return i;
 };
 
-int TdApi::queryCreditTickerDebtInfo(const dict &req, int session_id, int request_id)
+int TdApi::queryCreditTickerDebtInfo(const dict &req, long long session_id, int request_id)
 {
 	XTPClientQueryCrdDebtStockReq myreq = XTPClientQueryCrdDebtStockReq();
 	memset(&myreq, 0, sizeof(myreq));
@@ -181,7 +181,7 @@ int TdApi::queryCreditTickerDebtInfo(const dict &req, int session_id, int reques
 	return i;
 };
 
-int TdApi::queryCreditAssetDebtInfo(int session_id, int request_id)
+int TdApi::queryCreditAssetDebtInfo(long long session_id, int request_id)
 {
 	int myreq = int();
 	memset(&myreq, 0, sizeof(myreq));
@@ -189,7 +189,7 @@ int TdApi::queryCreditAssetDebtInfo(int session_id, int request_id)
 	return i;
 };
 
-int TdApi::queryCreditTickerAssignInfo(const dict &req, int session_id, int request_id)
+int TdApi::queryCreditTickerAssignInfo(const dict &req, long long session_id, int request_id)
 {
 	XTPClientQueryCrdPositionStockReq myreq = XTPClientQueryCrdPositionStockReq();
 	memset(&myreq, 0, sizeof(myreq));
@@ -199,7 +199,7 @@ int TdApi::queryCreditTickerAssignInfo(const dict &req, int session_id, int requ
 	return i;
 };
 
-int TdApi::queryCreditExcessStock(const dict &req, int session_id, int request_id)
+int TdApi::queryCreditExcessStock(const dict &req, long long session_id, int request_id)
 {
 	XTPClientQueryCrdSurplusStkReqInfo myreq = XTPClientQueryCrdSurplusStkReqInfo();
 	memset(&myreq, 0, sizeof(myreq));
@@ -209,7 +209,7 @@ int TdApi::queryCreditExcessStock(const dict &req, int session_id, int request_i
 	return i;
 };
 
-int TdApi::queryMulCreditExcessStock(const dict &req, int session_id, int request_id)
+int TdApi::queryMulCreditExcessStock(const dict &req, long long session_id, int request_id)
 {
 	XTPClientQueryCrdSurplusStkReqInfo myreq = XTPClientQueryCrdSurplusStkReqInfo();
 	memset(&myreq, 0, sizeof(myreq));
@@ -219,7 +219,7 @@ int TdApi::queryMulCreditExcessStock(const dict &req, int session_id, int reques
 	return i;
 };
 
-int TdApi::queryCreditExtendDebtDateOrders(int xtp_id, int session_id, int request_id)
+int TdApi::queryCreditExtendDebtDateOrders(int xtp_id, long long session_id, int request_id)
 {
 	int myreq = int();
 	memset(&myreq, 0, sizeof(myreq));
@@ -227,7 +227,7 @@ int TdApi::queryCreditExtendDebtDateOrders(int xtp_id, int session_id, int reque
 	return i;
 };
 
-int TdApi::queryCreditFundExtraInfo(int session_id, int request_id)
+int TdApi::queryCreditFundExtraInfo(long long session_id, int request_id)
 {
 	int myreq = int();
 	memset(&myreq, 0, sizeof(myreq));
@@ -235,7 +235,7 @@ int TdApi::queryCreditFundExtraInfo(int session_id, int request_id)
 	return i;
 };
 
-int TdApi::queryCreditPositionExtraInfo(const dict &req, int session_id, int request_id)
+int TdApi::queryCreditPositionExtraInfo(const dict &req, long long session_id, int request_id)
 {
 	XTPClientQueryCrdPositionStockReq myreq = XTPClientQueryCrdPositionStockReq();
 	memset(&myreq, 0, sizeof(myreq));
@@ -245,7 +245,7 @@ int TdApi::queryCreditPositionExtraInfo(const dict &req, int session_id, int req
 	return i;
 };
 
-int TdApi::queryOptionCombinedUnfinishedOrders(int session_id, int request_id)
+int TdApi::queryOptionCombinedUnfinishedOrders(long long session_id, int request_id)
 {
 	int myreq = int();
 	memset(&myreq, 0, sizeof(myreq));
@@ -253,7 +253,7 @@ int TdApi::queryOptionCombinedUnfinishedOrders(int session_id, int request_id)
 	return i;
 };
 
-int TdApi::queryOptionCombinedOrderByXTPID(int order_xtp_id, int session_id, int request_id)
+int TdApi::queryOptionCombinedOrderByXTPID(long long order_xtp_id, long long session_id, int request_id)
 {
 	int myreq = int();
 	memset(&myreq, 0, sizeof(myreq));
@@ -261,7 +261,7 @@ int TdApi::queryOptionCombinedOrderByXTPID(int order_xtp_id, int session_id, int
 	return i;
 };
 
-int TdApi::queryOptionCombinedOrders(const dict &req, int session_id, int request_id)
+int TdApi::queryOptionCombinedOrders(const dict &req, long long session_id, int request_id)
 {
 	XTPQueryOptCombOrderReq myreq = XTPQueryOptCombOrderReq();
 	memset(&myreq, 0, sizeof(myreq));
@@ -272,7 +272,7 @@ int TdApi::queryOptionCombinedOrders(const dict &req, int session_id, int reques
 	return i;
 };
 
-int TdApi::queryOptionCombinedOrdersByPage(const dict &req, int session_id, int request_id)
+int TdApi::queryOptionCombinedOrdersByPage(const dict &req, long long session_id, int request_id)
 {
 	XTPQueryOptCombOrderByPageReq myreq = XTPQueryOptCombOrderByPageReq();
 	memset(&myreq, 0, sizeof(myreq));
@@ -283,7 +283,7 @@ int TdApi::queryOptionCombinedOrdersByPage(const dict &req, int session_id, int 
 	return i;
 };
 
-int TdApi::queryOptionCombinedTradesByXTPID(int order_xtp_id, int session_id, int request_id)
+int TdApi::queryOptionCombinedTradesByXTPID(long long order_xtp_id, long long session_id, int request_id)
 {
 	int myreq = int();
 	memset(&myreq, 0, sizeof(myreq));
@@ -291,7 +291,7 @@ int TdApi::queryOptionCombinedTradesByXTPID(int order_xtp_id, int session_id, in
 	return i;
 };
 
-int TdApi::queryOptionCombinedTrades(const dict &req, int session_id, int request_id)
+int TdApi::queryOptionCombinedTrades(const dict &req, long long session_id, int request_id)
 {
 	XTPQueryOptCombTraderReq myreq = XTPQueryOptCombTraderReq();
 	memset(&myreq, 0, sizeof(myreq));
@@ -302,7 +302,7 @@ int TdApi::queryOptionCombinedTrades(const dict &req, int session_id, int reques
 	return i;
 };
 
-int TdApi::queryOptionCombinedTradesByPage(const dict &req, int session_id, int request_id)
+int TdApi::queryOptionCombinedTradesByPage(const dict &req, long long session_id, int request_id)
 {
 	XTPQueryOptCombTraderByPageReq myreq = XTPQueryOptCombTraderByPageReq();
 	memset(&myreq, 0, sizeof(myreq));
@@ -313,7 +313,7 @@ int TdApi::queryOptionCombinedTradesByPage(const dict &req, int session_id, int 
 	return i;
 };
 
-int TdApi::queryOptionCombinedPosition(const dict &req, int session_id, int request_id)
+int TdApi::queryOptionCombinedPosition(const dict &req, long long session_id, int request_id)
 {
 	XTPQueryOptCombPositionReq myreq = XTPQueryOptCombPositionReq();
 	memset(&myreq, 0, sizeof(myreq));
@@ -323,7 +323,7 @@ int TdApi::queryOptionCombinedPosition(const dict &req, int session_id, int requ
 	return i;
 };
 
-int TdApi::queryOptionCombinedStrategyInfo(int session_id, int request_id)
+int TdApi::queryOptionCombinedStrategyInfo(long long session_id, int request_id)
 {
 	int myreq = int();
 	memset(&myreq, 0, sizeof(myreq));
@@ -331,7 +331,7 @@ int TdApi::queryOptionCombinedStrategyInfo(int session_id, int request_id)
 	return i;
 };
 
-int TdApi::queryOptionCombinedExecPosition(const dict &req, int session_id, int request_id)
+int TdApi::queryOptionCombinedExecPosition(const dict &req, long long session_id, int request_id)
 {
 	XTPQueryOptCombExecPosReq myreq = XTPQueryOptCombExecPosReq();
 	memset(&myreq, 0, sizeof(myreq));
