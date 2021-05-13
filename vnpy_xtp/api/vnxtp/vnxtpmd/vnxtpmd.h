@@ -38,6 +38,7 @@ using namespace XTP::API;
 #define ONUNSUBSCRIBEALLOPTIONORDERBOOK 22
 #define ONSUBSCRIBEALLOPTIONTICKBYTICK 23
 #define ONUNSUBSCRIBEALLOPTIONTICKBYTICK 24
+#define ONQUERYALLTICKERSFULLINFO 25
 
 
 
@@ -180,10 +181,10 @@ public:
 	virtual void OnUnSubscribeAllTickByTick(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info);
 
 
-	///查询可交易合约的应答
-	///@param ticker_info 可交易合约信息
-	///@param error_info 查询可交易合约时发生错误时返回的错误信息，当error_info为空，或者error_info.error_id为0时，表明没有错误
-	///@param is_last 是否此次查询可交易合约的最后一个应答，当为最后一个的时候为true，如果为false，表示还有其他后续消息响应
+	///查询合约部分静态信息的应答
+	///@param ticker_info 合约部分静态信息
+	///@param error_info 查询合约部分静态信息时发生错误时返回的错误信息，当error_info为空，或者error_info.error_id为0时，表明没有错误
+	///@param is_last 是否此次查询合约部分静态信息的最后一个应答，当为最后一个的时候为true，如果为false，表示还有其他后续消息响应
 	virtual void OnQueryAllTickers(XTPQSI* ticker_info, XTPRI *error_info, bool is_last);
 
 	///查询合约的最新价格信息应答
@@ -227,6 +228,13 @@ public:
 	///@param error_info 取消订阅合约时发生错误时返回的错误信息，当error_info为空，或者error_info.error_id为0时，表明没有错误
 	///@remark 需要快速返回
 	virtual void OnUnSubscribeAllOptionTickByTick(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info);
+
+	///查询合约完整静态信息的应答
+	///@param ticker_info 合约完整静态信息
+	///@param error_info 查询合约完整静态信息时发生错误时返回的错误信息，当error_info为空，或者error_info.error_id为0时，表明没有错误
+	///@param is_last 是否此次查询合约完整静态信息的最后一个应答，当为最后一个的时候为true，如果为false，表示还有其他后续消息响应
+	virtual void OnQueryAllTickersFullInfo(XTPQFI* ticker_info, XTPRI *error_info, bool is_last);
+
 	//-------------------------------------------------------------------------------------
 	//task：任务
 	//-------------------------------------------------------------------------------------
@@ -283,6 +291,7 @@ public:
 
 	void processUnSubscribeAllOptionTickByTick(Task *task);
 
+	void processQueryAllTickersFullInfo(Task *task);
 
 	//-------------------------------------------------------------------------------------
 	//data：回调函数的数据字典
@@ -342,6 +351,7 @@ public:
 
 	virtual void onUnSubscribeAllOptionTickByTick(int extra, const dict &error) {};
 
+	virtual void onQueryAllTickersFullInfo(const dict &data, const dict &error, bool last) {};
 
 
 	//-------------------------------------------------------------------------------------
@@ -400,5 +410,5 @@ public:
 
 	int queryAllTickersPriceInfo();
 
-
+	int queryAllTickersFullInfo(int exchange_id);
 };

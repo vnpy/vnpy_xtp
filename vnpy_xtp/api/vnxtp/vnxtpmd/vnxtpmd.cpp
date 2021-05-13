@@ -396,11 +396,25 @@ void MdApi::OnUnSubscribeAllOptionTickByTick(XTP_EXCHANGE_TYPE exchange_id, XTPR
 	this->task_queue.push(task);
 };
 
-
-
-
-
-
+void MdApi::OnQueryAllTickersFullInfo(XTPQFI* ticker_info, XTPRI *error_info, bool is_last)
+{
+	Task task = Task();
+	task.task_name = ONQUERYALLTICKERSFULLINFO;
+	if (ticker_info)
+	{
+		XTPQFI *task_data = new XTPQFI();
+		*task_data = *ticker_info;
+		task.task_data = task_data;
+	}
+	if (error_info)
+	{
+		XTPRI *task_error = new XTPRI();
+		*task_error = *error_info;
+		task.task_error = task_error;
+	}
+	task.task_last = is_last;
+	this->task_queue.push(task);
+};
 
 
 ///-------------------------------------------------------------------------------------
@@ -567,7 +581,11 @@ void MdApi::processTask()
 				break;
 			}
 
-
+			case ONQUERYALLTICKERSFULLINFO:
+			{
+				this->processQueryAllTickersFullInfo(&task);
+				break;
+			}
 			};
 		}
 	}
@@ -825,7 +843,7 @@ void MdApi::processTickByTick(Task *task)
 		dict entrust;
 		dict trade;
 
-		if (task_data->type == XTP_TBT_ENTRUST) 
+		if (task_data->type == XTP_TBT_ENTRUST)
 		{
 			entrust["channel_no"] = task_data->entrust.channel_no;
 			entrust["seq"] = task_data->entrust.seq;
@@ -1075,6 +1093,52 @@ void MdApi::processUnSubscribeAllOptionTickByTick(Task *task)
 	this->onUnSubscribeAllOptionTickByTick(task->task_extra, error);
 };
 
+void MdApi::processQueryAllTickersFullInfo(Task *task)
+{
+	gil_scoped_acquire acquire;
+	dict data;
+	if (task->task_data)
+	{
+		XTPQFI *task_data = (XTPQFI*)task->task_data;
+		data["exchange_id"] = (int)task_data->exchange_id;
+		data["ticker"] = task_data->ticker;
+		data["ticker_name"] = task_data->ticker_name;
+		data["security_type"] = (int)task_data->security_type;
+		data["ticker_qualification_class"] = (int)task_data->ticker_qualification_class;
+		data["is_registration"] = task_data->is_registration;
+		data["is_VIE"] = task_data->is_VIE;
+		data["is_noprofit"] = task_data->is_noprofit;
+		data["is_weighted_voting_rights"] = task_data->is_weighted_voting_rights;
+		data["is_have_price_limit"] = task_data->is_have_price_limit;
+		data["upper_limit_price"] = task_data->upper_limit_price;
+		data["lower_limit_price"] = task_data->lower_limit_price;
+		data["pre_close_price"] = task_data->pre_close_price;
+		data["price_tick"] = task_data->price_tick;
+		data["bid_qty_upper_limit"] = task_data->bid_qty_upper_limit;
+		data["bid_qty_lower_limit"] = task_data->bid_qty_lower_limit;
+		data["bid_qty_unit"] = task_data->bid_qty_unit;
+		data["ask_qty_upper_limit"] = task_data->ask_qty_upper_limit;
+		data["ask_qty_lower_limit"] = task_data->ask_qty_lower_limit;
+		data["ask_qty_unit"] = task_data->ask_qty_unit;
+		data["market_bid_qty_upper_limit"] = task_data->market_bid_qty_upper_limit;
+		data["market_bid_qty_lower_limit"] = task_data->market_bid_qty_lower_limit;
+		data["market_bid_qty_unit"] = task_data->market_bid_qty_unit;
+		data["market_ask_qty_upper_limit"] = task_data->market_ask_qty_upper_limit;
+		data["market_ask_qty_lower_limit"] = task_data->market_ask_qty_lower_limit;
+		data["market_ask_qty_unit"] = task_data->market_ask_qty_unit;
+		data["unknown"] = task_data->unknown;
+		delete task_data;
+	}
+	dict error;
+	if (task->task_error)
+	{
+		XTPRI *task_error = (XTPRI*)task->task_error;
+		error["error_id"] = task_error->error_id;
+		error["error_msg"] = task_error->error_msg;
+		delete task_error;
+	}
+	this->onQueryAllTickersFullInfo(data, error, task->task_last);
+};
 
 
 ///-------------------------------------------------------------------------------------
@@ -1275,6 +1339,12 @@ int MdApi::queryAllTickersPriceInfo()
 	int i = this->api->QueryAllTickersPriceInfo();
 	return i;
 
+};
+
+int MdApi::queryAllTickersFullInfo(int exchange_id)
+{
+	int i = this->api->QueryAllTickersFullInfo((XTP_EXCHANGE_TYPE)exchange_id);
+	return i;
 };
 
 
@@ -1587,8 +1657,17 @@ public:
 		}
 	};
 
-
-
+	void onQueryAllTickersFullInfo(const dict &data, const dict &error, bool last) override
+	{
+		try
+		{
+			PYBIND11_OVERLOAD(void, MdApi, onQueryAllTickersFullInfo, data, error, last);
+		}
+		catch (const error_already_set &e)
+		{
+			cout << e.what() << endl;
+		}
+	};
 };
 
 
@@ -1624,6 +1703,7 @@ PYBIND11_MODULE(vnxtpmd, m)
 		.def("queryAllTickers", &MdApi::queryAllTickers)
 		.def("queryTickersPriceInfo", &MdApi::queryTickersPriceInfo)
 		.def("queryAllTickersPriceInfo", &MdApi::queryAllTickersPriceInfo)
+		.def("queryAllTickersFullInfo", &MdApi::queryAllTickersFullInfo)
 
 		.def("onDisconnected", &MdApi::onDisconnected)
 		.def("onError", &MdApi::onError)
@@ -1650,9 +1730,8 @@ PYBIND11_MODULE(vnxtpmd, m)
 		.def("onUnSubscribeAllOptionOrderBook", &MdApi::onUnSubscribeAllOptionOrderBook)
 		.def("onSubscribeAllOptionTickByTick", &MdApi::onSubscribeAllOptionTickByTick)
 		.def("onUnSubscribeAllOptionTickByTick", &MdApi::onUnSubscribeAllOptionTickByTick)
+		.def("onQueryAllTickersFullInfo", &MdApi::onQueryAllTickersFullInfo)
 		;
-
-
 }
 
 
