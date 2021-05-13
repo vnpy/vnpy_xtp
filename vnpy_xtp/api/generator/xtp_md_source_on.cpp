@@ -298,3 +298,15 @@ void onUnSubscribeAllOptionTickByTick(int extra, const dict &error) override
 	}
 };
 
+void onQueryAllTickersFullInfo(const dict &data, const dict &error, bool last) override
+{
+	try
+	{
+		PYBIND11_OVERLOAD(void, MdApi, onQueryAllTickersFullInfo, data, error, last);
+	}
+	catch (const error_already_set &e)
+	{
+		cout << e.what() << endl;
+	}
+};
+

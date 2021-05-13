@@ -392,3 +392,23 @@ void MdApi::OnUnSubscribeAllOptionTickByTick(XTP_EXCHANGE_TYPE exchange_id, XTPR
 	this->task_queue.push(task);
 };
 
+void MdApi::OnQueryAllTickersFullInfo(XTPQFI* ticker_info, XTPRI *error_info, bool is_last) 
+{
+	Task task = Task();
+	task.task_name = ONQUERYALLTICKERSFULLINFO;
+	if (ticker_info)
+	{
+		XTPQFI *task_data = new XTPQFI();
+		*task_data = *ticker_info;
+		task.task_data = task_data;
+	}
+	if (error_info)
+	{
+		XTPRI *task_error = new XTPRI();
+		*task_error = *error_info;
+		task.task_error = task_error;
+	}
+	task.task_last = is_last;
+	this->task_queue.push(task);
+};
+

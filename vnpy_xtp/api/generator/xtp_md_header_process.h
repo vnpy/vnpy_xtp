@@ -48,3 +48,5 @@ void processSubscribeAllOptionTickByTick(Task *task);
 
 void processUnSubscribeAllOptionTickByTick(Task *task);
 
+void processQueryAllTickersFullInfo(Task *task);
+

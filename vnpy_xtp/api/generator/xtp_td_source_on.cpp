@@ -70,11 +70,35 @@ void onQueryOrder(const dict &data, const dict &error, int reqid, bool last, int
 	}
 };
 
+void onQueryOrderByPage(const dict &data, int extra, int extra, int extra, int reqid, bool last, int extra) override
+{
+	try
+	{
+		PYBIND11_OVERLOAD(void, TdApi, onQueryOrderByPage, data, extra, extra, extra, reqid, last, extra);
+	}
+	catch (const error_already_set &e)
+	{
+		cout << e.what() << endl;
+	}
+};
+
 void onQueryTrade(const dict &data, const dict &error, int reqid, bool last, int extra) override
 {
 	try
 	{
 		PYBIND11_OVERLOAD(void, TdApi, onQueryTrade, data, error, reqid, last, extra);
+	}
+	catch (const error_already_set &e)
+	{
+		cout << e.what() << endl;
+	}
+};
+
+void onQueryTradeByPage(const dict &data, int extra, int extra, int extra, int reqid, bool last, int extra) override
+{
+	try
+	{
+		PYBIND11_OVERLOAD(void, TdApi, onQueryTradeByPage, data, extra, extra, extra, reqid, last, extra);
 	}
 	catch (const error_already_set &e)
 	{
@@ -214,6 +238,18 @@ void onCreditCashRepay(const dict &data, const dict &error, int extra) override
 	}
 };
 
+void onCreditCashRepayDebtInterestFee(const dict &data, const dict &error, int extra) override
+{
+	try
+	{
+		PYBIND11_OVERLOAD(void, TdApi, onCreditCashRepayDebtInterestFee, data, error, extra);
+	}
+	catch (const error_already_set &e)
+	{
+		cout << e.what() << endl;
+	}
+};
+
 void onQueryCreditCashRepayInfo(const dict &data, const dict &error, int reqid, bool last, int extra) override
 {
 	try
@@ -291,6 +327,186 @@ void onQueryCreditExcessStock(const dict &data, const dict &error, int reqid, in
 	try
 	{
 		PYBIND11_OVERLOAD(void, TdApi, onQueryCreditExcessStock, data, error, reqid, extra);
+	}
+	catch (const error_already_set &e)
+	{
+		cout << e.what() << endl;
+	}
+};
+
+void onQueryMulCreditExcessStock(const dict &data, const dict &error, int reqid, int extra, bool last) override
+{
+	try
+	{
+		PYBIND11_OVERLOAD(void, TdApi, onQueryMulCreditExcessStock, data, error, reqid, extra, last);
+	}
+	catch (const error_already_set &e)
+	{
+		cout << e.what() << endl;
+	}
+};
+
+void onCreditExtendDebtDate(const dict &data, const dict &error, int extra) override
+{
+	try
+	{
+		PYBIND11_OVERLOAD(void, TdApi, onCreditExtendDebtDate, data, error, extra);
+	}
+	catch (const error_already_set &e)
+	{
+		cout << e.what() << endl;
+	}
+};
+
+void onQueryCreditExtendDebtDateOrders(const dict &data, const dict &error, int reqid, bool last, int extra) override
+{
+	try
+	{
+		PYBIND11_OVERLOAD(void, TdApi, onQueryCreditExtendDebtDateOrders, data, error, reqid, last, extra);
+	}
+	catch (const error_already_set &e)
+	{
+		cout << e.what() << endl;
+	}
+};
+
+void onQueryCreditFundExtraInfo(const dict &data, const dict &error, int reqid, int extra) override
+{
+	try
+	{
+		PYBIND11_OVERLOAD(void, TdApi, onQueryCreditFundExtraInfo, data, error, reqid, extra);
+	}
+	catch (const error_already_set &e)
+	{
+		cout << e.what() << endl;
+	}
+};
+
+void onQueryCreditPositionExtraInfo(const dict &data, const dict &error, int reqid, bool last, int extra) override
+{
+	try
+	{
+		PYBIND11_OVERLOAD(void, TdApi, onQueryCreditPositionExtraInfo, data, error, reqid, last, extra);
+	}
+	catch (const error_already_set &e)
+	{
+		cout << e.what() << endl;
+	}
+};
+
+void onOptionCombinedOrderEvent(const dict &data, const dict &error, int extra) override
+{
+	try
+	{
+		PYBIND11_OVERLOAD(void, TdApi, onOptionCombinedOrderEvent, data, error, extra);
+	}
+	catch (const error_already_set &e)
+	{
+		cout << e.what() << endl;
+	}
+};
+
+void onOptionCombinedTradeEvent(const dict &data, int extra) override
+{
+	try
+	{
+		PYBIND11_OVERLOAD(void, TdApi, onOptionCombinedTradeEvent, data, extra);
+	}
+	catch (const error_already_set &e)
+	{
+		cout << e.what() << endl;
+	}
+};
+
+void onCancelOptionCombinedOrderError(const dict &data, const dict &error, int extra) override
+{
+	try
+	{
+		PYBIND11_OVERLOAD(void, TdApi, onCancelOptionCombinedOrderError, data, error, extra);
+	}
+	catch (const error_already_set &e)
+	{
+		cout << e.what() << endl;
+	}
+};
+
+void onQueryOptionCombinedOrders(const dict &data, const dict &error, int reqid, bool last, int extra) override
+{
+	try
+	{
+		PYBIND11_OVERLOAD(void, TdApi, onQueryOptionCombinedOrders, data, error, reqid, last, extra);
+	}
+	catch (const error_already_set &e)
+	{
+		cout << e.what() << endl;
+	}
+};
+
+void onQueryOptionCombinedOrdersByPage(const dict &data, int extra, int extra, int extra, int reqid, bool last, int extra) override
+{
+	try
+	{
+		PYBIND11_OVERLOAD(void, TdApi, onQueryOptionCombinedOrdersByPage, data, extra, extra, extra, reqid, last, extra);
+	}
+	catch (const error_already_set &e)
+	{
+		cout << e.what() << endl;
+	}
+};
+
+void onQueryOptionCombinedTrades(const dict &data, const dict &error, int reqid, bool last, int extra) override
+{
+	try
+	{
+		PYBIND11_OVERLOAD(void, TdApi, onQueryOptionCombinedTrades, data, error, reqid, last, extra);
+	}
+	catch (const error_already_set &e)
+	{
+		cout << e.what() << endl;
+	}
+};
+
+void onQueryOptionCombinedTradesByPage(const dict &data, int extra, int extra, int extra, int reqid, bool last, int extra) override
+{
+	try
+	{
+		PYBIND11_OVERLOAD(void, TdApi, onQueryOptionCombinedTradesByPage, data, extra, extra, extra, reqid, last, extra);
+	}
+	catch (const error_already_set &e)
+	{
+		cout << e.what() << endl;
+	}
+};
+
+void onQueryOptionCombinedPosition(const dict &data, const dict &error, int reqid, bool last, int extra) override
+{
+	try
+	{
+		PYBIND11_OVERLOAD(void, TdApi, onQueryOptionCombinedPosition, data, error, reqid, last, extra);
+	}
+	catch (const error_already_set &e)
+	{
+		cout << e.what() << endl;
+	}
+};
+
+void onQueryOptionCombinedStrategyInfo(const dict &data, const dict &error, int reqid, bool last, int extra) override
+{
+	try
+	{
+		PYBIND11_OVERLOAD(void, TdApi, onQueryOptionCombinedStrategyInfo, data, error, reqid, last, extra);
+	}
+	catch (const error_already_set &e)
+	{
+		cout << e.what() << endl;
+	}
+};
+
+void onQueryOptionCombinedExecPosition(const dict &data, const dict &error, int reqid, bool last, int extra) override
+{
+	try
+	{
+		PYBIND11_OVERLOAD(void, TdApi, onQueryOptionCombinedExecPosition, data, error, reqid, last, extra);
 	}
 	catch (const error_already_set &e)
 	{

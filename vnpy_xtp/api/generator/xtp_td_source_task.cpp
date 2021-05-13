@@ -96,6 +96,25 @@ void TdApi::OnQueryOrder(XTPQueryOrderRsp *order_info, XTPRI *error_info, int re
 	this->task_queue.push(task);
 };
 
+void TdApi::OnQueryOrderByPage(XTPQueryOrderRsp *order_info, int64_t req_count, int64_t order_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id) 
+{
+	Task task = Task();
+	task.task_name = ONQUERYORDERBYPAGE;
+	if (order_info)
+	{
+		XTPQueryOrderRsp *task_data = new XTPQueryOrderRsp();
+		*task_data = *order_info;
+		task.task_data = task_data;
+	}
+	task.task_extra = req_count;
+	task.task_extra = order_sequence;
+	task.task_extra = query_reference;
+	task.task_id = request_id;
+	task.task_last = is_last;
+	task.task_extra = session_id;
+	this->task_queue.push(task);
+};
+
 void TdApi::OnQueryTrade(XTPQueryTradeRsp *trade_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id) 
 {
 	Task task = Task();
@@ -112,6 +131,25 @@ void TdApi::OnQueryTrade(XTPQueryTradeRsp *trade_info, XTPRI *error_info, int re
 		*task_error = *error_info;
 		task.task_error = task_error;
 	}
+	task.task_id = request_id;
+	task.task_last = is_last;
+	task.task_extra = session_id;
+	this->task_queue.push(task);
+};
+
+void TdApi::OnQueryTradeByPage(XTPQueryTradeRsp *trade_info, int64_t req_count, int64_t trade_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id) 
+{
+	Task task = Task();
+	task.task_name = ONQUERYTRADEBYPAGE;
+	if (trade_info)
+	{
+		XTPQueryTradeRsp *task_data = new XTPQueryTradeRsp();
+		*task_data = *trade_info;
+		task.task_data = task_data;
+	}
+	task.task_extra = req_count;
+	task.task_extra = trade_sequence;
+	task.task_extra = query_reference;
 	task.task_id = request_id;
 	task.task_last = is_last;
 	task.task_extra = session_id;
@@ -356,6 +394,26 @@ void TdApi::OnCreditCashRepay(XTPCrdCashRepayRsp *cash_repay_info, XTPRI *error_
 	this->task_queue.push(task);
 };
 
+void TdApi::OnCreditCashRepayDebtInterestFee(XTPCrdCashRepayDebtInterestFeeRsp *cash_repay_info, XTPRI *error_info, uint64_t session_id) 
+{
+	Task task = Task();
+	task.task_name = ONCREDITCASHREPAYDEBTINTERESTFEE;
+	if (cash_repay_info)
+	{
+		XTPCrdCashRepayDebtInterestFeeRsp *task_data = new XTPCrdCashRepayDebtInterestFeeRsp();
+		*task_data = *cash_repay_info;
+		task.task_data = task_data;
+	}
+	if (error_info)
+	{
+		XTPRI *task_error = new XTPRI();
+		*task_error = *error_info;
+		task.task_error = task_error;
+	}
+	task.task_extra = session_id;
+	this->task_queue.push(task);
+};
+
 void TdApi::OnQueryCreditCashRepayInfo(XTPCrdCashRepayInfo *cash_repay_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id) 
 {
 	Task task = Task();
@@ -503,6 +561,315 @@ void TdApi::OnQueryCreditExcessStock(XTPClientQueryCrdSurplusStkRspInfo* stock_i
 		task.task_error = task_error;
 	}
 	task.task_id = request_id;
+	task.task_extra = session_id;
+	this->task_queue.push(task);
+};
+
+void TdApi::OnQueryMulCreditExcessStock(XTPClientQueryCrdSurplusStkRspInfo* stock_info, XTPRI *error_info, int request_id, uint64_t session_id, bool is_last) 
+{
+	Task task = Task();
+	task.task_name = ONQUERYMULCREDITEXCESSSTOCK;
+	if (stock_info)
+	{
+		XTPClientQueryCrdSurplusStkRspInfo *task_data = new XTPClientQueryCrdSurplusStkRspInfo();
+		*task_data = *stock_info;
+		task.task_data = task_data;
+	}
+	if (error_info)
+	{
+		XTPRI *task_error = new XTPRI();
+		*task_error = *error_info;
+		task.task_error = task_error;
+	}
+	task.task_id = request_id;
+	task.task_extra = session_id;
+	task.task_last = is_last;
+	this->task_queue.push(task);
+};
+
+void TdApi::OnCreditExtendDebtDate(XTPCreditDebtExtendNotice *debt_extend_info, XTPRI *error_info, uint64_t session_id) 
+{
+	Task task = Task();
+	task.task_name = ONCREDITEXTENDDEBTDATE;
+	if (debt_extend_info)
+	{
+		XTPCreditDebtExtendNotice *task_data = new XTPCreditDebtExtendNotice();
+		*task_data = *debt_extend_info;
+		task.task_data = task_data;
+	}
+	if (error_info)
+	{
+		XTPRI *task_error = new XTPRI();
+		*task_error = *error_info;
+		task.task_error = task_error;
+	}
+	task.task_extra = session_id;
+	this->task_queue.push(task);
+};
+
+void TdApi::OnQueryCreditExtendDebtDateOrders(XTPCreditDebtExtendNotice *debt_extend_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id) 
+{
+	Task task = Task();
+	task.task_name = ONQUERYCREDITEXTENDDEBTDATEORDERS;
+	if (debt_extend_info)
+	{
+		XTPCreditDebtExtendNotice *task_data = new XTPCreditDebtExtendNotice();
+		*task_data = *debt_extend_info;
+		task.task_data = task_data;
+	}
+	if (error_info)
+	{
+		XTPRI *task_error = new XTPRI();
+		*task_error = *error_info;
+		task.task_error = task_error;
+	}
+	task.task_id = request_id;
+	task.task_last = is_last;
+	task.task_extra = session_id;
+	this->task_queue.push(task);
+};
+
+void TdApi::OnQueryCreditFundExtraInfo(XTPCrdFundExtraInfo *fund_info, XTPRI *error_info, int request_id, uint64_t session_id) 
+{
+	Task task = Task();
+	task.task_name = ONQUERYCREDITFUNDEXTRAINFO;
+	if (fund_info)
+	{
+		XTPCrdFundExtraInfo *task_data = new XTPCrdFundExtraInfo();
+		*task_data = *fund_info;
+		task.task_data = task_data;
+	}
+	if (error_info)
+	{
+		XTPRI *task_error = new XTPRI();
+		*task_error = *error_info;
+		task.task_error = task_error;
+	}
+	task.task_id = request_id;
+	task.task_extra = session_id;
+	this->task_queue.push(task);
+};
+
+void TdApi::OnQueryCreditPositionExtraInfo(XTPCrdPositionExtraInfo *fund_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id) 
+{
+	Task task = Task();
+	task.task_name = ONQUERYCREDITPOSITIONEXTRAINFO;
+	if (fund_info)
+	{
+		XTPCrdPositionExtraInfo *task_data = new XTPCrdPositionExtraInfo();
+		*task_data = *fund_info;
+		task.task_data = task_data;
+	}
+	if (error_info)
+	{
+		XTPRI *task_error = new XTPRI();
+		*task_error = *error_info;
+		task.task_error = task_error;
+	}
+	task.task_id = request_id;
+	task.task_last = is_last;
+	task.task_extra = session_id;
+	this->task_queue.push(task);
+};
+
+void TdApi::OnOptionCombinedOrderEvent(XTPOptCombOrderInfo *order_info, XTPRI *error_info, uint64_t session_id) 
+{
+	Task task = Task();
+	task.task_name = ONOPTIONCOMBINEDORDEREVENT;
+	if (order_info)
+	{
+		XTPOptCombOrderInfo *task_data = new XTPOptCombOrderInfo();
+		*task_data = *order_info;
+		task.task_data = task_data;
+	}
+	if (error_info)
+	{
+		XTPRI *task_error = new XTPRI();
+		*task_error = *error_info;
+		task.task_error = task_error;
+	}
+	task.task_extra = session_id;
+	this->task_queue.push(task);
+};
+
+void TdApi::OnOptionCombinedTradeEvent(XTPOptCombTradeReport *trade_info, uint64_t session_id) 
+{
+	Task task = Task();
+	task.task_name = ONOPTIONCOMBINEDTRADEEVENT;
+	if (trade_info)
+	{
+		XTPOptCombTradeReport *task_data = new XTPOptCombTradeReport();
+		*task_data = *trade_info;
+		task.task_data = task_data;
+	}
+	task.task_extra = session_id;
+	this->task_queue.push(task);
+};
+
+void TdApi::OnCancelOptionCombinedOrderError(XTPOptCombOrderCancelInfo *cancel_info, XTPRI *error_info, uint64_t session_id) 
+{
+	Task task = Task();
+	task.task_name = ONCANCELOPTIONCOMBINEDORDERERROR;
+	if (cancel_info)
+	{
+		XTPOptCombOrderCancelInfo *task_data = new XTPOptCombOrderCancelInfo();
+		*task_data = *cancel_info;
+		task.task_data = task_data;
+	}
+	if (error_info)
+	{
+		XTPRI *task_error = new XTPRI();
+		*task_error = *error_info;
+		task.task_error = task_error;
+	}
+	task.task_extra = session_id;
+	this->task_queue.push(task);
+};
+
+void TdApi::OnQueryOptionCombinedOrders(XTPQueryOptCombOrderRsp *order_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id) 
+{
+	Task task = Task();
+	task.task_name = ONQUERYOPTIONCOMBINEDORDERS;
+	if (order_info)
+	{
+		XTPQueryOptCombOrderRsp *task_data = new XTPQueryOptCombOrderRsp();
+		*task_data = *order_info;
+		task.task_data = task_data;
+	}
+	if (error_info)
+	{
+		XTPRI *task_error = new XTPRI();
+		*task_error = *error_info;
+		task.task_error = task_error;
+	}
+	task.task_id = request_id;
+	task.task_last = is_last;
+	task.task_extra = session_id;
+	this->task_queue.push(task);
+};
+
+void TdApi::OnQueryOptionCombinedOrdersByPage(XTPQueryOptCombOrderRsp *order_info, int64_t req_count, int64_t order_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id) 
+{
+	Task task = Task();
+	task.task_name = ONQUERYOPTIONCOMBINEDORDERSBYPAGE;
+	if (order_info)
+	{
+		XTPQueryOptCombOrderRsp *task_data = new XTPQueryOptCombOrderRsp();
+		*task_data = *order_info;
+		task.task_data = task_data;
+	}
+	task.task_extra = req_count;
+	task.task_extra = order_sequence;
+	task.task_extra = query_reference;
+	task.task_id = request_id;
+	task.task_last = is_last;
+	task.task_extra = session_id;
+	this->task_queue.push(task);
+};
+
+void TdApi::OnQueryOptionCombinedTrades(XTPQueryOptCombTradeRsp *trade_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id) 
+{
+	Task task = Task();
+	task.task_name = ONQUERYOPTIONCOMBINEDTRADES;
+	if (trade_info)
+	{
+		XTPQueryOptCombTradeRsp *task_data = new XTPQueryOptCombTradeRsp();
+		*task_data = *trade_info;
+		task.task_data = task_data;
+	}
+	if (error_info)
+	{
+		XTPRI *task_error = new XTPRI();
+		*task_error = *error_info;
+		task.task_error = task_error;
+	}
+	task.task_id = request_id;
+	task.task_last = is_last;
+	task.task_extra = session_id;
+	this->task_queue.push(task);
+};
+
+void TdApi::OnQueryOptionCombinedTradesByPage(XTPQueryOptCombTradeRsp *trade_info, int64_t req_count, int64_t trade_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id) 
+{
+	Task task = Task();
+	task.task_name = ONQUERYOPTIONCOMBINEDTRADESBYPAGE;
+	if (trade_info)
+	{
+		XTPQueryOptCombTradeRsp *task_data = new XTPQueryOptCombTradeRsp();
+		*task_data = *trade_info;
+		task.task_data = task_data;
+	}
+	task.task_extra = req_count;
+	task.task_extra = trade_sequence;
+	task.task_extra = query_reference;
+	task.task_id = request_id;
+	task.task_last = is_last;
+	task.task_extra = session_id;
+	this->task_queue.push(task);
+};
+
+void TdApi::OnQueryOptionCombinedPosition(XTPQueryOptCombPositionRsp *position_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id) 
+{
+	Task task = Task();
+	task.task_name = ONQUERYOPTIONCOMBINEDPOSITION;
+	if (position_info)
+	{
+		XTPQueryOptCombPositionRsp *task_data = new XTPQueryOptCombPositionRsp();
+		*task_data = *position_info;
+		task.task_data = task_data;
+	}
+	if (error_info)
+	{
+		XTPRI *task_error = new XTPRI();
+		*task_error = *error_info;
+		task.task_error = task_error;
+	}
+	task.task_id = request_id;
+	task.task_last = is_last;
+	task.task_extra = session_id;
+	this->task_queue.push(task);
+};
+
+void TdApi::OnQueryOptionCombinedStrategyInfo(XTPQueryCombineStrategyInfoRsp *strategy_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id) 
+{
+	Task task = Task();
+	task.task_name = ONQUERYOPTIONCOMBINEDSTRATEGYINFO;
+	if (strategy_info)
+	{
+		XTPQueryCombineStrategyInfoRsp *task_data = new XTPQueryCombineStrategyInfoRsp();
+		*task_data = *strategy_info;
+		task.task_data = task_data;
+	}
+	if (error_info)
+	{
+		XTPRI *task_error = new XTPRI();
+		*task_error = *error_info;
+		task.task_error = task_error;
+	}
+	task.task_id = request_id;
+	task.task_last = is_last;
+	task.task_extra = session_id;
+	this->task_queue.push(task);
+};
+
+void TdApi::OnQueryOptionCombinedExecPosition(XTPQueryOptCombExecPosRsp *position_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id) 
+{
+	Task task = Task();
+	task.task_name = ONQUERYOPTIONCOMBINEDEXECPOSITION;
+	if (position_info)
+	{
+		XTPQueryOptCombExecPosRsp *task_data = new XTPQueryOptCombExecPosRsp();
+		*task_data = *position_info;
+		task.task_data = task_data;
+	}
+	if (error_info)
+	{
+		XTPRI *task_error = new XTPRI();
+		*task_error = *error_info;
+		task.task_error = task_error;
+	}
+	task.task_id = request_id;
+	task.task_last = is_last;
 	task.task_extra = session_id;
 	this->task_queue.push(task);
 };

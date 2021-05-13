@@ -48,3 +48,5 @@ virtual void onSubscribeAllOptionTickByTick(int extra, const dict &error) {};
 
 virtual void onUnSubscribeAllOptionTickByTick(int extra, const dict &error) {};
 
+virtual void onQueryAllTickersFullInfo(const dict &data, const dict &error, bool last) {};
+

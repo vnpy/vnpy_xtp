@@ -34,9 +34,21 @@ case ONQUERYORDER:
 	break;
 }
 
+case ONQUERYORDERBYPAGE:
+{
+	this->processQueryOrderByPage(&task);
+	break;
+}
+
 case ONQUERYTRADE:
 {
 	this->processQueryTrade(&task);
+	break;
+}
+
+case ONQUERYTRADEBYPAGE:
+{
+	this->processQueryTradeByPage(&task);
 	break;
 }
 
@@ -106,6 +118,12 @@ case ONCREDITCASHREPAY:
 	break;
 }
 
+case ONCREDITCASHREPAYDEBTINTERESTFEE:
+{
+	this->processCreditCashRepayDebtInterestFee(&task);
+	break;
+}
+
 case ONQUERYCREDITCASHREPAYINFO:
 {
 	this->processQueryCreditCashRepayInfo(&task);
@@ -145,6 +163,96 @@ case ONQUERYCREDITTICKERASSIGNINFO:
 case ONQUERYCREDITEXCESSSTOCK:
 {
 	this->processQueryCreditExcessStock(&task);
+	break;
+}
+
+case ONQUERYMULCREDITEXCESSSTOCK:
+{
+	this->processQueryMulCreditExcessStock(&task);
+	break;
+}
+
+case ONCREDITEXTENDDEBTDATE:
+{
+	this->processCreditExtendDebtDate(&task);
+	break;
+}
+
+case ONQUERYCREDITEXTENDDEBTDATEORDERS:
+{
+	this->processQueryCreditExtendDebtDateOrders(&task);
+	break;
+}
+
+case ONQUERYCREDITFUNDEXTRAINFO:
+{
+	this->processQueryCreditFundExtraInfo(&task);
+	break;
+}
+
+case ONQUERYCREDITPOSITIONEXTRAINFO:
+{
+	this->processQueryCreditPositionExtraInfo(&task);
+	break;
+}
+
+case ONOPTIONCOMBINEDORDEREVENT:
+{
+	this->processOptionCombinedOrderEvent(&task);
+	break;
+}
+
+case ONOPTIONCOMBINEDTRADEEVENT:
+{
+	this->processOptionCombinedTradeEvent(&task);
+	break;
+}
+
+case ONCANCELOPTIONCOMBINEDORDERERROR:
+{
+	this->processCancelOptionCombinedOrderError(&task);
+	break;
+}
+
+case ONQUERYOPTIONCOMBINEDORDERS:
+{
+	this->processQueryOptionCombinedOrders(&task);
+	break;
+}
+
+case ONQUERYOPTIONCOMBINEDORDERSBYPAGE:
+{
+	this->processQueryOptionCombinedOrdersByPage(&task);
+	break;
+}
+
+case ONQUERYOPTIONCOMBINEDTRADES:
+{
+	this->processQueryOptionCombinedTrades(&task);
+	break;
+}
+
+case ONQUERYOPTIONCOMBINEDTRADESBYPAGE:
+{
+	this->processQueryOptionCombinedTradesByPage(&task);
+	break;
+}
+
+case ONQUERYOPTIONCOMBINEDPOSITION:
+{
+	this->processQueryOptionCombinedPosition(&task);
+	break;
+}
+
+case ONQUERYOPTIONCOMBINEDSTRATEGYINFO:
+{
+	this->processQueryOptionCombinedStrategyInfo(&task);
+	break;
+}
+
+case ONQUERYOPTIONCOMBINEDEXECPOSITION:
+{
+	this->processQueryOptionCombinedExecPosition(&task);
 	break;
 }
 

@@ -180,7 +180,7 @@ typedef struct XTPMarketDataStruct
     union {
         XTPMarketDataStockExData  stk;
         XTPMarketDataOptionExData opt;
-    } ;
+    };
     ///决定了union是哪种数据类型
     XTP_MARKETDATA_TYPE data_type;
     ///预留

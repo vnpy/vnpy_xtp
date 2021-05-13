@@ -22,3 +22,11 @@ int MdApi::queryAllTickersPriceInfo()
 	return i;
 };
 
+int MdApi::queryAllTickersFullInfo(int exchange_id)
+{
+	XTP_EXCHANGE_TYPE myreq = XTP_EXCHANGE_TYPE();
+	memset(&myreq, 0, sizeof(myreq));
+	int i = this->api->QueryAllTickersFullInfo(&myreq, );
+	return i;
+};
+

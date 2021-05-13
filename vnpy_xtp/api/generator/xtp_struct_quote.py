@@ -139,9 +139,41 @@ XTPTickerPriceInfo = {
     "last_price": "float",
 }
 
+XTPQuoteFullInfo = {
+    "exchange_id": "enum",
+    "ticker": "string",
+    "ticker_name": "string",
+    "security_type": "enum",
+    "ticker_qualification_class": "enum",
+    "is_registration": "bool",
+    "is_VIE": "bool",
+    "is_noprofit": "bool",
+    "is_weighted_voting_rights": "bool",
+    "is_have_price_limit": "bool",
+    "upper_limit_price": "float",
+    "lower_limit_price": "float",
+    "pre_close_price": "float",
+    "price_tick": "float",
+    "bid_qty_upper_limit": "int",
+    "bid_qty_lower_limit": "int",
+    "bid_qty_unit": "int",
+    "ask_qty_upper_limit": "int",
+    "ask_qty_lower_limit": "int",
+    "ask_qty_unit": "int",
+    "market_bid_qty_upper_limit": "int",
+    "market_bid_qty_lower_limit": "int",
+    "market_bid_qty_unit": "int",
+    "market_ask_qty_upper_limit": "int",
+    "market_ask_qty_lower_limit": "int",
+    "market_ask_qty_unit": "int",
+    "unknown": "int",
+}
+
 XTPST = XTPSpecificTickerStruct
 XTPMD = XTPMarketDataStruct
 XTPQSI = XTPQuoteStaticInfo
 XTPOB = OrderBookStruct
 XTPTBT = XTPTickByTickStruct
 XTPTPI = XTPTickerPriceInfo
+
+XTPQFI = XTPQuoteFullInfo

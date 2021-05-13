@@ -95,7 +95,10 @@ class StructGenerator:
             else:
                 words = words[0].split()
                 type_ = words[0]
-                py_type = self.typedefs[type_]
+                py_type = self.typedefs.get(type_, None)
+                if py_type is None:
+                    print(type_)
+                    return
                 name = words[1].strip()
 
             new_line = f"    \"{name}\": \"{py_type}\",\n"
@@ -111,6 +114,8 @@ class StructGenerator:
                 line = line.strip()
                 words = line.split(" ")
                 words = [word for word in words if word]
+                if not words:
+                    return
 
                 type_ = words[0]
                 py_type = self.typedefs[type_]
@@ -145,6 +150,9 @@ class StructGenerator:
             new_line = "}\n\n"
             self.f_struct.write(new_line)
 
+        elif line.startswith("#define"):
+            pass
+
         # 内容部分
         elif ("\t" in line or "  " in line) and "//" not in line:
             line = line.strip()
@@ -156,14 +164,16 @@ class StructGenerator:
                 type_ = words[0]
                 py_type = self.typedefs[type_]
                 name = words[1].strip()
-            else:
+            elif len(words) == 1:
                 words = words[0].split()
                 type_ = words[0]
-                py_type = self.typedefs[type_]
+                py_type = self.typedefs.get(type_, type_)
                 name = words[1].strip()
+            else:
+                return
 
             new_line = f"    \"{name}\": \"{py_type}\",\n"
-            # print(new_line)
+
             self.f_struct.write(new_line)
 
 

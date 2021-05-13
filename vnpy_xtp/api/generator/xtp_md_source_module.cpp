@@ -1,6 +1,7 @@
 .def("queryAllTickers", &MdApi::queryAllTickers)
 .def("queryTickersPriceInfo", &MdApi::queryTickersPriceInfo)
 .def("queryAllTickersPriceInfo", &MdApi::queryAllTickersPriceInfo)
+.def("queryAllTickersFullInfo", &MdApi::queryAllTickersFullInfo)
 
 .def("onDisconnected", &MdApi::onDisconnected)
 .def("onError", &MdApi::onError)
@@ -27,4 +28,5 @@
 .def("onUnSubscribeAllOptionOrderBook", &MdApi::onUnSubscribeAllOptionOrderBook)
 .def("onSubscribeAllOptionTickByTick", &MdApi::onSubscribeAllOptionTickByTick)
 .def("onUnSubscribeAllOptionTickByTick", &MdApi::onUnSubscribeAllOptionTickByTick)
+.def("onQueryAllTickersFullInfo", &MdApi::onQueryAllTickersFullInfo)
 ;

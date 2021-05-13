@@ -68,6 +68,12 @@ XTPQueryOrderReq = {
     "end_time": "int",
 }
 
+XTPQueryOrderByPageReq = {
+    "req_count": "int",
+    "reference": "int",
+    "reserved": "int",
+}
+
 XTPQueryReportByExecIdReq = {
     "order_xtp_id": "int",
     "exec_id": "string",
@@ -77,6 +83,12 @@ XTPQueryTraderReq = {
     "ticker": "string",
     "begin_time": "int",
     "end_time": "int",
+}
+
+XTPQueryTraderByPageReq = {
+    "req_count": "int",
+    "reference": "int",
+    "reserved": "int",
 }
 
 XTPQueryAssetRsp = {
@@ -102,7 +114,14 @@ XTPQueryAssetRsp = {
     "force_freeze_amount": "float",
     "preferred_amount": "float",
     "repay_stock_aval_banlance": "float",
+    "fund_order_data_charges": "float",
+    "fund_cancel_data_charges": "float",
     "unknown": "int",
+}
+
+XTPQueryStkPositionReq = {
+    "ticker": "string",
+    "market": "enum",
 }
 
 XTPQueryStkPositionRsp = {
@@ -122,7 +141,17 @@ XTPQueryStkPositionRsp = {
     "executable_underlying": "int",
     "locked_position": "int",
     "usable_locked_position": "int",
+    "profit_price": "float",
+    "buy_cost": "float",
+    "profit_cost": "float",
     "unknown": "int",
+}
+
+XTPCreditDebtExtendNotice = {
+    "xtpid": "int",
+    "debt_id": "string",
+    "oper_status": "enum",
+    "oper_time": "int",
 }
 
 XTPFundTransferNotice = {
@@ -179,7 +208,7 @@ XTPQueryETFComponentReq = {
     "ticker": "string",
 }
 
-XTPQueryETFComponentRsp = {
+XTPQueryETFComponentRspV1 = {
     "market": "enum",
     "ticker": "string",
     "component_ticker": "string",
@@ -191,18 +220,54 @@ XTPQueryETFComponentRsp = {
     "amount": "float",
 }
 
+XTPQueryETFComponentRsp = {
+    "market": "enum",
+    "ticker": "string",
+    "component_ticker": "string",
+    "component_name": "string",
+    "quantity": "int",
+    "component_market": "enum",
+    "replace_type": "enum",
+    "premium_ratio": "float",
+    "amount": "float",
+    "creation_premium_ratio": "float",
+    "redemption_discount_ratio": "float",
+    "creation_amount": "float",
+    "redemption_amount": "float",
+}
+
 XTPQueryIPOTickerRsp = {
     "market": "enum",
     "ticker": "string",
     "ticker_name": "string",
+    "ticker_type": "enum",
     "price": "float",
     "unit": "int",
     "qty_upper_limit": "int",
 }
 
+XTPQueryIPOQuotaRspV1 = {
+    "market": "enum",
+    "quantity": "int",
+}
+
 XTPQueryIPOQuotaRsp = {
     "market": "enum",
     "quantity": "int",
+    "tech_quantity": "int",
+    "unused": "int",
+}
+
+XTPUserTerminalInfoReq = {
+    "local_ip": "string",
+    "mac_addr": "string",
+    "hd": "string",
+    "term_type": "enum",
+    "internet_ip": "string",
+    "internet_port": "int",
+    "client_version": "string",
+    "macos_sno": "string",
+    "unused": "string",
 }
 
 XTPQueryOptionAuctionInfoReq = {
@@ -248,6 +313,105 @@ XTPQueryOptionAuctionInfoRsp = {
     "margin_ratio_param1": "float",
     "margin_ratio_param2": "float",
     "unknown": "int",
+}
+
+XTPCombLegStrategy = {
+    "call_or_put": "enum",
+    "position_side": "enum",
+    "exercise_price_seq": "string",
+    "expire_date_seq": "int",
+    "leg_qty": "int",
+}
+
+XTPQueryOptCombineReq = {
+    "strategy_id": "string",
+    "market": "enum",
+}
+
+XTPQueryCombineStrategyInfoRsp = {
+    "strategy_id": "string",
+    "strategy_name": "string",
+    "market": "enum",
+    "leg_num": "int",
+    "expire_date_type": "enum",
+    "underlying_type": "enum",
+    "auto_sep_type": "enum",
+    "reserved": "int",
+}
+
+XTPOptCombLegInfo = {
+    "leg_security_id": "string",
+    "leg_cntr_type": "enum",
+    "leg_side": "enum",
+    "leg_covered": "enum",
+    "leg_qty": "int",
+}
+
+XTPOptCombPlugin = {
+    "strategy_id": "string",
+    "comb_num": "string",
+    "num_legs": "int",
+}
+
+XTPQueryOptCombPositionReq = {
+    "comb_num": "string",
+    "market": "enum",
+}
+
+XTPQueryOptCombPositionRsp = {
+    "strategy_id": "string",
+    "strategy_name": "string",
+    "market": "enum",
+    "total_qty": "int",
+    "available_qty": "int",
+    "yesterday_position": "int",
+    "reserved": "int",
+}
+
+XTPQueryOptExecInfoRsp = {
+    "market": "enum",
+    "cntrt_code": "string",
+    "own_qty_long": "int",
+    "own_qty_short": "int",
+    "own_qty_short_cover": "int",
+    "net_qty": "int",
+    "combed_qty_long": "int",
+    "combed_qty_short": "int",
+    "combed_qty_short_cover": "int",
+    "total_execute_gene_order_qty": "int",
+    "total_execute_gene_confirm_qty": "int",
+    "total_execute_comb_order_qty": "int",
+    "total_execute_comb_confirm_qty": "int",
+    "reserved": "int",
+}
+
+XTPQueryOptCombExecPosReq = {
+    "market": "enum",
+    "cntrt_code_1": "string",
+    "cntrt_code_2": "string",
+}
+
+XTPQueryOptCombExecPosRsp = {
+    "market": "enum",
+    "cntrt_code_1": "string",
+    "cntrt_name_1": "string",
+    "position_side_1": "enum",
+    "call_or_put_1": "enum",
+    "avl_qty_1": "int",
+    "orig_own_qty_1": "int",
+    "own_qty_1": "int",
+    "cntrt_code_2": "string",
+    "cntrt_name_2": "string",
+    "position_side_2": "enum",
+    "call_or_put_2": "enum",
+    "avl_qty_2": "int",
+    "orig_own_qty_2": "int",
+    "own_qty_2": "int",
+    "net_qty": "int",
+    "order_qty": "int",
+    "confirm_qty": "int",
+    "avl_qty": "int",
+    "reserved": "int",
 }
 
 XTPCrdCashRepayRsp = {
@@ -298,7 +462,7 @@ XTPCrdFundInfo = {
     "all_debt": "float",
     "line_of_credit": "float",
     "guaranty": "float",
-    "position_amount": "float",
+    "reserved": "float",
 }
 
 XTPClientQueryCrdDebtStockReq = {
@@ -309,8 +473,8 @@ XTPClientQueryCrdDebtStockReq = {
 XTPCrdDebtStockInfo = {
     "market": "enum",
     "ticker": "string",
-    "remain_quantity": "int",
-    "order_withhold_quantity": "int",
+    "stock_repay_quantity": "int",
+    "stock_total_quantity": "int",
 }
 
 XTPClientQueryCrdPositionStockReq = {
@@ -339,11 +503,108 @@ XTPClientQueryCrdSurplusStkRspInfo = {
     "transferred_quantity": "int",
 }
 
-XTPClientCrdExtendDebtInfo = {
-    "xtp_id": "int",
+XTPCreditDebtExtendReq = {
+    "xtpid": "int",
     "debt_id": "string",
+    "defer_days": "int",
+    "fund_account": "string",
+    "password": "string",
+}
+
+XTPCrdFundExtraInfo = {
+    "mf_rs_avl_used": "float",
+    "reserve": "string",
+}
+
+XTPCrdPositionExtraInfo = {
+    "market": "enum",
+    "ticker": "string",
+    "mf_rs_avl_used": "float",
+    "reserve": "string",
+}
+
+XTPOptCombOrderInsertInfo = {
+    "order_xtp_id": "int",
+    "order_client_id": "int",
+    "market": "enum",
+    "quantity": "int",
+    "side": "int",
+    "business_type": "enum",
+    "opt_comb_info": "XTPOptCombPlugin",
+}
+
+XTPOptCombOrderInfo = {
+    "order_xtp_id": "int",
+    "order_client_id": "int",
+    "order_cancel_client_id": "int",
+    "order_cancel_xtp_id": "int",
+    "market": "enum",
+    "quantity": "int",
+    "side": "int",
+    "business_type": "enum",
+    "qty_traded": "int",
+    "qty_left": "int",
+    "insert_time": "int",
+    "update_time": "int",
+    "cancel_time": "int",
+    "trade_amount": "float",
+    "order_local_id": "string",
+    "order_status": "enum",
+    "order_submit_status": "enum",
+    "order_type": "string",
+    "opt_comb_info": "XTPOptCombPlugin",
+}
+
+XTPOptCombTradeReport = {
+    "order_xtp_id": "int",
+    "order_client_id": "int",
+    "market": "enum",
+    "local_order_id": "int",
+    "exec_id": "string",
+    "quantity": "int",
+    "trade_time": "int",
+    "trade_amount": "float",
+    "report_index": "int",
+    "order_exch_id": "string",
+    "trade_type": "string",
+    "side": "int",
+    "business_type": "enum",
+    "branch_pbu": "string",
+    "opt_comb_info": "XTPOptCombPlugin",
+}
+
+XTPQueryOptCombOrderReq = {
+    "comb_num": "string",
+    "begin_time": "int",
+    "end_time": "int",
+}
+
+XTPQueryOptCombOrderByPageReq = {
+    "req_count": "int",
+    "reference": "int",
+    "reserved": "int",
+}
+
+XTPQueryOptCombReportByExecIdReq = {
+    "order_xtp_id": "int",
+    "exec_id": "string",
+}
+
+XTPQueryOptCombTraderReq = {
+    "comb_num": "string",
+    "begin_time": "int",
+    "end_time": "int",
+}
+
+XTPQueryOptCombTraderByPageReq = {
+    "req_count": "int",
+    "reference": "int",
+    "reserved": "int",
 }
 
 XTPQueryOrderRsp = XTPOrderInfo
 XTPQueryTradeRsp = XTPTradeReport
 XTPFundTransferLog = XTPFundTransferNotice
+XTPOptCombOrderCancelInfo = XTPOrderCancelInfo
+XTPQueryOptCombOrderRsp = XTPOptCombOrderInfo
+XTPQueryOptCombTradeRsp = XTPOptCombTradeReport

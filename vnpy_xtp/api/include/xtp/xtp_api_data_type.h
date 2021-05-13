@@ -524,7 +524,7 @@ typedef char TXTPExerciseSeqType;
 /////////////////////////////////////////////////////////////////////////
 ///@brief XTP_QUALIFICATION_TYPE是一个证券适当性枚举类型
 /////////////////////////////////////////////////////////////////////////
-typedef enum  XTP_QUALIFICATION_TYPE
+typedef enum XTP_QUALIFICATION_TYPE
 {
 	XTP_QUALIFICATION_PUBLIC = 0,			///<公众投资者，合格投资者与机构投资者均可
 	XTP_QUALIFICATION_COMMON = 1,			///<仅合格投资者与公众投资者

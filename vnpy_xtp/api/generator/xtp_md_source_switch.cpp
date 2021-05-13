@@ -148,3 +148,9 @@ case ONUNSUBSCRIBEALLOPTIONTICKBYTICK:
 	break;
 }
 
+case ONQUERYALLTICKERSFULLINFO:
+{
+	this->processQueryAllTickersFullInfo(&task);
+	break;
+}
+
