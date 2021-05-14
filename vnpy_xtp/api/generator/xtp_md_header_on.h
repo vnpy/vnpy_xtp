@@ -20,33 +20,33 @@ virtual void onUnSubTickByTick(const dict &data, const dict &error, bool is_last
 
 virtual void onTickByTick(const dict &data) {};
 
-virtual void onSubscribeAllMarketData(const dict &error) {};
+virtual void onSubscribeAllMarketData(int exchange_id, const dict &error) {};
 
-virtual void onUnSubscribeAllMarketData(const dict &error) {};
+virtual void onUnSubscribeAllMarketData(int exchange_id, const dict &error) {};
 
-virtual void onSubscribeAllOrderBook(const dict &error) {};
+virtual void onSubscribeAllOrderBook(int exchange_id, const dict &error) {};
 
-virtual void onUnSubscribeAllOrderBook(const dict &error) {};
+virtual void onUnSubscribeAllOrderBook(int exchange_id, const dict &error) {};
 
-virtual void onSubscribeAllTickByTick(const dict &error) {};
+virtual void onSubscribeAllTickByTick(int exchange_id, const dict &error) {};
 
-virtual void onUnSubscribeAllTickByTick(const dict &error) {};
+virtual void onUnSubscribeAllTickByTick(int exchange_id, const dict &error) {};
 
 virtual void onQueryAllTickers(const dict &data, const dict &error, bool is_last) {};
 
 virtual void onQueryTickersPriceInfo(const dict &data, const dict &error, bool is_last) {};
 
-virtual void onSubscribeAllOptionMarketData(const dict &error) {};
+virtual void onSubscribeAllOptionMarketData(int exchange_id, const dict &error) {};
 
-virtual void onUnSubscribeAllOptionMarketData(const dict &error) {};
+virtual void onUnSubscribeAllOptionMarketData(int exchange_id, const dict &error) {};
 
-virtual void onSubscribeAllOptionOrderBook(const dict &error) {};
+virtual void onSubscribeAllOptionOrderBook(int exchange_id, const dict &error) {};
 
-virtual void onUnSubscribeAllOptionOrderBook(const dict &error) {};
+virtual void onUnSubscribeAllOptionOrderBook(int exchange_id, const dict &error) {};
 
-virtual void onSubscribeAllOptionTickByTick(const dict &error) {};
+virtual void onSubscribeAllOptionTickByTick(int exchange_id, const dict &error) {};
 
-virtual void onUnSubscribeAllOptionTickByTick(const dict &error) {};
+virtual void onUnSubscribeAllOptionTickByTick(int exchange_id, const dict &error) {};
 
 virtual void onQueryAllTickersFullInfo(const dict &data, const dict &error, bool is_last) {};
 
