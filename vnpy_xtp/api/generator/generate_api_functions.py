@@ -1,11 +1,12 @@
 """"""
 import importlib
 from typing import Dict, List
+
 type_dict = {
-    'uint64_t': 'int',
-    'uint32_t': 'int',
-    'int64_t': 'int',
-    'int32_t': 'int',
+    'uint64_t': 'uint64_t',
+    'uint32_t': 'uint32_t',
+    'int64_t': 'int64_t',
+    'int32_t': 'int32_t',
     'char': 'string',
     'double': 'float',
     "string": "string",
@@ -62,20 +63,12 @@ class ApiGenerator:
 
         self.f_cpp.close()
 
-        # print("self.callbacks", self.callbacks)
-        # print("self.structs", self.structs)
-        # print("self.functions", self.functions)
-        # print(self.enums)
-        # print(self.lines)
-
-        self.generate_header_define()
-        self.generate_header_process()
         self.generate_header_on()
         self.generate_header_function()
 
         self.generate_source_task()
-        self.generate_source_switch()
-        self.generate_source_process()
+        # self.generate_source_switch()
+        # self.generate_source_process()
         self.generate_source_function()
         self.generate_source_on()
         self.generate_source_module()
@@ -123,11 +116,7 @@ class ApiGenerator:
 
             type_ = words[-2]
 
-            if "int" in type_:
-                type_ = "int"
-            elif type_ == "double":
-                type_ = "float"
-            elif "*" in words[-2]:
+            if "*" in words[-2]:
                 type_ = words[-2].replace("*", "")
 
             name = words[-1].replace("*", "")
@@ -154,57 +143,21 @@ class ApiGenerator:
                 line = f"void {name}(Task *task);\n\n"
                 f.write(line)
 
-    def length(self, d: Dict[str, str]):
-        """"""
-        return len(d.keys())
-
     def generate_header_on(self):
         """"""
         filename = f"{self.prefix}_{self.name}_header_on.h"
         with open(filename, "w") as f:
             for name, d in self.callbacks.items():
                 name = name.replace("On", "on")
-
                 args_list = []
-                length = self.length(d)
 
-                if length == 1:
-                    for type_ in d.values():
-                        if type_ == "XTPRI":
-                            args_list.append("const dict &error")
-                        elif type_ == "int":
-                            args_list.append("int reqid")
-                elif length == 2:
-                    for type_ in d.values():
-                        if type_ == "XTPRI":
-                            args_list.append("const dict &error")
-                        elif type_ == "int":
-                            args_list.append("int extra")
-                        elif type_ in self.enums:
-                            args_list.append("int extra")
-                elif length == 3:
-                    for type_ in d.values():
-                        if type_ == "int":
-                            args_list.append("int extra")
-                        elif type_ == "bool":
-                            args_list.append("bool last")
-                        elif type_ == "XTPRI":
-                            args_list.append("const dict &error")
-                        else:
-                            args_list.append("const dict &data")
-                elif length == 4:
-                    args_list.append("const dict &data")
-                    args_list.append("const dict &error")
-                    args_list.append("int reqid")
-                    args_list.append("int extra")
-                elif length == 5:
-                    args_list.append("const dict &data")
-                    args_list.append("const dict &error")
-                    args_list.append("int reqid")
-                    args_list.append("bool last")
-                    args_list.append("int extra")
-                elif length > 5:
-                    args_list.append("const dict &data")
+                for pname, ptype in d.items():
+                    if ptype == "XTPRI":
+                        args_list.append("const dict &error")
+                    elif ptype in self.structs:
+                        args_list.append("const dict &data")
+                    elif ptype in type_dict:
+                        args_list.append(f"{ptype} {pname}")
 
                 args_str = ", ".join(args_list)
                 line = f"virtual void {name}({args_str}) {{}};\n\n"
@@ -219,7 +172,7 @@ class ApiGenerator:
 
                 args_list = []
 
-                length = self.length(d)
+                length = len(d)
 
                 if length < 3:
                     for name_, type_ in d.items():
@@ -240,61 +193,58 @@ class ApiGenerator:
                 line = f"int {name}({content});\n\n"
                 f.write(line)
 
-    def mod_insert(self, line):
-        """"""
-        parts = line.split("(")
-        words = line[line.index("(") + 1:line.index(")")].split(" ")
-        count = -1
-        for i in words:
-            count += 1
-            if i in self.enums:
-                words[count] = "int"
-            elif "int" in i:
-                words[count] = "int"
-            elif "[" in i:
-                words[count] = i.split("[")[0]
-        last_part = " ".join(words) + ")"
-        new_line = parts[0] + "(" + last_part
-        return new_line
-
     def generate_source_task(self):
         """"""
         filename = f"{self.prefix}_{self.name}_source_task.cpp"
         with open(filename, "w") as f:
             for name, d in self.callbacks.items():
-                # line = self.mod_insert(self.lines[name])
+                on_name = name.replace("On", "on")
+
                 line = self.lines[name]
                 f.write(line.replace("virtual void ",
                                      f"void {self.class_name}::") + "\n")
                 f.write("{\n")
-                f.write("\tTask task = Task();\n")
-                f.write(f"\ttask.task_name = {name.upper()};\n")
+                f.write("\tgil_scoped_acquire acquire;\n")
+
+                args = []
+
                 for field, type_ in d.items():
-                    if "int" in type_:
-                        if field == "request_id":
-                            f.write(f"\ttask.task_id = {field};\n")
-                        else:
-                            f.write(f"\ttask.task_extra = {field};\n")
-                    elif type_ in self.enums:
-                        f.write(f"\ttask.task_extra = (int) {field};\n")
-                    elif type_ == "bool":
-                        f.write(f"\ttask.task_last = {field};\n")
-                    elif type_ == "XTPRI":
+                    if type_ == "XTPRI":
+                        args.append("error")
+
+                        f.write("\tdict error;\n")
                         f.write(f"\tif ({field})\n")
                         f.write("\t{\n")
-                        f.write(f"\t\t{type_} *task_error = new {type_}();\n")
-                        f.write(f"\t\t*task_error = *{field};\n")
-                        f.write(f"\t\ttask.task_error = task_error;\n")
+                        
+                        struct_fields = self.structs[type_]
+                        for struct_field, struct_type in struct_fields.items():
+                            f.write(
+                                f"\t\terror[\"{struct_field}\"] = {field}->{struct_field};\n")
+
+                        f.write("\t}\n")
+                    elif type_ in self.structs:
+                        args.append("data")
+
+                        f.write("\tdict data;\n")
+                        f.write(f"\tif ({field})\n")
+                        f.write("\t{\n")
+
+                        struct_fields = self.structs[type_]
+                        for struct_field, struct_type in struct_fields.items():
+                            if struct_type == "enum":
+                                f.write(
+                                    f"\t\tdata[\"{struct_field}\"] = (int) {field}->{struct_field};\n")
+                            else:
+                                f.write(
+                                    f"\t\tdata[\"{struct_field}\"] = {field}->{struct_field};\n")
+
                         f.write("\t}\n")
                     else:
-                        f.write(f"\tif ({field})\n")
-                        f.write("\t{\n")
-                        f.write(f"\t\t{type_} *task_data = new {type_}();\n")
-                        f.write(f"\t\t*task_data = *{field};\n")
-                        f.write(f"\t\ttask.task_data = task_data;\n")
-                        f.write("\t}\n")
+                        args.append(field)
 
-                f.write(f"\tthis->task_queue.push(task);\n")
+                args_str = ", ".join(args)
+                f.write(f"\tthis->{on_name}({args_str});\n")
+
                 f.write("};\n\n")
 
     def generate_source_switch(self):
@@ -386,7 +336,7 @@ class ApiGenerator:
 
                 args_list = []
 
-                length = self.length(d)
+                length = len(d)
 
                 if length < 3:
                     for name_, type_ in d.items():
@@ -462,26 +412,16 @@ class ApiGenerator:
 
                 args = []
                 bind_args = ["void", self.class_name, on_name]
-                for field, type_ in d.items():
-                    if type_ == "int":
-                        if field == "request_id":
-                            args.append("int reqid")
-                            bind_args.append("reqid")
-                        else:
-                            args.append("int extra")
-                            bind_args.append("extra")
-                    elif type_ in self.enums:
-                        args.append("int extra")
-                        bind_args.append("extra")
-                    elif type_ == "bool":
-                        args.append("bool last")
-                        bind_args.append("last")
-                    elif type_ == "XTPRI":
+                for pname, ptype in d.items():
+                    if ptype == "XTPRI":
                         args.append("const dict &error")
                         bind_args.append("error")
-                    else:
+                    elif ptype in self.structs:
                         args.append("const dict &data")
                         bind_args.append("data")
+                    elif ptype in type_dict:
+                        args.append(f"{ptype} {pname}")
+                        bind_args.append(pname)
 
                 args_str = ", ".join(args)
                 bind_args_str = ", ".join(bind_args)

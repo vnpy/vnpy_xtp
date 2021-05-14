@@ -1,52 +1,52 @@
-virtual void onDisconnected(int reqid) {};
+virtual void onDisconnected(int reason) {};
 
 virtual void onError(const dict &error) {};
 
-virtual void onSubMarketData(const dict &data, const dict &error, bool last) {};
+virtual void onSubMarketData(const dict &data, const dict &error, bool is_last) {};
 
-virtual void onUnSubMarketData(const dict &data, const dict &error, bool last) {};
+virtual void onUnSubMarketData(const dict &data, const dict &error, bool is_last) {};
 
-virtual void onDepthMarketData(const dict &data) {};
+virtual void onDepthMarketData(const dict &data, int64_t bid1_qty, int32_t bid1_count, int32_t max_bid1_count, int64_t ask1_qty, int32_t ask1_count, int32_t max_ask1_count) {};
 
-virtual void onSubOrderBook(const dict &data, const dict &error, bool last) {};
+virtual void onSubOrderBook(const dict &data, const dict &error, bool is_last) {};
 
-virtual void onUnSubOrderBook(const dict &data, const dict &error, bool last) {};
+virtual void onUnSubOrderBook(const dict &data, const dict &error, bool is_last) {};
 
-virtual void onOrderBook() {};
+virtual void onOrderBook(const dict &data) {};
 
-virtual void onSubTickByTick(const dict &data, const dict &error, bool last) {};
+virtual void onSubTickByTick(const dict &data, const dict &error, bool is_last) {};
 
-virtual void onUnSubTickByTick(const dict &data, const dict &error, bool last) {};
+virtual void onUnSubTickByTick(const dict &data, const dict &error, bool is_last) {};
 
-virtual void onTickByTick() {};
+virtual void onTickByTick(const dict &data) {};
 
-virtual void onSubscribeAllMarketData(int extra, const dict &error) {};
+virtual void onSubscribeAllMarketData(const dict &error) {};
 
-virtual void onUnSubscribeAllMarketData(int extra, const dict &error) {};
+virtual void onUnSubscribeAllMarketData(const dict &error) {};
 
-virtual void onSubscribeAllOrderBook(int extra, const dict &error) {};
+virtual void onSubscribeAllOrderBook(const dict &error) {};
 
-virtual void onUnSubscribeAllOrderBook(int extra, const dict &error) {};
+virtual void onUnSubscribeAllOrderBook(const dict &error) {};
 
-virtual void onSubscribeAllTickByTick(int extra, const dict &error) {};
+virtual void onSubscribeAllTickByTick(const dict &error) {};
 
-virtual void onUnSubscribeAllTickByTick(int extra, const dict &error) {};
+virtual void onUnSubscribeAllTickByTick(const dict &error) {};
 
-virtual void onQueryAllTickers(const dict &data, const dict &error, bool last) {};
+virtual void onQueryAllTickers(const dict &data, const dict &error, bool is_last) {};
 
-virtual void onQueryTickersPriceInfo(const dict &data, const dict &error, bool last) {};
+virtual void onQueryTickersPriceInfo(const dict &data, const dict &error, bool is_last) {};
 
-virtual void onSubscribeAllOptionMarketData(int extra, const dict &error) {};
+virtual void onSubscribeAllOptionMarketData(const dict &error) {};
 
-virtual void onUnSubscribeAllOptionMarketData(int extra, const dict &error) {};
+virtual void onUnSubscribeAllOptionMarketData(const dict &error) {};
 
-virtual void onSubscribeAllOptionOrderBook(int extra, const dict &error) {};
+virtual void onSubscribeAllOptionOrderBook(const dict &error) {};
 
-virtual void onUnSubscribeAllOptionOrderBook(int extra, const dict &error) {};
+virtual void onUnSubscribeAllOptionOrderBook(const dict &error) {};
 
-virtual void onSubscribeAllOptionTickByTick(int extra, const dict &error) {};
+virtual void onSubscribeAllOptionTickByTick(const dict &error) {};
 
-virtual void onUnSubscribeAllOptionTickByTick(int extra, const dict &error) {};
+virtual void onUnSubscribeAllOptionTickByTick(const dict &error) {};
 
-virtual void onQueryAllTickersFullInfo(const dict &data, const dict &error, bool last) {};
+virtual void onQueryAllTickersFullInfo(const dict &data, const dict &error, bool is_last) {};
 

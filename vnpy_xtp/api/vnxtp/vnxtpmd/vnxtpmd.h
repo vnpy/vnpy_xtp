@@ -12,36 +12,6 @@ using namespace pybind11;
 using namespace XTP::API;
 
 
-//常量
-#define ONDISCONNECTED 0
-#define ONERROR 1
-#define ONSUBMARKETDATA 2
-#define ONUNSUBMARKETDATA 3
-#define ONDEPTHMARKETDATA 4
-#define ONSUBORDERBOOK 5
-#define ONUNSUBORDERBOOK 6
-#define ONORDERBOOK 7
-#define ONSUBTICKBYTICK 8
-#define ONUNSUBTICKBYTICK 9
-#define ONTICKBYTICK 10
-#define ONSUBSCRIBEALLMARKETDATA 11
-#define ONUNSUBSCRIBEALLMARKETDATA 12
-#define ONSUBSCRIBEALLORDERBOOK 13
-#define ONUNSUBSCRIBEALLORDERBOOK 14
-#define ONSUBSCRIBEALLTICKBYTICK 15
-#define ONUNSUBSCRIBEALLTICKBYTICK 16
-#define ONQUERYALLTICKERS 17
-#define ONQUERYTICKERSPRICEINFO 18
-#define ONSUBSCRIBEALLOPTIONMARKETDATA 19
-#define ONUNSUBSCRIBEALLOPTIONMARKETDATA 20
-#define ONSUBSCRIBEALLOPTIONORDERBOOK 21
-#define ONUNSUBSCRIBEALLOPTIONORDERBOOK 22
-#define ONSUBSCRIBEALLOPTIONTICKBYTICK 23
-#define ONUNSUBSCRIBEALLOPTIONTICKBYTICK 24
-#define ONQUERYALLTICKERSFULLINFO 25
-
-
-
 ///-------------------------------------------------------------------------------------
 ///C++ SPI的回调函数方法实现
 ///-------------------------------------------------------------------------------------
@@ -51,9 +21,7 @@ class MdApi : public QuoteSpi
 {
 private:
 	QuoteApi* api;				//API对象
-	thread task_thread;					//工作线程指针（向python中推送数据）
-	TaskQueue task_queue;			    //任务队列
-	bool active = false;				//工作状态
+	bool active = false;		//工作状态
 
 public:
 	MdApi()
@@ -236,123 +204,62 @@ public:
 	virtual void OnQueryAllTickersFullInfo(XTPQFI* ticker_info, XTPRI *error_info, bool is_last);
 
 	//-------------------------------------------------------------------------------------
-	//task：任务
-	//-------------------------------------------------------------------------------------
-
-	void processTask();
-
-	void processDisconnected(Task *task);
-
-	void processError(Task *task);
-
-	void processSubMarketData(Task *task);
-
-	void processUnSubMarketData(Task *task);
-
-	void processDepthMarketData(Task *task);
-
-	void processSubOrderBook(Task *task);
-
-	void processUnSubOrderBook(Task *task);
-
-	void processOrderBook(Task *task);
-
-	void processSubTickByTick(Task *task);
-
-	void processUnSubTickByTick(Task *task);
-
-	void processTickByTick(Task *task);
-
-	void processSubscribeAllMarketData(Task *task);
-
-	void processUnSubscribeAllMarketData(Task *task);
-
-	void processSubscribeAllOrderBook(Task *task);
-
-	void processUnSubscribeAllOrderBook(Task *task);
-
-	void processSubscribeAllTickByTick(Task *task);
-
-	void processUnSubscribeAllTickByTick(Task *task);
-
-	void processQueryAllTickers(Task *task);
-
-	void processQueryTickersPriceInfo(Task *task);
-
-	void processSubscribeAllOptionMarketData(Task *task);
-
-	void processUnSubscribeAllOptionMarketData(Task *task);
-
-	void processSubscribeAllOptionOrderBook(Task *task);
-
-	void processUnSubscribeAllOptionOrderBook(Task *task);
-
-	void processSubscribeAllOptionTickByTick(Task *task);
-
-	void processUnSubscribeAllOptionTickByTick(Task *task);
-
-	void processQueryAllTickersFullInfo(Task *task);
-
-	//-------------------------------------------------------------------------------------
 	//data：回调函数的数据字典
 	//error：回调函数的错误字典
-	//id：请求id
-	//last：是否为最后返回
-	//i：整数
+	//其他参数采用原名称
 	//-------------------------------------------------------------------------------------
 
-	virtual void onDisconnected(int reqid) {};
+	virtual void onDisconnected(int reason) {};
 
 	virtual void onError(const dict &error) {};
 
-	virtual void onSubMarketData(const dict &data, const dict &error, bool last) {};
+	virtual void onSubMarketData(const dict &data, const dict &error, bool is_last) {};
 
-	virtual void onUnSubMarketData(const dict &data, const dict &error, bool last) {};
+	virtual void onUnSubMarketData(const dict &data, const dict &error, bool is_last) {};
 
-	virtual void onDepthMarketData(const dict &data) {};
+	virtual void onDepthMarketData(const dict &data, int64_t bid1_qty, int32_t bid1_count, int32_t max_bid1_count, int64_t ask1_qty, int32_t ask1_count, int32_t max_ask1_count) {};
 
-	virtual void onSubOrderBook(const dict &data, const dict &error, bool last) {};
+	virtual void onSubOrderBook(const dict &data, const dict &error, bool is_last) {};
 
-	virtual void onUnSubOrderBook(const dict &data, const dict &error, bool last) {};
+	virtual void onUnSubOrderBook(const dict &data, const dict &error, bool is_last) {};
 
 	virtual void onOrderBook(const dict &data) {};
 
-	virtual void onSubTickByTick(const dict &data, const dict &error, bool last) {};
+	virtual void onSubTickByTick(const dict &data, const dict &error, bool is_last) {};
 
-	virtual void onUnSubTickByTick(const dict &data, const dict &error, bool last) {};
+	virtual void onUnSubTickByTick(const dict &data, const dict &error, bool is_last) {};
 
 	virtual void onTickByTick(const dict &data) {};
 
-	virtual void onSubscribeAllMarketData(int extra, const dict &error) {};
+	virtual void onSubscribeAllMarketData(const dict &error) {};
 
-	virtual void onUnSubscribeAllMarketData(int extra, const dict &error) {};
+	virtual void onUnSubscribeAllMarketData(const dict &error) {};
 
-	virtual void onSubscribeAllOrderBook(int extra, const dict &error) {};
+	virtual void onSubscribeAllOrderBook(const dict &error) {};
 
-	virtual void onUnSubscribeAllOrderBook(int extra, const dict &error) {};
+	virtual void onUnSubscribeAllOrderBook(const dict &error) {};
 
-	virtual void onSubscribeAllTickByTick(int extra, const dict &error) {};
+	virtual void onSubscribeAllTickByTick(const dict &error) {};
 
-	virtual void onUnSubscribeAllTickByTick(int extra, const dict &error) {};
+	virtual void onUnSubscribeAllTickByTick(const dict &error) {};
 
-	virtual void onQueryAllTickers(const dict &data, const dict &error, bool last) {};
+	virtual void onQueryAllTickers(const dict &data, const dict &error, bool is_last) {};
 
-	virtual void onQueryTickersPriceInfo(const dict &data, const dict &error, bool last) {};
+	virtual void onQueryTickersPriceInfo(const dict &data, const dict &error, bool is_last) {};
 
-	virtual void onSubscribeAllOptionMarketData(int extra, const dict &error) {};
+	virtual void onSubscribeAllOptionMarketData(const dict &error) {};
 
-	virtual void onUnSubscribeAllOptionMarketData(int extra, const dict &error) {};
+	virtual void onUnSubscribeAllOptionMarketData(const dict &error) {};
 
-	virtual void onSubscribeAllOptionOrderBook(int extra, const dict &error) {};
+	virtual void onSubscribeAllOptionOrderBook(const dict &error) {};
 
-	virtual void onUnSubscribeAllOptionOrderBook(int extra, const dict &error) {};
+	virtual void onUnSubscribeAllOptionOrderBook(const dict &error) {};
 
-	virtual void onSubscribeAllOptionTickByTick(int extra, const dict &error) {};
+	virtual void onSubscribeAllOptionTickByTick(const dict &error) {};
 
-	virtual void onUnSubscribeAllOptionTickByTick(int extra, const dict &error) {};
+	virtual void onUnSubscribeAllOptionTickByTick(const dict &error) {};
 
-	virtual void onQueryAllTickersFullInfo(const dict &data, const dict &error, bool last) {};
-
+	virtual void onQueryAllTickersFullInfo(const dict &data, const dict &error, bool is_last) {};
 
 	//-------------------------------------------------------------------------------------
 	//req:主动函数的请求字典
