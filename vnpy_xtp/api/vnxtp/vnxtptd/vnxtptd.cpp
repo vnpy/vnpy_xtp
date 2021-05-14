@@ -7,2409 +7,1104 @@
 
 void TdApi::OnDisconnected(uint64_t session_id, int reason)
 {
-	Task task = Task();
-	task.task_name = ONDISCONNECTED;
-	task.task_extra_long = session_id;
-	task.task_extra_1 = reason;
-	this->task_queue.push(task);
+	gil_scoped_acquire acquire;
+	this->onDisconnected(session_id, reason);
 };
 
 void TdApi::OnError(XTPRI *error_info)
 {
-	Task task = Task();
-	task.task_name = ONERROR;
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	this->task_queue.push(task);
-};
-
-void TdApi::OnOrderEvent(XTPOrderInfo *order_info, XTPRI *error_info, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONORDEREVENT;
-	if (order_info)
-	{
-		XTPOrderInfo *task_data = new XTPOrderInfo();
-		*task_data = *order_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnTradeEvent(XTPTradeReport *trade_info, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONTRADEEVENT;
-	if (trade_info)
-	{
-		XTPTradeReport *task_data = new XTPTradeReport();
-		*task_data = *trade_info;
-		task.task_data = task_data;
-	}
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnCancelOrderError(XTPOrderCancelInfo *cancel_info, XTPRI *error_info, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONCANCELORDERERROR;
-	if (cancel_info)
-	{
-		XTPOrderCancelInfo *task_data = new XTPOrderCancelInfo();
-		*task_data = *cancel_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryOrder(XTPQueryOrderRsp *order_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYORDER;
-	if (order_info)
-	{
-		XTPQueryOrderRsp *task_data = new XTPQueryOrderRsp();
-		*task_data = *order_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_id = request_id;
-	task.task_last = is_last;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryOrderByPage(XTPQueryOrderRsp *order_info, int64_t req_count, int64_t order_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYORDERBYPAGE;
-	if (order_info)
-	{
-		XTPQueryOrderRsp *task_data = new XTPQueryOrderRsp();
-		*task_data = *order_info;
-		task.task_data = task_data;
-	}
-	task.task_extra = req_count;
-	task.task_extra = order_sequence;
-	task.task_extra = query_reference;
-	task.task_id = request_id;
-	task.task_last = is_last;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryTrade(XTPQueryTradeRsp *trade_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYTRADE;
-	if (trade_info)
-	{
-		XTPQueryTradeRsp *task_data = new XTPQueryTradeRsp();
-		*task_data = *trade_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_id = request_id;
-	task.task_last = is_last;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryTradeByPage(XTPQueryTradeRsp *trade_info, int64_t req_count, int64_t trade_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYTRADEBYPAGE;
-	if (trade_info)
-	{
-		XTPQueryTradeRsp *task_data = new XTPQueryTradeRsp();
-		*task_data = *trade_info;
-		task.task_data = task_data;
-	}
-	task.task_extra = req_count;
-	task.task_extra = trade_sequence;
-	task.task_extra = query_reference;
-	task.task_id = request_id;
-	task.task_last = is_last;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryPosition(XTPQueryStkPositionRsp *position, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYPOSITION;
-	if (position)
-	{
-		XTPQueryStkPositionRsp *task_data = new XTPQueryStkPositionRsp();
-		*task_data = *position;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_id = request_id;
-	task.task_last = is_last;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryAsset(XTPQueryAssetRsp *asset, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYASSET;
-	if (asset)
-	{
-		XTPQueryAssetRsp *task_data = new XTPQueryAssetRsp();
-		*task_data = *asset;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_id = request_id;
-	task.task_last = is_last;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryStructuredFund(XTPStructuredFundInfo *fund_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYSTRUCTUREDFUND;
-	if (fund_info)
-	{
-		XTPStructuredFundInfo *task_data = new XTPStructuredFundInfo();
-		*task_data = *fund_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_id = request_id;
-	task.task_last = is_last;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryFundTransfer(XTPFundTransferNotice *fund_transfer_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYFUNDTRANSFER;
-	if (fund_transfer_info)
-	{
-		XTPFundTransferNotice *task_data = new XTPFundTransferNotice();
-		*task_data = *fund_transfer_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_id = request_id;
-	task.task_last = is_last;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnFundTransfer(XTPFundTransferNotice *fund_transfer_info, XTPRI *error_info, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONFUNDTRANSFER;
-	if (fund_transfer_info)
-	{
-		XTPFundTransferNotice *task_data = new XTPFundTransferNotice();
-		*task_data = *fund_transfer_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryETF(XTPQueryETFBaseRsp *etf_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYETF;
-	if (etf_info)
-	{
-		XTPQueryETFBaseRsp *task_data = new XTPQueryETFBaseRsp();
-		*task_data = *etf_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_id = request_id;
-	task.task_last = is_last;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryETFBasket(XTPQueryETFComponentRsp *etf_component_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYETFBASKET;
-	if (etf_component_info)
-	{
-		XTPQueryETFComponentRsp *task_data = new XTPQueryETFComponentRsp();
-		*task_data = *etf_component_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_id = request_id;
-	task.task_last = is_last;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryIPOInfoList(XTPQueryIPOTickerRsp *ipo_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYIPOINFOLIST;
-	if (ipo_info)
-	{
-		XTPQueryIPOTickerRsp *task_data = new XTPQueryIPOTickerRsp();
-		*task_data = *ipo_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_id = request_id;
-	task.task_last = is_last;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryIPOQuotaInfo(XTPQueryIPOQuotaRsp *quota_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYIPOQUOTAINFO;
-	if (quota_info)
-	{
-		XTPQueryIPOQuotaRsp *task_data = new XTPQueryIPOQuotaRsp();
-		*task_data = *quota_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_id = request_id;
-	task.task_last = is_last;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryOptionAuctionInfo(XTPQueryOptionAuctionInfoRsp *option_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYOPTIONAUCTIONINFO;
-	if (option_info)
-	{
-		XTPQueryOptionAuctionInfoRsp *task_data = new XTPQueryOptionAuctionInfoRsp();
-		*task_data = *option_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_id = request_id;
-	task.task_last = is_last;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnCreditCashRepay(XTPCrdCashRepayRsp *cash_repay_info, XTPRI *error_info, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONCREDITCASHREPAY;
-	if (cash_repay_info)
-	{
-		XTPCrdCashRepayRsp *task_data = new XTPCrdCashRepayRsp();
-		*task_data = *cash_repay_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnCreditCashRepayDebtInterestFee(XTPCrdCashRepayDebtInterestFeeRsp *cash_repay_info, XTPRI *error_info, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONCREDITCASHREPAYDEBTINTERESTFEE;
-	if (cash_repay_info)
-	{
-		XTPCrdCashRepayDebtInterestFeeRsp *task_data = new XTPCrdCashRepayDebtInterestFeeRsp();
-		*task_data = *cash_repay_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryCreditCashRepayInfo(XTPCrdCashRepayInfo *cash_repay_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYCREDITCASHREPAYINFO;
-	if (cash_repay_info)
-	{
-		XTPCrdCashRepayInfo *task_data = new XTPCrdCashRepayInfo();
-		*task_data = *cash_repay_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_id = request_id;
-	task.task_last = is_last;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryCreditFundInfo(XTPCrdFundInfo *fund_info, XTPRI *error_info, int request_id, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYCREDITFUNDINFO;
-	if (fund_info)
-	{
-		XTPCrdFundInfo *task_data = new XTPCrdFundInfo();
-		*task_data = *fund_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_id = request_id;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryCreditDebtInfo(XTPCrdDebtInfo *debt_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYCREDITDEBTINFO;
-	if (debt_info)
-	{
-		XTPCrdDebtInfo *task_data = new XTPCrdDebtInfo();
-		*task_data = *debt_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_id = request_id;
-	task.task_last = is_last;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryCreditTickerDebtInfo(XTPCrdDebtStockInfo *debt_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYCREDITTICKERDEBTINFO;
-	if (debt_info)
-	{
-		XTPCrdDebtStockInfo *task_data = new XTPCrdDebtStockInfo();
-		*task_data = *debt_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_id = request_id;
-	task.task_last = is_last;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryCreditAssetDebtInfo(double remain_amount, XTPRI *error_info, int request_id, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYCREDITASSETDEBTINFO;
-	task.task_extra_double = remain_amount;
-
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_id = request_id;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryCreditTickerAssignInfo(XTPClientQueryCrdPositionStkInfo *assign_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYCREDITTICKERASSIGNINFO;
-	if (assign_info)
-	{
-		XTPClientQueryCrdPositionStkInfo *task_data = new XTPClientQueryCrdPositionStkInfo();
-		*task_data = *assign_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_id = request_id;
-	task.task_last = is_last;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryCreditExcessStock(XTPClientQueryCrdSurplusStkRspInfo* stock_info, XTPRI *error_info, int request_id, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYCREDITEXCESSSTOCK;
-	if (stock_info)
-	{
-		XTPClientQueryCrdSurplusStkRspInfo *task_data = new XTPClientQueryCrdSurplusStkRspInfo();
-		*task_data = *stock_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_id = request_id;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryMulCreditExcessStock(XTPClientQueryCrdSurplusStkRspInfo* stock_info, XTPRI *error_info, int request_id, uint64_t session_id, bool is_last)
-{
-	Task task = Task();
-	task.task_name = ONQUERYMULCREDITEXCESSSTOCK;
-	if (stock_info)
-	{
-		XTPClientQueryCrdSurplusStkRspInfo *task_data = new XTPClientQueryCrdSurplusStkRspInfo();
-		*task_data = *stock_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_id = request_id;
-	task.task_extra_long = session_id;
-	task.task_last = is_last;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnCreditExtendDebtDate(XTPCreditDebtExtendNotice *debt_extend_info, XTPRI *error_info, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONCREDITEXTENDDEBTDATE;
-	if (debt_extend_info)
-	{
-		XTPCreditDebtExtendNotice *task_data = new XTPCreditDebtExtendNotice();
-		*task_data = *debt_extend_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryCreditExtendDebtDateOrders(XTPCreditDebtExtendNotice *debt_extend_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYCREDITEXTENDDEBTDATEORDERS;
-	if (debt_extend_info)
-	{
-		XTPCreditDebtExtendNotice *task_data = new XTPCreditDebtExtendNotice();
-		*task_data = *debt_extend_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_id = request_id;
-	task.task_last = is_last;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryCreditFundExtraInfo(XTPCrdFundExtraInfo *fund_info, XTPRI *error_info, int request_id, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYCREDITFUNDEXTRAINFO;
-	if (fund_info)
-	{
-		XTPCrdFundExtraInfo *task_data = new XTPCrdFundExtraInfo();
-		*task_data = *fund_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_id = request_id;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryCreditPositionExtraInfo(XTPCrdPositionExtraInfo *fund_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYCREDITPOSITIONEXTRAINFO;
-	if (fund_info)
-	{
-		XTPCrdPositionExtraInfo *task_data = new XTPCrdPositionExtraInfo();
-		*task_data = *fund_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_id = request_id;
-	task.task_last = is_last;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnOptionCombinedOrderEvent(XTPOptCombOrderInfo *order_info, XTPRI *error_info, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONOPTIONCOMBINEDORDEREVENT;
-	if (order_info)
-	{
-		XTPOptCombOrderInfo *task_data = new XTPOptCombOrderInfo();
-		*task_data = *order_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnOptionCombinedTradeEvent(XTPOptCombTradeReport *trade_info, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONOPTIONCOMBINEDTRADEEVENT;
-	if (trade_info)
-	{
-		XTPOptCombTradeReport *task_data = new XTPOptCombTradeReport();
-		*task_data = *trade_info;
-		task.task_data = task_data;
-	}
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnCancelOptionCombinedOrderError(XTPOptCombOrderCancelInfo *cancel_info, XTPRI *error_info, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONCANCELOPTIONCOMBINEDORDERERROR;
-	if (cancel_info)
-	{
-		XTPOptCombOrderCancelInfo *task_data = new XTPOptCombOrderCancelInfo();
-		*task_data = *cancel_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryOptionCombinedOrders(XTPQueryOptCombOrderRsp *order_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYOPTIONCOMBINEDORDERS;
-	if (order_info)
-	{
-		XTPQueryOptCombOrderRsp *task_data = new XTPQueryOptCombOrderRsp();
-		*task_data = *order_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_id = request_id;
-	task.task_last = is_last;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryOptionCombinedOrdersByPage(XTPQueryOptCombOrderRsp *order_info, int64_t req_count, int64_t order_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYOPTIONCOMBINEDORDERSBYPAGE;
-	if (order_info)
-	{
-		XTPQueryOptCombOrderRsp *task_data = new XTPQueryOptCombOrderRsp();
-		*task_data = *order_info;
-		task.task_data = task_data;
-	}
-	task.task_extra = req_count;
-	task.task_extra = order_sequence;
-	task.task_extra = query_reference;
-	task.task_id = request_id;
-	task.task_last = is_last;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryOptionCombinedTrades(XTPQueryOptCombTradeRsp *trade_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYOPTIONCOMBINEDTRADES;
-	if (trade_info)
-	{
-		XTPQueryOptCombTradeRsp *task_data = new XTPQueryOptCombTradeRsp();
-		*task_data = *trade_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_id = request_id;
-	task.task_last = is_last;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryOptionCombinedTradesByPage(XTPQueryOptCombTradeRsp *trade_info, int64_t req_count, int64_t trade_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYOPTIONCOMBINEDTRADESBYPAGE;
-	if (trade_info)
-	{
-		XTPQueryOptCombTradeRsp *task_data = new XTPQueryOptCombTradeRsp();
-		*task_data = *trade_info;
-		task.task_data = task_data;
-	}
-	task.task_extra = req_count;
-	task.task_extra = trade_sequence;
-	task.task_extra = query_reference;
-	task.task_id = request_id;
-	task.task_last = is_last;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryOptionCombinedPosition(XTPQueryOptCombPositionRsp *position_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYOPTIONCOMBINEDPOSITION;
-	if (position_info)
-	{
-		XTPQueryOptCombPositionRsp *task_data = new XTPQueryOptCombPositionRsp();
-		*task_data = *position_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_id = request_id;
-	task.task_last = is_last;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryOptionCombinedStrategyInfo(XTPQueryCombineStrategyInfoRsp *strategy_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYOPTIONCOMBINEDSTRATEGYINFO;
-	if (strategy_info)
-	{
-		XTPQueryCombineStrategyInfoRsp *task_data = new XTPQueryCombineStrategyInfoRsp();
-		*task_data = *strategy_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_id = request_id;
-	task.task_last = is_last;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-void TdApi::OnQueryOptionCombinedExecPosition(XTPQueryOptCombExecPosRsp *position_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
-{
-	Task task = Task();
-	task.task_name = ONQUERYOPTIONCOMBINEDEXECPOSITION;
-	if (position_info)
-	{
-		XTPQueryOptCombExecPosRsp *task_data = new XTPQueryOptCombExecPosRsp();
-		*task_data = *position_info;
-		task.task_data = task_data;
-	}
-	if (error_info)
-	{
-		XTPRI *task_error = new XTPRI();
-		*task_error = *error_info;
-		task.task_error = task_error;
-	}
-	task.task_id = request_id;
-	task.task_last = is_last;
-	task.task_extra_long = session_id;
-	this->task_queue.push(task);
-};
-
-
-///-------------------------------------------------------------------------------------
-///工作线程从队列中取出数据，转化为python对象后，进行推送
-///-------------------------------------------------------------------------------------
-
-void TdApi::processTask()
-{
-	try
-	{
-		while (this->active)
-		{
-			Task task = this->task_queue.pop();
-
-			switch (task.task_name)
-			{
-			case ONDISCONNECTED:
-			{
-				this->processDisconnected(&task);
-				break;
-			}
-
-			case ONERROR:
-			{
-				this->processError(&task);
-				break;
-			}
-
-			case ONORDEREVENT:
-			{
-				this->processOrderEvent(&task);
-				break;
-			}
-
-			case ONTRADEEVENT:
-			{
-				this->processTradeEvent(&task);
-				break;
-			}
-
-			case ONCANCELORDERERROR:
-			{
-				this->processCancelOrderError(&task);
-				break;
-			}
-
-			case ONQUERYORDER:
-			{
-				this->processQueryOrder(&task);
-				break;
-			}
-
-			case ONQUERYORDERBYPAGE:
-			{
-				this->processQueryOrderByPage(&task);
-				break;
-			}
-
-			case ONQUERYTRADE:
-			{
-				this->processQueryTrade(&task);
-				break;
-			}
-
-			case ONQUERYTRADEBYPAGE:
-			{
-				this->processQueryTradeByPage(&task);
-				break;
-			}
-
-			case ONQUERYPOSITION:
-			{
-				this->processQueryPosition(&task);
-				break;
-			}
-
-			case ONQUERYASSET:
-			{
-				this->processQueryAsset(&task);
-				break;
-			}
-
-			case ONQUERYSTRUCTUREDFUND:
-			{
-				this->processQueryStructuredFund(&task);
-				break;
-			}
-
-			case ONQUERYFUNDTRANSFER:
-			{
-				this->processQueryFundTransfer(&task);
-				break;
-			}
-
-			case ONFUNDTRANSFER:
-			{
-				this->processFundTransfer(&task);
-				break;
-			}
-
-			case ONQUERYETF:
-			{
-				this->processQueryETF(&task);
-				break;
-			}
-
-			case ONQUERYETFBASKET:
-			{
-				this->processQueryETFBasket(&task);
-				break;
-			}
-
-			case ONQUERYIPOINFOLIST:
-			{
-				this->processQueryIPOInfoList(&task);
-				break;
-			}
-
-			case ONQUERYIPOQUOTAINFO:
-			{
-				this->processQueryIPOQuotaInfo(&task);
-				break;
-			}
-
-			case ONQUERYOPTIONAUCTIONINFO:
-			{
-				this->processQueryOptionAuctionInfo(&task);
-				break;
-			}
-
-			case ONCREDITCASHREPAY:
-			{
-				this->processCreditCashRepay(&task);
-				break;
-			}
-
-			case ONCREDITCASHREPAYDEBTINTERESTFEE:
-			{
-				this->processCreditCashRepayDebtInterestFee(&task);
-				break;
-			}
-
-			case ONQUERYCREDITCASHREPAYINFO:
-			{
-				this->processQueryCreditCashRepayInfo(&task);
-				break;
-			}
-
-			case ONQUERYCREDITFUNDINFO:
-			{
-				this->processQueryCreditFundInfo(&task);
-				break;
-			}
-
-			case ONQUERYCREDITDEBTINFO:
-			{
-				this->processQueryCreditDebtInfo(&task);
-				break;
-			}
-
-			case ONQUERYCREDITTICKERDEBTINFO:
-			{
-				this->processQueryCreditTickerDebtInfo(&task);
-				break;
-			}
-
-			case ONQUERYCREDITASSETDEBTINFO:
-			{
-				this->processQueryCreditAssetDebtInfo(&task);
-				break;
-			}
-
-			case ONQUERYCREDITTICKERASSIGNINFO:
-			{
-				this->processQueryCreditTickerAssignInfo(&task);
-				break;
-			}
-
-			case ONQUERYCREDITEXCESSSTOCK:
-			{
-				this->processQueryCreditExcessStock(&task);
-				break;
-			}
-
-			case ONQUERYMULCREDITEXCESSSTOCK:
-			{
-				this->processQueryMulCreditExcessStock(&task);
-				break;
-			}
-
-			case ONCREDITEXTENDDEBTDATE:
-			{
-				this->processCreditExtendDebtDate(&task);
-				break;
-			}
-
-			case ONQUERYCREDITEXTENDDEBTDATEORDERS:
-			{
-				this->processQueryCreditExtendDebtDateOrders(&task);
-				break;
-			}
-
-			case ONQUERYCREDITFUNDEXTRAINFO:
-			{
-				this->processQueryCreditFundExtraInfo(&task);
-				break;
-			}
-
-			case ONQUERYCREDITPOSITIONEXTRAINFO:
-			{
-				this->processQueryCreditPositionExtraInfo(&task);
-				break;
-			}
-
-			case ONOPTIONCOMBINEDORDEREVENT:
-			{
-				this->processOptionCombinedOrderEvent(&task);
-				break;
-			}
-
-			case ONOPTIONCOMBINEDTRADEEVENT:
-			{
-				this->processOptionCombinedTradeEvent(&task);
-				break;
-			}
-
-			case ONCANCELOPTIONCOMBINEDORDERERROR:
-			{
-				this->processCancelOptionCombinedOrderError(&task);
-				break;
-			}
-
-			case ONQUERYOPTIONCOMBINEDORDERS:
-			{
-				this->processQueryOptionCombinedOrders(&task);
-				break;
-			}
-
-			case ONQUERYOPTIONCOMBINEDORDERSBYPAGE:
-			{
-				this->processQueryOptionCombinedOrdersByPage(&task);
-				break;
-			}
-
-			case ONQUERYOPTIONCOMBINEDTRADES:
-			{
-				this->processQueryOptionCombinedTrades(&task);
-				break;
-			}
-
-			case ONQUERYOPTIONCOMBINEDTRADESBYPAGE:
-			{
-				this->processQueryOptionCombinedTradesByPage(&task);
-				break;
-			}
-
-			case ONQUERYOPTIONCOMBINEDPOSITION:
-			{
-				this->processQueryOptionCombinedPosition(&task);
-				break;
-			}
-
-			case ONQUERYOPTIONCOMBINEDSTRATEGYINFO:
-			{
-				this->processQueryOptionCombinedStrategyInfo(&task);
-				break;
-			}
-
-			case ONQUERYOPTIONCOMBINEDEXECPOSITION:
-			{
-				this->processQueryOptionCombinedExecPosition(&task);
-				break;
-			}
-			};
-
-		}
-	}
-	catch (const TerminatedError&)
-	{
-	}
-};
-
-void TdApi::processDisconnected(Task *task)
-{
-	gil_scoped_acquire acquire;
-	this->onDisconnected(task->task_extra, task->task_extra);
-};
-
-void TdApi::processError(Task *task)
-{
 	gil_scoped_acquire acquire;
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
 	this->onError(error);
 };
 
-void TdApi::processOrderEvent(Task *task)
+void TdApi::OnOrderEvent(XTPOrderInfo *order_info, XTPRI *error_info, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (order_info)
 	{
-		XTPOrderInfo *task_data = (XTPOrderInfo*)task->task_data;
-		data["order_xtp_id"] = task_data->order_xtp_id;
-		data["order_client_id"] = task_data->order_client_id;
-		data["order_cancel_client_id"] = task_data->order_cancel_client_id;
-		data["order_cancel_xtp_id"] = task_data->order_cancel_xtp_id;
-		data["ticker"] = task_data->ticker;
-		data["market"] = (int)task_data->market;
-		data["price"] = task_data->price;
-		data["quantity"] = task_data->quantity;
-		data["price_type"] = (int)task_data->price_type;
-		data["side"] = task_data->side;
-		data["position_effect"] = task_data->position_effect;
-		data["business_type"] = (int)task_data->business_type;
-		data["qty_traded"] = task_data->qty_traded;
-		data["qty_left"] = task_data->qty_left;
-		data["insert_time"] = task_data->insert_time;
-		data["update_time"] = task_data->update_time;
-		data["cancel_time"] = task_data->cancel_time;
-		data["trade_amount"] = task_data->trade_amount;
-		data["order_local_id"] = task_data->order_local_id;
-		data["order_status"] = (int)task_data->order_status;
-		data["order_submit_status"] = (int)task_data->order_submit_status;
-		data["order_type"] = task_data->order_type;
-		delete task_data;
+		data["order_xtp_id"] = order_info->order_xtp_id;
+		data["order_client_id"] = order_info->order_client_id;
+		data["order_cancel_client_id"] = order_info->order_cancel_client_id;
+		data["order_cancel_xtp_id"] = order_info->order_cancel_xtp_id;
+		data["ticker"] = order_info->ticker;
+		data["market"] = (int)order_info->market;
+		data["price"] = order_info->price;
+		data["quantity"] = order_info->quantity;
+		data["price_type"] = (int)order_info->price_type;
+		data["side"] = order_info->side;
+		data["position_effect"] = order_info->position_effect;
+		data["business_type"] = (int)order_info->business_type;
+		data["qty_traded"] = order_info->qty_traded;
+		data["qty_left"] = order_info->qty_left;
+		data["insert_time"] = order_info->insert_time;
+		data["update_time"] = order_info->update_time;
+		data["cancel_time"] = order_info->cancel_time;
+		data["trade_amount"] = order_info->trade_amount;
+		data["order_local_id"] = order_info->order_local_id;
+		data["order_status"] = (int)order_info->order_status;
+		data["order_submit_status"] = (int)order_info->order_submit_status;
+		data["order_type"] = order_info->order_type;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onOrderEvent(data, error, task->task_extra);
+	this->onOrderEvent(data, error, session_id);
 };
 
-void TdApi::processTradeEvent(Task *task)
+void TdApi::OnTradeEvent(XTPTradeReport *trade_info, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (trade_info)
 	{
-		XTPTradeReport *task_data = (XTPTradeReport*)task->task_data;
-		data["order_xtp_id"] = task_data->order_xtp_id;
-		data["order_client_id"] = task_data->order_client_id;
-		data["ticker"] = task_data->ticker;
-		data["market"] = (int)task_data->market;
-		data["local_order_id"] = task_data->local_order_id;
-		data["exec_id"] = task_data->exec_id;
-		data["price"] = task_data->price;
-		data["quantity"] = task_data->quantity;
-		data["trade_time"] = task_data->trade_time;
-		data["trade_amount"] = task_data->trade_amount;
-		data["report_index"] = task_data->report_index;
-		data["order_exch_id"] = task_data->order_exch_id;
-		data["trade_type"] = task_data->trade_type;
-		data["side"] = task_data->side;
-		data["position_effect"] = task_data->position_effect;
-		data["business_type"] = (int)task_data->business_type;
-		data["branch_pbu"] = task_data->branch_pbu;
-		delete task_data;
+		data["order_xtp_id"] = trade_info->order_xtp_id;
+		data["order_client_id"] = trade_info->order_client_id;
+		data["ticker"] = trade_info->ticker;
+		data["market"] = (int)trade_info->market;
+		data["local_order_id"] = trade_info->local_order_id;
+		data["exec_id"] = trade_info->exec_id;
+		data["price"] = trade_info->price;
+		data["quantity"] = trade_info->quantity;
+		data["trade_time"] = trade_info->trade_time;
+		data["trade_amount"] = trade_info->trade_amount;
+		data["report_index"] = trade_info->report_index;
+		data["order_exch_id"] = trade_info->order_exch_id;
+		data["trade_type"] = trade_info->trade_type;
+		data["side"] = trade_info->side;
+		data["position_effect"] = trade_info->position_effect;
+		data["business_type"] = (int)trade_info->business_type;
+		data["branch_pbu"] = trade_info->branch_pbu;
 	}
-	this->onTradeEvent(data, task->task_extra);
+	this->onTradeEvent(data, session_id);
 };
 
-void TdApi::processCancelOrderError(Task *task)
+void TdApi::OnCancelOrderError(XTPOrderCancelInfo *cancel_info, XTPRI *error_info, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (cancel_info)
 	{
-		XTPOrderCancelInfo *task_data = (XTPOrderCancelInfo*)task->task_data;
-		data["order_cancel_xtp_id"] = task_data->order_cancel_xtp_id;
-		data["order_xtp_id"] = task_data->order_xtp_id;
-		delete task_data;
+		data["order_cancel_xtp_id"] = cancel_info->order_cancel_xtp_id;
+		data["order_xtp_id"] = cancel_info->order_xtp_id;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onCancelOrderError(data, error, task->task_extra);
+	this->onCancelOrderError(data, error, session_id);
 };
 
-void TdApi::processQueryOrder(Task *task)
+void TdApi::OnQueryOrder(XTPQueryOrderRsp *order_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (order_info)
 	{
-		XTPQueryOrderRsp *task_data = (XTPQueryOrderRsp*)task->task_data;
-		data["order_xtp_id"] = task_data->order_xtp_id;
-		data["order_client_id"] = task_data->order_client_id;
-		data["order_cancel_client_id"] = task_data->order_cancel_client_id;
-		data["order_cancel_xtp_id"] = task_data->order_cancel_xtp_id;
-		data["ticker"] = task_data->ticker;
-		data["market"] = (int)task_data->market;
-		data["price"] = task_data->price;
-		data["quantity"] = task_data->quantity;
-		data["price_type"] = (int)task_data->price_type;
-		data["side"] = task_data->side;
-		data["position_effect"] = task_data->position_effect;
-		data["business_type"] = (int)task_data->business_type;
-		data["qty_traded"] = task_data->qty_traded;
-		data["qty_left"] = task_data->qty_left;
-		data["insert_time"] = task_data->insert_time;
-		data["update_time"] = task_data->update_time;
-		data["cancel_time"] = task_data->cancel_time;
-		data["trade_amount"] = task_data->trade_amount;
-		data["order_local_id"] = task_data->order_local_id;
-		data["order_status"] = (int)task_data->order_status;
-		data["order_submit_status"] = (int)task_data->order_submit_status;
-		data["order_type"] = task_data->order_type;
-		delete task_data;
+		data["order_xtp_id"] = order_info->order_xtp_id;
+		data["order_client_id"] = order_info->order_client_id;
+		data["order_cancel_client_id"] = order_info->order_cancel_client_id;
+		data["order_cancel_xtp_id"] = order_info->order_cancel_xtp_id;
+		data["ticker"] = order_info->ticker;
+		data["market"] = (int)order_info->market;
+		data["price"] = order_info->price;
+		data["quantity"] = order_info->quantity;
+		data["price_type"] = (int)order_info->price_type;
+		data["side"] = order_info->side;
+		data["position_effect"] = order_info->position_effect;
+		data["business_type"] = (int)order_info->business_type;
+		data["qty_traded"] = order_info->qty_traded;
+		data["qty_left"] = order_info->qty_left;
+		data["insert_time"] = order_info->insert_time;
+		data["update_time"] = order_info->update_time;
+		data["cancel_time"] = order_info->cancel_time;
+		data["trade_amount"] = order_info->trade_amount;
+		data["order_local_id"] = order_info->order_local_id;
+		data["order_status"] = (int)order_info->order_status;
+		data["order_submit_status"] = (int)order_info->order_submit_status;
+		data["order_type"] = order_info->order_type;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryOrder(data, error, task->task_id, task->task_last, task->task_extra);
+	this->onQueryOrder(data, error, request_id, is_last, session_id);
 };
 
-void TdApi::processQueryOrderByPage(Task *task)
+void TdApi::OnQueryOrderByPage(XTPQueryOrderRsp *order_info, int64_t req_count, int64_t order_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (order_info)
 	{
-		XTPQueryOrderRsp *task_data = (XTPQueryOrderRsp*)task->task_data;
-		data["order_xtp_id"] = task_data->order_xtp_id;
-		data["order_client_id"] = task_data->order_client_id;
-		data["order_cancel_client_id"] = task_data->order_cancel_client_id;
-		data["order_cancel_xtp_id"] = task_data->order_cancel_xtp_id;
-		data["ticker"] = task_data->ticker;
-		data["market"] = (int)task_data->market;
-		data["price"] = task_data->price;
-		data["quantity"] = task_data->quantity;
-		data["price_type"] = (int)task_data->price_type;
-		data["side"] = task_data->side;
-		data["position_effect"] = task_data->position_effect;
-		data["business_type"] = (int)task_data->business_type;
-		data["qty_traded"] = task_data->qty_traded;
-		data["qty_left"] = task_data->qty_left;
-		data["insert_time"] = task_data->insert_time;
-		data["update_time"] = task_data->update_time;
-		data["cancel_time"] = task_data->cancel_time;
-		data["trade_amount"] = task_data->trade_amount;
-		data["order_local_id"] = task_data->order_local_id;
-		data["order_status"] = (int)task_data->order_status;
-		data["order_submit_status"] = (int)task_data->order_submit_status;
-		data["order_type"] = task_data->order_type;
-		delete task_data;
+		data["order_xtp_id"] = order_info->order_xtp_id;
+		data["order_client_id"] = order_info->order_client_id;
+		data["order_cancel_client_id"] = order_info->order_cancel_client_id;
+		data["order_cancel_xtp_id"] = order_info->order_cancel_xtp_id;
+		data["ticker"] = order_info->ticker;
+		data["market"] = (int)order_info->market;
+		data["price"] = order_info->price;
+		data["quantity"] = order_info->quantity;
+		data["price_type"] = (int)order_info->price_type;
+		data["side"] = order_info->side;
+		data["position_effect"] = order_info->position_effect;
+		data["business_type"] = (int)order_info->business_type;
+		data["qty_traded"] = order_info->qty_traded;
+		data["qty_left"] = order_info->qty_left;
+		data["insert_time"] = order_info->insert_time;
+		data["update_time"] = order_info->update_time;
+		data["cancel_time"] = order_info->cancel_time;
+		data["trade_amount"] = order_info->trade_amount;
+		data["order_local_id"] = order_info->order_local_id;
+		data["order_status"] = (int)order_info->order_status;
+		data["order_submit_status"] = (int)order_info->order_submit_status;
+		data["order_type"] = order_info->order_type;
 	}
-	this->onQueryOrderByPage(data, task->task_extra, task->task_extra, task->task_extra, task->task_id, task->task_last, task->task_extra);
+	this->onQueryOrderByPage(data, req_count, order_sequence, query_reference, request_id, is_last, session_id);
 };
 
-void TdApi::processQueryTrade(Task *task)
+void TdApi::OnQueryTrade(XTPQueryTradeRsp *trade_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (trade_info)
 	{
-		XTPQueryTradeRsp *task_data = (XTPQueryTradeRsp*)task->task_data;
-		data["order_xtp_id"] = task_data->order_xtp_id;
-		data["order_client_id"] = task_data->order_client_id;
-		data["ticker"] = task_data->ticker;
-		data["market"] = (int)task_data->market;
-		data["local_order_id"] = task_data->local_order_id;
-		data["exec_id"] = task_data->exec_id;
-		data["price"] = task_data->price;
-		data["quantity"] = task_data->quantity;
-		data["trade_time"] = task_data->trade_time;
-		data["trade_amount"] = task_data->trade_amount;
-		data["report_index"] = task_data->report_index;
-		data["order_exch_id"] = task_data->order_exch_id;
-		data["trade_type"] = task_data->trade_type;
-		data["side"] = task_data->side;
-		data["position_effect"] = task_data->position_effect;
-		data["business_type"] = (int)task_data->business_type;
-		data["branch_pbu"] = task_data->branch_pbu;
-		delete task_data;
+		data["order_xtp_id"] = trade_info->order_xtp_id;
+		data["order_client_id"] = trade_info->order_client_id;
+		data["ticker"] = trade_info->ticker;
+		data["market"] = (int)trade_info->market;
+		data["local_order_id"] = trade_info->local_order_id;
+		data["exec_id"] = trade_info->exec_id;
+		data["price"] = trade_info->price;
+		data["quantity"] = trade_info->quantity;
+		data["trade_time"] = trade_info->trade_time;
+		data["trade_amount"] = trade_info->trade_amount;
+		data["report_index"] = trade_info->report_index;
+		data["order_exch_id"] = trade_info->order_exch_id;
+		data["trade_type"] = trade_info->trade_type;
+		data["side"] = trade_info->side;
+		data["position_effect"] = trade_info->position_effect;
+		data["business_type"] = (int)trade_info->business_type;
+		data["branch_pbu"] = trade_info->branch_pbu;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryTrade(data, error, task->task_id, task->task_last, task->task_extra);
+	this->onQueryTrade(data, error, request_id, is_last, session_id);
 };
 
-void TdApi::processQueryTradeByPage(Task *task)
+void TdApi::OnQueryTradeByPage(XTPQueryTradeRsp *trade_info, int64_t req_count, int64_t trade_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (trade_info)
 	{
-		XTPQueryTradeRsp *task_data = (XTPQueryTradeRsp*)task->task_data;
-		data["order_xtp_id"] = task_data->order_xtp_id;
-		data["order_client_id"] = task_data->order_client_id;
-		data["ticker"] = task_data->ticker;
-		data["market"] = (int)task_data->market;
-		data["local_order_id"] = task_data->local_order_id;
-		data["exec_id"] = task_data->exec_id;
-		data["price"] = task_data->price;
-		data["quantity"] = task_data->quantity;
-		data["trade_time"] = task_data->trade_time;
-		data["trade_amount"] = task_data->trade_amount;
-		data["report_index"] = task_data->report_index;
-		data["order_exch_id"] = task_data->order_exch_id;
-		data["trade_type"] = task_data->trade_type;
-		data["side"] = task_data->side;
-		data["position_effect"] = task_data->position_effect;
-		data["business_type"] = (int)task_data->business_type;
-		data["branch_pbu"] = task_data->branch_pbu;
-		delete task_data;
+		data["order_xtp_id"] = trade_info->order_xtp_id;
+		data["order_client_id"] = trade_info->order_client_id;
+		data["ticker"] = trade_info->ticker;
+		data["market"] = (int)trade_info->market;
+		data["local_order_id"] = trade_info->local_order_id;
+		data["exec_id"] = trade_info->exec_id;
+		data["price"] = trade_info->price;
+		data["quantity"] = trade_info->quantity;
+		data["trade_time"] = trade_info->trade_time;
+		data["trade_amount"] = trade_info->trade_amount;
+		data["report_index"] = trade_info->report_index;
+		data["order_exch_id"] = trade_info->order_exch_id;
+		data["trade_type"] = trade_info->trade_type;
+		data["side"] = trade_info->side;
+		data["position_effect"] = trade_info->position_effect;
+		data["business_type"] = (int)trade_info->business_type;
+		data["branch_pbu"] = trade_info->branch_pbu;
 	}
-	this->onQueryTradeByPage(data, task->task_extra, task->task_extra, task->task_extra, task->task_id, task->task_last, task->task_extra);
+	this->onQueryTradeByPage(data, req_count, trade_sequence, query_reference, request_id, is_last, session_id);
 };
 
-void TdApi::processQueryPosition(Task *task)
+void TdApi::OnQueryPosition(XTPQueryStkPositionRsp *position, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (position)
 	{
-		XTPQueryStkPositionRsp *task_data = (XTPQueryStkPositionRsp*)task->task_data;
-		data["ticker"] = task_data->ticker;
-		data["ticker_name"] = task_data->ticker_name;
-		data["market"] = (int)task_data->market;
-		data["total_qty"] = task_data->total_qty;
-		data["sellable_qty"] = task_data->sellable_qty;
-		data["avg_price"] = task_data->avg_price;
-		data["unrealized_pnl"] = task_data->unrealized_pnl;
-		data["yesterday_position"] = task_data->yesterday_position;
-		data["purchase_redeemable_qty"] = task_data->purchase_redeemable_qty;
-		data["position_direction"] = (int)task_data->position_direction;
-		data["reserved1"] = task_data->reserved1;
-		data["executable_option"] = task_data->executable_option;
-		data["lockable_position"] = task_data->lockable_position;
-		data["executable_underlying"] = task_data->executable_underlying;
-		data["locked_position"] = task_data->locked_position;
-		data["usable_locked_position"] = task_data->usable_locked_position;
-		data["profit_price"] = task_data->profit_price;
-		data["buy_cost"] = task_data->buy_cost;
-		data["profit_cost"] = task_data->profit_cost;
-		data["unknown"] = task_data->unknown;
-		delete task_data;
+		data["ticker"] = position->ticker;
+		data["ticker_name"] = position->ticker_name;
+		data["market"] = (int)position->market;
+		data["total_qty"] = position->total_qty;
+		data["sellable_qty"] = position->sellable_qty;
+		data["avg_price"] = position->avg_price;
+		data["unrealized_pnl"] = position->unrealized_pnl;
+		data["yesterday_position"] = position->yesterday_position;
+		data["purchase_redeemable_qty"] = position->purchase_redeemable_qty;
+		data["position_direction"] = (int)position->position_direction;
+		data["reserved1"] = position->reserved1;
+		data["executable_option"] = position->executable_option;
+		data["lockable_position"] = position->lockable_position;
+		data["executable_underlying"] = position->executable_underlying;
+		data["locked_position"] = position->locked_position;
+		data["usable_locked_position"] = position->usable_locked_position;
+		data["profit_price"] = position->profit_price;
+		data["buy_cost"] = position->buy_cost;
+		data["profit_cost"] = position->profit_cost;
+		data["unknown"] = position->unknown;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryPosition(data, error, task->task_id, task->task_last, task->task_extra);
+	this->onQueryPosition(data, error, request_id, is_last, session_id);
 };
 
-void TdApi::processQueryAsset(Task *task)
+void TdApi::OnQueryAsset(XTPQueryAssetRsp *asset, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (asset)
 	{
-		XTPQueryAssetRsp *task_data = (XTPQueryAssetRsp*)task->task_data;
-		data["total_asset"] = task_data->total_asset;
-		data["buying_power"] = task_data->buying_power;
-		data["security_asset"] = task_data->security_asset;
-		data["fund_buy_amount"] = task_data->fund_buy_amount;
-		data["fund_buy_fee"] = task_data->fund_buy_fee;
-		data["fund_sell_amount"] = task_data->fund_sell_amount;
-		data["fund_sell_fee"] = task_data->fund_sell_fee;
-		data["withholding_amount"] = task_data->withholding_amount;
-		data["account_type"] = (int)task_data->account_type;
-		data["frozen_margin"] = task_data->frozen_margin;
-		data["frozen_exec_cash"] = task_data->frozen_exec_cash;
-		data["frozen_exec_fee"] = task_data->frozen_exec_fee;
-		data["pay_later"] = task_data->pay_later;
-		data["preadva_pay"] = task_data->preadva_pay;
-		data["orig_banlance"] = task_data->orig_banlance;
-		data["banlance"] = task_data->banlance;
-		data["deposit_withdraw"] = task_data->deposit_withdraw;
-		data["trade_netting"] = task_data->trade_netting;
-		data["captial_asset"] = task_data->captial_asset;
-		data["force_freeze_amount"] = task_data->force_freeze_amount;
-		data["preferred_amount"] = task_data->preferred_amount;
-		data["repay_stock_aval_banlance"] = task_data->repay_stock_aval_banlance;
-		data["fund_order_data_charges"] = task_data->fund_order_data_charges;
-		data["fund_cancel_data_charges"] = task_data->fund_cancel_data_charges;
-		data["unknown"] = task_data->unknown;
-		delete task_data;
+		data["total_asset"] = asset->total_asset;
+		data["buying_power"] = asset->buying_power;
+		data["security_asset"] = asset->security_asset;
+		data["fund_buy_amount"] = asset->fund_buy_amount;
+		data["fund_buy_fee"] = asset->fund_buy_fee;
+		data["fund_sell_amount"] = asset->fund_sell_amount;
+		data["fund_sell_fee"] = asset->fund_sell_fee;
+		data["withholding_amount"] = asset->withholding_amount;
+		data["account_type"] = (int)asset->account_type;
+		data["frozen_margin"] = asset->frozen_margin;
+		data["frozen_exec_cash"] = asset->frozen_exec_cash;
+		data["frozen_exec_fee"] = asset->frozen_exec_fee;
+		data["pay_later"] = asset->pay_later;
+		data["preadva_pay"] = asset->preadva_pay;
+		data["orig_banlance"] = asset->orig_banlance;
+		data["banlance"] = asset->banlance;
+		data["deposit_withdraw"] = asset->deposit_withdraw;
+		data["trade_netting"] = asset->trade_netting;
+		data["captial_asset"] = asset->captial_asset;
+		data["force_freeze_amount"] = asset->force_freeze_amount;
+		data["preferred_amount"] = asset->preferred_amount;
+		data["repay_stock_aval_banlance"] = asset->repay_stock_aval_banlance;
+		data["fund_order_data_charges"] = asset->fund_order_data_charges;
+		data["fund_cancel_data_charges"] = asset->fund_cancel_data_charges;
+		data["unknown"] = asset->unknown;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryAsset(data, error, task->task_id, task->task_last, task->task_extra);
+	this->onQueryAsset(data, error, request_id, is_last, session_id);
 };
 
-void TdApi::processQueryStructuredFund(Task *task)
+void TdApi::OnQueryStructuredFund(XTPStructuredFundInfo *fund_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (fund_info)
 	{
-		XTPStructuredFundInfo *task_data = (XTPStructuredFundInfo*)task->task_data;
-		data["exchange_id"] = (int)task_data->exchange_id;
-		data["sf_ticker"] = task_data->sf_ticker;
-		data["sf_ticker_name"] = task_data->sf_ticker_name;
-		data["ticker"] = task_data->ticker;
-		data["ticker_name"] = task_data->ticker_name;
-		data["split_merge_status"] = (int)task_data->split_merge_status;
-		data["ratio"] = task_data->ratio;
-		data["min_split_qty"] = task_data->min_split_qty;
-		data["min_merge_qty"] = task_data->min_merge_qty;
-		data["net_price"] = task_data->net_price;
-		delete task_data;
+		data["exchange_id"] = (int)fund_info->exchange_id;
+		data["sf_ticker"] = fund_info->sf_ticker;
+		data["sf_ticker_name"] = fund_info->sf_ticker_name;
+		data["ticker"] = fund_info->ticker;
+		data["ticker_name"] = fund_info->ticker_name;
+		data["split_merge_status"] = (int)fund_info->split_merge_status;
+		data["ratio"] = fund_info->ratio;
+		data["min_split_qty"] = fund_info->min_split_qty;
+		data["min_merge_qty"] = fund_info->min_merge_qty;
+		data["net_price"] = fund_info->net_price;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryStructuredFund(data, error, task->task_id, task->task_last, task->task_extra);
+	this->onQueryStructuredFund(data, error, request_id, is_last, session_id);
 };
 
-void TdApi::processQueryFundTransfer(Task *task)
+void TdApi::OnQueryFundTransfer(XTPFundTransferNotice *fund_transfer_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (fund_transfer_info)
 	{
-		XTPFundTransferNotice *task_data = (XTPFundTransferNotice*)task->task_data;
-		data["serial_id"] = task_data->serial_id;
-		data["transfer_type"] = (int)task_data->transfer_type;
-		data["amount"] = task_data->amount;
-		data["oper_status"] = (int)task_data->oper_status;
-		data["transfer_time"] = task_data->transfer_time;
-		delete task_data;
+		data["serial_id"] = fund_transfer_info->serial_id;
+		data["transfer_type"] = (int)fund_transfer_info->transfer_type;
+		data["amount"] = fund_transfer_info->amount;
+		data["oper_status"] = (int)fund_transfer_info->oper_status;
+		data["transfer_time"] = fund_transfer_info->transfer_time;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryFundTransfer(data, error, task->task_id, task->task_last, task->task_extra);
+	this->onQueryFundTransfer(data, error, request_id, is_last, session_id);
 };
 
-void TdApi::processFundTransfer(Task *task)
+void TdApi::OnFundTransfer(XTPFundTransferNotice *fund_transfer_info, XTPRI *error_info, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (fund_transfer_info)
 	{
-		XTPFundTransferNotice *task_data = (XTPFundTransferNotice*)task->task_data;
-		data["serial_id"] = task_data->serial_id;
-		data["transfer_type"] = (int)task_data->transfer_type;
-		data["amount"] = task_data->amount;
-		data["oper_status"] = (int)task_data->oper_status;
-		data["transfer_time"] = task_data->transfer_time;
-		delete task_data;
+		data["serial_id"] = fund_transfer_info->serial_id;
+		data["transfer_type"] = (int)fund_transfer_info->transfer_type;
+		data["amount"] = fund_transfer_info->amount;
+		data["oper_status"] = (int)fund_transfer_info->oper_status;
+		data["transfer_time"] = fund_transfer_info->transfer_time;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onFundTransfer(data, error, task->task_extra);
+	this->onFundTransfer(data, error, session_id);
 };
 
-void TdApi::processQueryETF(Task *task)
+void TdApi::OnQueryETF(XTPQueryETFBaseRsp *etf_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (etf_info)
 	{
-		XTPQueryETFBaseRsp *task_data = (XTPQueryETFBaseRsp*)task->task_data;
-		data["market"] = (int)task_data->market;
-		data["etf"] = task_data->etf;
-		data["subscribe_redemption_ticker"] = task_data->subscribe_redemption_ticker;
-		data["unit"] = task_data->unit;
-		data["subscribe_status"] = task_data->subscribe_status;
-		data["redemption_status"] = task_data->redemption_status;
-		data["max_cash_ratio"] = task_data->max_cash_ratio;
-		data["estimate_amount"] = task_data->estimate_amount;
-		data["cash_component"] = task_data->cash_component;
-		data["net_value"] = task_data->net_value;
-		data["total_amount"] = task_data->total_amount;
-		delete task_data;
+		data["market"] = (int)etf_info->market;
+		data["etf"] = etf_info->etf;
+		data["subscribe_redemption_ticker"] = etf_info->subscribe_redemption_ticker;
+		data["unit"] = etf_info->unit;
+		data["subscribe_status"] = etf_info->subscribe_status;
+		data["redemption_status"] = etf_info->redemption_status;
+		data["max_cash_ratio"] = etf_info->max_cash_ratio;
+		data["estimate_amount"] = etf_info->estimate_amount;
+		data["cash_component"] = etf_info->cash_component;
+		data["net_value"] = etf_info->net_value;
+		data["total_amount"] = etf_info->total_amount;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryETF(data, error, task->task_id, task->task_last, task->task_extra);
+	this->onQueryETF(data, error, request_id, is_last, session_id);
 };
 
-void TdApi::processQueryETFBasket(Task *task)
+void TdApi::OnQueryETFBasket(XTPQueryETFComponentRsp *etf_component_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (etf_component_info)
 	{
-		XTPQueryETFComponentRsp *task_data = (XTPQueryETFComponentRsp*)task->task_data;
-		data["market"] = (int)task_data->market;
-		data["ticker"] = task_data->ticker;
-		data["component_ticker"] = task_data->component_ticker;
-		data["component_name"] = task_data->component_name;
-		data["quantity"] = task_data->quantity;
-		data["component_market"] = (int)task_data->component_market;
-		data["replace_type"] = (int)task_data->replace_type;
-		data["premium_ratio"] = task_data->premium_ratio;
-		data["amount"] = task_data->amount;
-		data["creation_premium_ratio"] = task_data->creation_premium_ratio;
-		data["redemption_discount_ratio"] = task_data->redemption_discount_ratio;
-		data["creation_amount"] = task_data->creation_amount;
-		data["redemption_amount"] = task_data->redemption_amount;
-		delete task_data;
+		data["market"] = (int)etf_component_info->market;
+		data["ticker"] = etf_component_info->ticker;
+		data["component_ticker"] = etf_component_info->component_ticker;
+		data["component_name"] = etf_component_info->component_name;
+		data["quantity"] = etf_component_info->quantity;
+		data["component_market"] = (int)etf_component_info->component_market;
+		data["replace_type"] = (int)etf_component_info->replace_type;
+		data["premium_ratio"] = etf_component_info->premium_ratio;
+		data["amount"] = etf_component_info->amount;
+		data["creation_premium_ratio"] = etf_component_info->creation_premium_ratio;
+		data["redemption_discount_ratio"] = etf_component_info->redemption_discount_ratio;
+		data["creation_amount"] = etf_component_info->creation_amount;
+		data["redemption_amount"] = etf_component_info->redemption_amount;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryETFBasket(data, error, task->task_id, task->task_last, task->task_extra);
+	this->onQueryETFBasket(data, error, request_id, is_last, session_id);
 };
 
-void TdApi::processQueryIPOInfoList(Task *task)
+void TdApi::OnQueryIPOInfoList(XTPQueryIPOTickerRsp *ipo_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (ipo_info)
 	{
-		XTPQueryIPOTickerRsp *task_data = (XTPQueryIPOTickerRsp*)task->task_data;
-		data["market"] = (int)task_data->market;
-		data["ticker"] = task_data->ticker;
-		data["ticker_name"] = task_data->ticker_name;
-		data["ticker_type"] = (int)task_data->ticker_type;
-		data["price"] = task_data->price;
-		data["unit"] = task_data->unit;
-		data["qty_upper_limit"] = task_data->qty_upper_limit;
-		delete task_data;
+		data["market"] = (int)ipo_info->market;
+		data["ticker"] = ipo_info->ticker;
+		data["ticker_name"] = ipo_info->ticker_name;
+		data["ticker_type"] = (int)ipo_info->ticker_type;
+		data["price"] = ipo_info->price;
+		data["unit"] = ipo_info->unit;
+		data["qty_upper_limit"] = ipo_info->qty_upper_limit;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryIPOInfoList(data, error, task->task_id, task->task_last, task->task_extra);
+	this->onQueryIPOInfoList(data, error, request_id, is_last, session_id);
 };
 
-void TdApi::processQueryIPOQuotaInfo(Task *task)
+void TdApi::OnQueryIPOQuotaInfo(XTPQueryIPOQuotaRsp *quota_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (quota_info)
 	{
-		XTPQueryIPOQuotaRsp *task_data = (XTPQueryIPOQuotaRsp*)task->task_data;
-		data["market"] = (int)task_data->market;
-		data["quantity"] = task_data->quantity;
-		data["tech_quantity"] = task_data->tech_quantity;
-		data["unused"] = task_data->unused;
-		delete task_data;
+		data["market"] = (int)quota_info->market;
+		data["quantity"] = quota_info->quantity;
+		data["tech_quantity"] = quota_info->tech_quantity;
+		data["unused"] = quota_info->unused;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryIPOQuotaInfo(data, error, task->task_id, task->task_last, task->task_extra);
+	this->onQueryIPOQuotaInfo(data, error, request_id, is_last, session_id);
 };
 
-void TdApi::processQueryOptionAuctionInfo(Task *task)
+void TdApi::OnQueryOptionAuctionInfo(XTPQueryOptionAuctionInfoRsp *option_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (option_info)
 	{
-		XTPQueryOptionAuctionInfoRsp *task_data = (XTPQueryOptionAuctionInfoRsp*)task->task_data;
-		data["ticker"] = task_data->ticker;
-		data["security_id_source"] = (int)task_data->security_id_source;
-		data["symbol"] = task_data->symbol;
-		data["contract_id"] = task_data->contract_id;
-		data["underlying_security_id"] = task_data->underlying_security_id;
-		data["underlying_security_id_source"] = (int)task_data->underlying_security_id_source;
-		data["list_date"] = task_data->list_date;
-		data["last_trade_date"] = task_data->last_trade_date;
-		data["ticker_type"] = (int)task_data->ticker_type;
-		data["day_trading"] = task_data->day_trading;
-		data["call_or_put"] = (int)task_data->call_or_put;
-		data["delivery_day"] = task_data->delivery_day;
-		data["delivery_month"] = task_data->delivery_month;
-		data["exercise_type"] = (int)task_data->exercise_type;
-		data["exercise_begin_date"] = task_data->exercise_begin_date;
-		data["exercise_end_date"] = task_data->exercise_end_date;
-		data["exercise_price"] = task_data->exercise_price;
-		data["qty_unit"] = task_data->qty_unit;
-		data["contract_unit"] = task_data->contract_unit;
-		data["contract_position"] = task_data->contract_position;
-		data["prev_close_price"] = task_data->prev_close_price;
-		data["prev_clearing_price"] = task_data->prev_clearing_price;
-		data["lmt_buy_max_qty"] = task_data->lmt_buy_max_qty;
-		data["lmt_buy_min_qty"] = task_data->lmt_buy_min_qty;
-		data["lmt_sell_max_qty"] = task_data->lmt_sell_max_qty;
-		data["lmt_sell_min_qty"] = task_data->lmt_sell_min_qty;
-		data["mkt_buy_max_qty"] = task_data->mkt_buy_max_qty;
-		data["mkt_buy_min_qty"] = task_data->mkt_buy_min_qty;
-		data["mkt_sell_max_qty"] = task_data->mkt_sell_max_qty;
-		data["mkt_sell_min_qty"] = task_data->mkt_sell_min_qty;
-		data["price_tick"] = task_data->price_tick;
-		data["upper_limit_price"] = task_data->upper_limit_price;
-		data["lower_limit_price"] = task_data->lower_limit_price;
-		data["sell_margin"] = task_data->sell_margin;
-		data["margin_ratio_param1"] = task_data->margin_ratio_param1;
-		data["margin_ratio_param2"] = task_data->margin_ratio_param2;
-		data["unknown"] = task_data->unknown;
-		delete task_data;
+		data["ticker"] = option_info->ticker;
+		data["security_id_source"] = (int)option_info->security_id_source;
+		data["symbol"] = option_info->symbol;
+		data["contract_id"] = option_info->contract_id;
+		data["underlying_security_id"] = option_info->underlying_security_id;
+		data["underlying_security_id_source"] = (int)option_info->underlying_security_id_source;
+		data["list_date"] = option_info->list_date;
+		data["last_trade_date"] = option_info->last_trade_date;
+		data["ticker_type"] = (int)option_info->ticker_type;
+		data["day_trading"] = option_info->day_trading;
+		data["call_or_put"] = (int)option_info->call_or_put;
+		data["delivery_day"] = option_info->delivery_day;
+		data["delivery_month"] = option_info->delivery_month;
+		data["exercise_type"] = (int)option_info->exercise_type;
+		data["exercise_begin_date"] = option_info->exercise_begin_date;
+		data["exercise_end_date"] = option_info->exercise_end_date;
+		data["exercise_price"] = option_info->exercise_price;
+		data["qty_unit"] = option_info->qty_unit;
+		data["contract_unit"] = option_info->contract_unit;
+		data["contract_position"] = option_info->contract_position;
+		data["prev_close_price"] = option_info->prev_close_price;
+		data["prev_clearing_price"] = option_info->prev_clearing_price;
+		data["lmt_buy_max_qty"] = option_info->lmt_buy_max_qty;
+		data["lmt_buy_min_qty"] = option_info->lmt_buy_min_qty;
+		data["lmt_sell_max_qty"] = option_info->lmt_sell_max_qty;
+		data["lmt_sell_min_qty"] = option_info->lmt_sell_min_qty;
+		data["mkt_buy_max_qty"] = option_info->mkt_buy_max_qty;
+		data["mkt_buy_min_qty"] = option_info->mkt_buy_min_qty;
+		data["mkt_sell_max_qty"] = option_info->mkt_sell_max_qty;
+		data["mkt_sell_min_qty"] = option_info->mkt_sell_min_qty;
+		data["price_tick"] = option_info->price_tick;
+		data["upper_limit_price"] = option_info->upper_limit_price;
+		data["lower_limit_price"] = option_info->lower_limit_price;
+		data["sell_margin"] = option_info->sell_margin;
+		data["margin_ratio_param1"] = option_info->margin_ratio_param1;
+		data["margin_ratio_param2"] = option_info->margin_ratio_param2;
+		data["unknown"] = option_info->unknown;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryOptionAuctionInfo(data, error, task->task_id, task->task_last, task->task_extra);
+	this->onQueryOptionAuctionInfo(data, error, request_id, is_last, session_id);
 };
 
-void TdApi::processCreditCashRepay(Task *task)
+void TdApi::OnCreditCashRepay(XTPCrdCashRepayRsp *cash_repay_info, XTPRI *error_info, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (cash_repay_info)
 	{
-		XTPCrdCashRepayRsp *task_data = (XTPCrdCashRepayRsp*)task->task_data;
-		data["xtp_id"] = task_data->xtp_id;
-		data["request_amount"] = task_data->request_amount;
-		data["cash_repay_amount"] = task_data->cash_repay_amount;
-		delete task_data;
+		data["xtp_id"] = cash_repay_info->xtp_id;
+		data["request_amount"] = cash_repay_info->request_amount;
+		data["cash_repay_amount"] = cash_repay_info->cash_repay_amount;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onCreditCashRepay(data, error, task->task_extra);
+	this->onCreditCashRepay(data, error, session_id);
 };
 
-void TdApi::processCreditCashRepayDebtInterestFee(Task *task)
+void TdApi::OnCreditCashRepayDebtInterestFee(XTPCrdCashRepayDebtInterestFeeRsp *cash_repay_info, XTPRI *error_info, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (cash_repay_info)
 	{
-		XTPCrdCashRepayDebtInterestFeeRsp *task_data = (XTPCrdCashRepayDebtInterestFeeRsp*)task->task_data;
-		data["xtp_id"] = task_data->xtp_id;
-		data["request_amount"] = task_data->request_amount;
-		data["cash_repay_amount"] = task_data->cash_repay_amount;
-		data["debt_compact_id"] = task_data->debt_compact_id;
-		data["unknow"] = task_data->unknow;
-		delete task_data;
+		data["xtp_id"] = cash_repay_info->xtp_id;
+		data["request_amount"] = cash_repay_info->request_amount;
+		data["cash_repay_amount"] = cash_repay_info->cash_repay_amount;
+		data["debt_compact_id"] = cash_repay_info->debt_compact_id;
+		data["unknow"] = cash_repay_info->unknow;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onCreditCashRepayDebtInterestFee(data, error, task->task_extra);
+	this->onCreditCashRepayDebtInterestFee(data, error, session_id);
 };
 
-void TdApi::processQueryCreditCashRepayInfo(Task *task)
+void TdApi::OnQueryCreditCashRepayInfo(XTPCrdCashRepayInfo *cash_repay_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (cash_repay_info)
 	{
-		XTPCrdCashRepayInfo *task_data = (XTPCrdCashRepayInfo*)task->task_data;
-		data["xtp_id"] = task_data->xtp_id;
-		data["status"] = (int)task_data->status;
-		data["request_amount"] = task_data->request_amount;
-		data["cash_repay_amount"] = task_data->cash_repay_amount;
-		data["position_effect"] = task_data->position_effect;
+		data["xtp_id"] = cash_repay_info->xtp_id;
+		data["status"] = (int)cash_repay_info->status;
+		data["request_amount"] = cash_repay_info->request_amount;
+		data["cash_repay_amount"] = cash_repay_info->cash_repay_amount;
+		data["position_effect"] = cash_repay_info->position_effect;
 
-		dict info;
-		info["error_info"] = task_data->error_info.error_id;
-		info["error_msg"] = task_data->error_info.error_msg;
-		delete task_data;
+		dict error_info;
+		error_info["error_id"] = cash_repay_info->error_info.error_id;
+		error_info["error_msg"] = cash_repay_info->error_info.error_msg;
+		data["error_info"] = error_info;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryCreditCashRepayInfo(data, error, task->task_id, task->task_last, task->task_extra);
+	this->onQueryCreditCashRepayInfo(data, error, request_id, is_last, session_id);
 };
 
-void TdApi::processQueryCreditFundInfo(Task *task)
+void TdApi::OnQueryCreditFundInfo(XTPCrdFundInfo *fund_info, XTPRI *error_info, int request_id, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (fund_info)
 	{
-		XTPCrdFundInfo *task_data = (XTPCrdFundInfo*)task->task_data;
-		data["maintenance_ratio"] = task_data->maintenance_ratio;
-		data["all_asset"] = task_data->all_asset;
-		data["all_debt"] = task_data->all_debt;
-		data["line_of_credit"] = task_data->line_of_credit;
-		data["guaranty"] = task_data->guaranty;
-		data["reserved"] = task_data->reserved;
-		delete task_data;
+		data["maintenance_ratio"] = fund_info->maintenance_ratio;
+		data["all_asset"] = fund_info->all_asset;
+		data["all_debt"] = fund_info->all_debt;
+		data["line_of_credit"] = fund_info->line_of_credit;
+		data["guaranty"] = fund_info->guaranty;
+		data["reserved"] = fund_info->reserved;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryCreditFundInfo(data, error, task->task_id, task->task_extra);
+	this->onQueryCreditFundInfo(data, error, request_id, session_id);
 };
 
-void TdApi::processQueryCreditDebtInfo(Task *task)
+void TdApi::OnQueryCreditDebtInfo(XTPCrdDebtInfo *debt_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (debt_info)
 	{
-		XTPCrdDebtInfo *task_data = (XTPCrdDebtInfo*)task->task_data;
-		data["debt_type"] = task_data->debt_type;
-		data["debt_id"] = task_data->debt_id;
-		data["position_id"] = task_data->position_id;
-		data["order_xtp_id"] = task_data->order_xtp_id;
-		data["debt_status"] = task_data->debt_status;
-		data["market"] = (int)task_data->market;
-		data["ticker"] = task_data->ticker;
-		data["order_date"] = task_data->order_date;
-		data["end_date"] = task_data->end_date;
-		data["orig_end_date"] = task_data->orig_end_date;
-		data["is_extended"] = task_data->is_extended;
-		data["remain_amt"] = task_data->remain_amt;
-		data["remain_qty"] = task_data->remain_qty;
-		data["remain_principal"] = task_data->remain_principal;
-		data["due_right_qty"] = task_data->due_right_qty;
-		data["unknown"] = task_data->unknown;
-		delete task_data;
+		data["debt_type"] = debt_info->debt_type;
+		data["debt_id"] = debt_info->debt_id;
+		data["position_id"] = debt_info->position_id;
+		data["order_xtp_id"] = debt_info->order_xtp_id;
+		data["debt_status"] = debt_info->debt_status;
+		data["market"] = (int)debt_info->market;
+		data["ticker"] = debt_info->ticker;
+		data["order_date"] = debt_info->order_date;
+		data["end_date"] = debt_info->end_date;
+		data["orig_end_date"] = debt_info->orig_end_date;
+		data["is_extended"] = debt_info->is_extended;
+		data["remain_amt"] = debt_info->remain_amt;
+		data["remain_qty"] = debt_info->remain_qty;
+		data["remain_principal"] = debt_info->remain_principal;
+		data["due_right_qty"] = debt_info->due_right_qty;
+		data["unknown"] = debt_info->unknown;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryCreditDebtInfo(data, error, task->task_id, task->task_last, task->task_extra);
+	this->onQueryCreditDebtInfo(data, error, request_id, is_last, session_id);
 };
 
-void TdApi::processQueryCreditTickerDebtInfo(Task *task)
+void TdApi::OnQueryCreditTickerDebtInfo(XTPCrdDebtStockInfo *debt_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (debt_info)
 	{
-		XTPCrdDebtStockInfo *task_data = (XTPCrdDebtStockInfo*)task->task_data;
-		data["market"] = (int)task_data->market;
-		data["ticker"] = task_data->ticker;
-		data["stock_repay_quantity"] = task_data->stock_repay_quantity;
-		data["stock_total_quantity"] = task_data->stock_total_quantity;
-		delete task_data;
+		data["market"] = (int)debt_info->market;
+		data["ticker"] = debt_info->ticker;
+		data["stock_repay_quantity"] = debt_info->stock_repay_quantity;
+		data["stock_total_quantity"] = debt_info->stock_total_quantity;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryCreditTickerDebtInfo(data, error, task->task_id, task->task_last, task->task_extra);
+	this->onQueryCreditTickerDebtInfo(data, error, request_id, is_last, session_id);
 };
 
-void TdApi::processQueryCreditAssetDebtInfo(Task *task)
+void TdApi::OnQueryCreditAssetDebtInfo(double remain_amount, XTPRI *error_info, int request_id, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryCreditAssetDebtInfo(task->task_extra_double, error, task->task_id, task->task_extra);
+	this->onQueryCreditAssetDebtInfo(remain_amount, error, request_id, session_id);
 };
 
-void TdApi::processQueryCreditTickerAssignInfo(Task *task)
+void TdApi::OnQueryCreditTickerAssignInfo(XTPClientQueryCrdPositionStkInfo *assign_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (assign_info)
 	{
-		XTPClientQueryCrdPositionStkInfo *task_data = (XTPClientQueryCrdPositionStkInfo*)task->task_data;
-		data["market"] = (int)task_data->market;
-		data["ticker"] = task_data->ticker;
-		data["limit_qty"] = task_data->limit_qty;
-		data["yesterday_qty"] = task_data->yesterday_qty;
-		data["left_qty"] = task_data->left_qty;
-		data["frozen_qty"] = task_data->frozen_qty;
-		delete task_data;
+		data["market"] = (int)assign_info->market;
+		data["ticker"] = assign_info->ticker;
+		data["limit_qty"] = assign_info->limit_qty;
+		data["yesterday_qty"] = assign_info->yesterday_qty;
+		data["left_qty"] = assign_info->left_qty;
+		data["frozen_qty"] = assign_info->frozen_qty;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryCreditTickerAssignInfo(data, error, task->task_id, task->task_last, task->task_extra);
+	this->onQueryCreditTickerAssignInfo(data, error, request_id, is_last, session_id);
 };
 
-void TdApi::processQueryCreditExcessStock(Task *task)
+void TdApi::OnQueryCreditExcessStock(XTPClientQueryCrdSurplusStkRspInfo* stock_info, XTPRI *error_info, int request_id, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (stock_info)
 	{
-		XTPClientQueryCrdSurplusStkRspInfo *task_data = (XTPClientQueryCrdSurplusStkRspInfo*)task->task_data;
-		data["market"] = (int)task_data->market;
-		data["ticker"] = task_data->ticker;
-		data["transferable_quantity"] = task_data->transferable_quantity;
-		data["transferred_quantity"] = task_data->transferred_quantity;
-		delete task_data;
+		data["market"] = (int)stock_info->market;
+		data["ticker"] = stock_info->ticker;
+		data["transferable_quantity"] = stock_info->transferable_quantity;
+		data["transferred_quantity"] = stock_info->transferred_quantity;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryCreditExcessStock(data, error, task->task_id, task->task_extra);
+	this->onQueryCreditExcessStock(data, error, request_id, session_id);
 };
 
-void TdApi::processQueryMulCreditExcessStock(Task *task)
+void TdApi::OnQueryMulCreditExcessStock(XTPClientQueryCrdSurplusStkRspInfo* stock_info, XTPRI *error_info, int request_id, uint64_t session_id, bool is_last)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (stock_info)
 	{
-		XTPClientQueryCrdSurplusStkRspInfo *task_data = (XTPClientQueryCrdSurplusStkRspInfo*)task->task_data;
-		data["market"] = (int)task_data->market;
-		data["ticker"] = task_data->ticker;
-		data["transferable_quantity"] = task_data->transferable_quantity;
-		data["transferred_quantity"] = task_data->transferred_quantity;
-		delete task_data;
+		data["market"] = (int)stock_info->market;
+		data["ticker"] = stock_info->ticker;
+		data["transferable_quantity"] = stock_info->transferable_quantity;
+		data["transferred_quantity"] = stock_info->transferred_quantity;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryMulCreditExcessStock(data, error, task->task_id, task->task_extra, task->task_last);
+	this->onQueryMulCreditExcessStock(data, error, request_id, session_id, is_last);
 };
 
-void TdApi::processCreditExtendDebtDate(Task *task)
+void TdApi::OnCreditExtendDebtDate(XTPCreditDebtExtendNotice *debt_extend_info, XTPRI *error_info, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (debt_extend_info)
 	{
-		XTPCreditDebtExtendNotice *task_data = (XTPCreditDebtExtendNotice*)task->task_data;
-		data["xtpid"] = task_data->xtpid;
-		data["debt_id"] = task_data->debt_id;
-		data["oper_status"] = (int)task_data->oper_status;
-		data["oper_time"] = task_data->oper_time;
-		delete task_data;
+		data["xtpid"] = debt_extend_info->xtpid;
+		data["debt_id"] = debt_extend_info->debt_id;
+		data["oper_status"] = (int)debt_extend_info->oper_status;
+		data["oper_time"] = debt_extend_info->oper_time;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onCreditExtendDebtDate(data, error, task->task_extra);
+	this->onCreditExtendDebtDate(data, error, session_id);
 };
 
-void TdApi::processQueryCreditExtendDebtDateOrders(Task *task)
+void TdApi::OnQueryCreditExtendDebtDateOrders(XTPCreditDebtExtendNotice *debt_extend_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (debt_extend_info)
 	{
-		XTPCreditDebtExtendNotice *task_data = (XTPCreditDebtExtendNotice*)task->task_data;
-		data["xtpid"] = task_data->xtpid;
-		data["debt_id"] = task_data->debt_id;
-		data["oper_status"] = (int)task_data->oper_status;
-		data["oper_time"] = task_data->oper_time;
-		delete task_data;
+		data["xtpid"] = debt_extend_info->xtpid;
+		data["debt_id"] = debt_extend_info->debt_id;
+		data["oper_status"] = (int)debt_extend_info->oper_status;
+		data["oper_time"] = debt_extend_info->oper_time;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryCreditExtendDebtDateOrders(data, error, task->task_id, task->task_last, task->task_extra);
+	this->onQueryCreditExtendDebtDateOrders(data, error, request_id, is_last, session_id);
 };
 
-void TdApi::processQueryCreditFundExtraInfo(Task *task)
+void TdApi::OnQueryCreditFundExtraInfo(XTPCrdFundExtraInfo *fund_info, XTPRI *error_info, int request_id, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (fund_info)
 	{
-		XTPCrdFundExtraInfo *task_data = (XTPCrdFundExtraInfo*)task->task_data;
-		data["mf_rs_avl_used"] = task_data->mf_rs_avl_used;
-		data["reserve"] = task_data->reserve;
-		delete task_data;
+		data["mf_rs_avl_used"] = fund_info->mf_rs_avl_used;
+		data["reserve"] = fund_info->reserve;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryCreditFundExtraInfo(data, error, task->task_id, task->task_extra);
+	this->onQueryCreditFundExtraInfo(data, error, request_id, session_id);
 };
 
-void TdApi::processQueryCreditPositionExtraInfo(Task *task)
+void TdApi::OnQueryCreditPositionExtraInfo(XTPCrdPositionExtraInfo *fund_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (fund_info)
 	{
-		XTPCrdPositionExtraInfo *task_data = (XTPCrdPositionExtraInfo*)task->task_data;
-		data["market"] = (int)task_data->market;
-		data["ticker"] = task_data->ticker;
-		data["mf_rs_avl_used"] = task_data->mf_rs_avl_used;
-		data["reserve"] = task_data->reserve;
-		delete task_data;
+		data["market"] = (int)fund_info->market;
+		data["ticker"] = fund_info->ticker;
+		data["mf_rs_avl_used"] = fund_info->mf_rs_avl_used;
+		data["reserve"] = fund_info->reserve;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryCreditPositionExtraInfo(data, error, task->task_id, task->task_last, task->task_extra);
+	this->onQueryCreditPositionExtraInfo(data, error, request_id, is_last, session_id);
 };
 
-void TdApi::processOptionCombinedOrderEvent(Task *task)
+void TdApi::OnOptionCombinedOrderEvent(XTPOptCombOrderInfo *order_info, XTPRI *error_info, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (order_info)
 	{
-		XTPOptCombOrderInfo *task_data = (XTPOptCombOrderInfo*)task->task_data;
-		data["order_xtp_id"] = task_data->order_xtp_id;
-		data["order_client_id"] = task_data->order_client_id;
-		data["order_cancel_client_id"] = task_data->order_cancel_client_id;
-		data["order_cancel_xtp_id"] = task_data->order_cancel_xtp_id;
-		data["market"] = (int)task_data->market;
-		data["quantity"] = task_data->quantity;
-		data["side"] = task_data->side;
-		data["business_type"] = (int)task_data->business_type;
-		data["qty_traded"] = task_data->qty_traded;
-		data["qty_left"] = task_data->qty_left;
-		data["insert_time"] = task_data->insert_time;
-		data["update_time"] = task_data->update_time;
-		data["cancel_time"] = task_data->cancel_time;
-		data["trade_amount"] = task_data->trade_amount;
-		data["order_local_id"] = task_data->order_local_id;
-		data["order_status"] = (int)task_data->order_status;
-		data["order_submit_status"] = (int)task_data->order_submit_status;
-		data["order_type"] = task_data->order_type;
-		data["opt_comb_info"] = task_data->opt_comb_info;
-		delete task_data;
+		data["order_xtp_id"] = order_info->order_xtp_id;
+		data["order_client_id"] = order_info->order_client_id;
+		data["order_cancel_client_id"] = order_info->order_cancel_client_id;
+		data["order_cancel_xtp_id"] = order_info->order_cancel_xtp_id;
+		data["market"] = (int)order_info->market;
+		data["quantity"] = order_info->quantity;
+		data["side"] = order_info->side;
+		data["business_type"] = (int)order_info->business_type;
+		data["qty_traded"] = order_info->qty_traded;
+		data["qty_left"] = order_info->qty_left;
+		data["insert_time"] = order_info->insert_time;
+		data["update_time"] = order_info->update_time;
+		data["cancel_time"] = order_info->cancel_time;
+		data["trade_amount"] = order_info->trade_amount;
+		data["order_local_id"] = order_info->order_local_id;
+		data["order_status"] = (int)order_info->order_status;
+		data["order_submit_status"] = (int)order_info->order_submit_status;
+		data["order_type"] = order_info->order_type;
+		data["opt_comb_info"] = order_info->opt_comb_info;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onOptionCombinedOrderEvent(data, error, task->task_extra);
+	this->onOptionCombinedOrderEvent(data, error, session_id);
 };
 
-void TdApi::processOptionCombinedTradeEvent(Task *task)
+void TdApi::OnOptionCombinedTradeEvent(XTPOptCombTradeReport *trade_info, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (trade_info)
 	{
-		XTPOptCombTradeReport *task_data = (XTPOptCombTradeReport*)task->task_data;
-		data["order_xtp_id"] = task_data->order_xtp_id;
-		data["order_client_id"] = task_data->order_client_id;
-		data["market"] = (int)task_data->market;
-		data["local_order_id"] = task_data->local_order_id;
-		data["exec_id"] = task_data->exec_id;
-		data["quantity"] = task_data->quantity;
-		data["trade_time"] = task_data->trade_time;
-		data["trade_amount"] = task_data->trade_amount;
-		data["report_index"] = task_data->report_index;
-		data["order_exch_id"] = task_data->order_exch_id;
-		data["trade_type"] = task_data->trade_type;
-		data["side"] = task_data->side;
-		data["business_type"] = (int)task_data->business_type;
-		data["branch_pbu"] = task_data->branch_pbu;
-		data["opt_comb_info"] = task_data->opt_comb_info;
-		delete task_data;
+		data["order_xtp_id"] = trade_info->order_xtp_id;
+		data["order_client_id"] = trade_info->order_client_id;
+		data["market"] = (int)trade_info->market;
+		data["local_order_id"] = trade_info->local_order_id;
+		data["exec_id"] = trade_info->exec_id;
+		data["quantity"] = trade_info->quantity;
+		data["trade_time"] = trade_info->trade_time;
+		data["trade_amount"] = trade_info->trade_amount;
+		data["report_index"] = trade_info->report_index;
+		data["order_exch_id"] = trade_info->order_exch_id;
+		data["trade_type"] = trade_info->trade_type;
+		data["side"] = trade_info->side;
+		data["business_type"] = (int)trade_info->business_type;
+		data["branch_pbu"] = trade_info->branch_pbu;
+		data["opt_comb_info"] = trade_info->opt_comb_info;
 	}
-	this->onOptionCombinedTradeEvent(data, task->task_extra);
+	this->onOptionCombinedTradeEvent(data, session_id);
 };
 
-void TdApi::processCancelOptionCombinedOrderError(Task *task)
+void TdApi::OnCancelOptionCombinedOrderError(XTPOptCombOrderCancelInfo *cancel_info, XTPRI *error_info, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (cancel_info)
 	{
-		XTPOptCombOrderCancelInfo *task_data = (XTPOptCombOrderCancelInfo*)task->task_data;
-		data["order_cancel_xtp_id"] = task_data->order_cancel_xtp_id;
-		data["order_xtp_id"] = task_data->order_xtp_id;
-		delete task_data;
+		data["order_cancel_xtp_id"] = cancel_info->order_cancel_xtp_id;
+		data["order_xtp_id"] = cancel_info->order_xtp_id;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onCancelOptionCombinedOrderError(data, error, task->task_extra);
+	this->onCancelOptionCombinedOrderError(data, error, session_id);
 };
 
-void TdApi::processQueryOptionCombinedOrders(Task *task)
+void TdApi::OnQueryOptionCombinedOrders(XTPQueryOptCombOrderRsp *order_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (order_info)
 	{
-		XTPQueryOptCombOrderRsp *task_data = (XTPQueryOptCombOrderRsp*)task->task_data;
-		data["order_xtp_id"] = task_data->order_xtp_id;
-		data["order_client_id"] = task_data->order_client_id;
-		data["order_cancel_client_id"] = task_data->order_cancel_client_id;
-		data["order_cancel_xtp_id"] = task_data->order_cancel_xtp_id;
-		data["market"] = (int)task_data->market;
-		data["quantity"] = task_data->quantity;
-		data["side"] = task_data->side;
-		data["business_type"] = (int)task_data->business_type;
-		data["qty_traded"] = task_data->qty_traded;
-		data["qty_left"] = task_data->qty_left;
-		data["insert_time"] = task_data->insert_time;
-		data["update_time"] = task_data->update_time;
-		data["cancel_time"] = task_data->cancel_time;
-		data["trade_amount"] = task_data->trade_amount;
-		data["order_local_id"] = task_data->order_local_id;
-		data["order_status"] = (int)task_data->order_status;
-		data["order_submit_status"] = (int)task_data->order_submit_status;
-		data["order_type"] = task_data->order_type;
-		data["opt_comb_info"] = task_data->opt_comb_info;
-		delete task_data;
+		data["order_xtp_id"] = order_info->order_xtp_id;
+		data["order_client_id"] = order_info->order_client_id;
+		data["order_cancel_client_id"] = order_info->order_cancel_client_id;
+		data["order_cancel_xtp_id"] = order_info->order_cancel_xtp_id;
+		data["market"] = (int)order_info->market;
+		data["quantity"] = order_info->quantity;
+		data["side"] = order_info->side;
+		data["business_type"] = (int)order_info->business_type;
+		data["qty_traded"] = order_info->qty_traded;
+		data["qty_left"] = order_info->qty_left;
+		data["insert_time"] = order_info->insert_time;
+		data["update_time"] = order_info->update_time;
+		data["cancel_time"] = order_info->cancel_time;
+		data["trade_amount"] = order_info->trade_amount;
+		data["order_local_id"] = order_info->order_local_id;
+		data["order_status"] = (int)order_info->order_status;
+		data["order_submit_status"] = (int)order_info->order_submit_status;
+		data["order_type"] = order_info->order_type;
+		data["opt_comb_info"] = order_info->opt_comb_info;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryOptionCombinedOrders(data, error, task->task_id, task->task_last, task->task_extra);
+	this->onQueryOptionCombinedOrders(data, error, request_id, is_last, session_id);
 };
 
-void TdApi::processQueryOptionCombinedOrdersByPage(Task *task)
+void TdApi::OnQueryOptionCombinedOrdersByPage(XTPQueryOptCombOrderRsp *order_info, int64_t req_count, int64_t order_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (order_info)
 	{
-		XTPQueryOptCombOrderRsp *task_data = (XTPQueryOptCombOrderRsp*)task->task_data;
-		data["order_xtp_id"] = task_data->order_xtp_id;
-		data["order_client_id"] = task_data->order_client_id;
-		data["order_cancel_client_id"] = task_data->order_cancel_client_id;
-		data["order_cancel_xtp_id"] = task_data->order_cancel_xtp_id;
-		data["market"] = (int)task_data->market;
-		data["quantity"] = task_data->quantity;
-		data["side"] = task_data->side;
-		data["business_type"] = (int)task_data->business_type;
-		data["qty_traded"] = task_data->qty_traded;
-		data["qty_left"] = task_data->qty_left;
-		data["insert_time"] = task_data->insert_time;
-		data["update_time"] = task_data->update_time;
-		data["cancel_time"] = task_data->cancel_time;
-		data["trade_amount"] = task_data->trade_amount;
-		data["order_local_id"] = task_data->order_local_id;
-		data["order_status"] = (int)task_data->order_status;
-		data["order_submit_status"] = (int)task_data->order_submit_status;
-		data["order_type"] = task_data->order_type;
-		data["opt_comb_info"] = task_data->opt_comb_info;
-		delete task_data;
+		data["order_xtp_id"] = order_info->order_xtp_id;
+		data["order_client_id"] = order_info->order_client_id;
+		data["order_cancel_client_id"] = order_info->order_cancel_client_id;
+		data["order_cancel_xtp_id"] = order_info->order_cancel_xtp_id;
+		data["market"] = (int)order_info->market;
+		data["quantity"] = order_info->quantity;
+		data["side"] = order_info->side;
+		data["business_type"] = (int)order_info->business_type;
+		data["qty_traded"] = order_info->qty_traded;
+		data["qty_left"] = order_info->qty_left;
+		data["insert_time"] = order_info->insert_time;
+		data["update_time"] = order_info->update_time;
+		data["cancel_time"] = order_info->cancel_time;
+		data["trade_amount"] = order_info->trade_amount;
+		data["order_local_id"] = order_info->order_local_id;
+		data["order_status"] = (int)order_info->order_status;
+		data["order_submit_status"] = (int)order_info->order_submit_status;
+		data["order_type"] = order_info->order_type;
+		data["opt_comb_info"] = order_info->opt_comb_info;
 	}
-	this->onQueryOptionCombinedOrdersByPage(data, task->task_extra, task->task_extra, task->task_extra, task->task_id, task->task_last, task->task_extra);
+	this->onQueryOptionCombinedOrdersByPage(data, req_count, order_sequence, query_reference, request_id, is_last, session_id);
 };
 
-void TdApi::processQueryOptionCombinedTrades(Task *task)
+void TdApi::OnQueryOptionCombinedTrades(XTPQueryOptCombTradeRsp *trade_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (trade_info)
 	{
-		XTPQueryOptCombTradeRsp *task_data = (XTPQueryOptCombTradeRsp*)task->task_data;
-		data["order_xtp_id"] = task_data->order_xtp_id;
-		data["order_client_id"] = task_data->order_client_id;
-		data["market"] = (int)task_data->market;
-		data["local_order_id"] = task_data->local_order_id;
-		data["exec_id"] = task_data->exec_id;
-		data["quantity"] = task_data->quantity;
-		data["trade_time"] = task_data->trade_time;
-		data["trade_amount"] = task_data->trade_amount;
-		data["report_index"] = task_data->report_index;
-		data["order_exch_id"] = task_data->order_exch_id;
-		data["trade_type"] = task_data->trade_type;
-		data["side"] = task_data->side;
-		data["business_type"] = (int)task_data->business_type;
-		data["branch_pbu"] = task_data->branch_pbu;
-		data["opt_comb_info"] = task_data->opt_comb_info;
-		delete task_data;
+		data["order_xtp_id"] = trade_info->order_xtp_id;
+		data["order_client_id"] = trade_info->order_client_id;
+		data["market"] = (int)trade_info->market;
+		data["local_order_id"] = trade_info->local_order_id;
+		data["exec_id"] = trade_info->exec_id;
+		data["quantity"] = trade_info->quantity;
+		data["trade_time"] = trade_info->trade_time;
+		data["trade_amount"] = trade_info->trade_amount;
+		data["report_index"] = trade_info->report_index;
+		data["order_exch_id"] = trade_info->order_exch_id;
+		data["trade_type"] = trade_info->trade_type;
+		data["side"] = trade_info->side;
+		data["business_type"] = (int)trade_info->business_type;
+		data["branch_pbu"] = trade_info->branch_pbu;
+		data["opt_comb_info"] = trade_info->opt_comb_info;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryOptionCombinedTrades(data, error, task->task_id, task->task_last, task->task_extra);
+	this->onQueryOptionCombinedTrades(data, error, request_id, is_last, session_id);
 };
 
-void TdApi::processQueryOptionCombinedTradesByPage(Task *task)
+void TdApi::OnQueryOptionCombinedTradesByPage(XTPQueryOptCombTradeRsp *trade_info, int64_t req_count, int64_t trade_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (trade_info)
 	{
-		XTPQueryOptCombTradeRsp *task_data = (XTPQueryOptCombTradeRsp*)task->task_data;
-		data["order_xtp_id"] = task_data->order_xtp_id;
-		data["order_client_id"] = task_data->order_client_id;
-		data["market"] = (int)task_data->market;
-		data["local_order_id"] = task_data->local_order_id;
-		data["exec_id"] = task_data->exec_id;
-		data["quantity"] = task_data->quantity;
-		data["trade_time"] = task_data->trade_time;
-		data["trade_amount"] = task_data->trade_amount;
-		data["report_index"] = task_data->report_index;
-		data["order_exch_id"] = task_data->order_exch_id;
-		data["trade_type"] = task_data->trade_type;
-		data["side"] = task_data->side;
-		data["business_type"] = (int)task_data->business_type;
-		data["branch_pbu"] = task_data->branch_pbu;
-		data["opt_comb_info"] = task_data->opt_comb_info;
-		delete task_data;
+		data["order_xtp_id"] = trade_info->order_xtp_id;
+		data["order_client_id"] = trade_info->order_client_id;
+		data["market"] = (int)trade_info->market;
+		data["local_order_id"] = trade_info->local_order_id;
+		data["exec_id"] = trade_info->exec_id;
+		data["quantity"] = trade_info->quantity;
+		data["trade_time"] = trade_info->trade_time;
+		data["trade_amount"] = trade_info->trade_amount;
+		data["report_index"] = trade_info->report_index;
+		data["order_exch_id"] = trade_info->order_exch_id;
+		data["trade_type"] = trade_info->trade_type;
+		data["side"] = trade_info->side;
+		data["business_type"] = (int)trade_info->business_type;
+		data["branch_pbu"] = trade_info->branch_pbu;
+		data["opt_comb_info"] = trade_info->opt_comb_info;
 	}
-	this->onQueryOptionCombinedTradesByPage(data, task->task_extra, task->task_extra, task->task_extra, task->task_id, task->task_last, task->task_extra);
+	this->onQueryOptionCombinedTradesByPage(data, req_count, trade_sequence, query_reference, request_id, is_last, session_id);
 };
 
-void TdApi::processQueryOptionCombinedPosition(Task *task)
+void TdApi::OnQueryOptionCombinedPosition(XTPQueryOptCombPositionRsp *position_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (position_info)
 	{
-		XTPQueryOptCombPositionRsp *task_data = (XTPQueryOptCombPositionRsp*)task->task_data;
-		data["strategy_id"] = task_data->strategy_id;
-		data["strategy_name"] = task_data->strategy_name;
-		data["market"] = (int)task_data->market;
-		data["total_qty"] = task_data->total_qty;
-		data["available_qty"] = task_data->available_qty;
-		data["yesterday_position"] = task_data->yesterday_position;
-		data["reserved"] = task_data->reserved;
-		delete task_data;
+		data["strategy_id"] = position_info->strategy_id;
+		data["strategy_name"] = position_info->strategy_name;
+		data["market"] = (int)position_info->market;
+		data["total_qty"] = position_info->total_qty;
+		data["available_qty"] = position_info->available_qty;
+		data["yesterday_position"] = position_info->yesterday_position;
+		data["reserved"] = position_info->reserved;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryOptionCombinedPosition(data, error, task->task_id, task->task_last, task->task_extra);
+	this->onQueryOptionCombinedPosition(data, error, request_id, is_last, session_id);
 };
 
-void TdApi::processQueryOptionCombinedStrategyInfo(Task *task)
+void TdApi::OnQueryOptionCombinedStrategyInfo(XTPQueryCombineStrategyInfoRsp *strategy_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (strategy_info)
 	{
-		XTPQueryCombineStrategyInfoRsp *task_data = (XTPQueryCombineStrategyInfoRsp*)task->task_data;
-		data["strategy_id"] = task_data->strategy_id;
-		data["strategy_name"] = task_data->strategy_name;
-		data["market"] = (int)task_data->market;
-		data["leg_num"] = task_data->leg_num;
-		data["expire_date_type"] = (int)task_data->expire_date_type;
-		data["underlying_type"] = (int)task_data->underlying_type;
-		data["auto_sep_type"] = (int)task_data->auto_sep_type;
-		data["reserved"] = task_data->reserved;
-		delete task_data;
+		data["strategy_id"] = strategy_info->strategy_id;
+		data["strategy_name"] = strategy_info->strategy_name;
+		data["market"] = (int)strategy_info->market;
+		data["leg_num"] = strategy_info->leg_num;
+		data["expire_date_type"] = (int)strategy_info->expire_date_type;
+		data["underlying_type"] = (int)strategy_info->underlying_type;
+		data["auto_sep_type"] = (int)strategy_info->auto_sep_type;
+		data["reserved"] = strategy_info->reserved;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryOptionCombinedStrategyInfo(data, error, task->task_id, task->task_last, task->task_extra);
+	this->onQueryOptionCombinedStrategyInfo(data, error, request_id, is_last, session_id);
 };
 
-void TdApi::processQueryOptionCombinedExecPosition(Task *task)
+void TdApi::OnQueryOptionCombinedExecPosition(XTPQueryOptCombExecPosRsp *position_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	if (task->task_data)
+	if (position_info)
 	{
-		XTPQueryOptCombExecPosRsp *task_data = (XTPQueryOptCombExecPosRsp*)task->task_data;
-		data["market"] = (int)task_data->market;
-		data["cntrt_code_1"] = task_data->cntrt_code_1;
-		data["cntrt_name_1"] = task_data->cntrt_name_1;
-		data["position_side_1"] = (int)task_data->position_side_1;
-		data["call_or_put_1"] = (int)task_data->call_or_put_1;
-		data["avl_qty_1"] = task_data->avl_qty_1;
-		data["orig_own_qty_1"] = task_data->orig_own_qty_1;
-		data["own_qty_1"] = task_data->own_qty_1;
-		data["cntrt_code_2"] = task_data->cntrt_code_2;
-		data["cntrt_name_2"] = task_data->cntrt_name_2;
-		data["position_side_2"] = (int)task_data->position_side_2;
-		data["call_or_put_2"] = (int)task_data->call_or_put_2;
-		data["avl_qty_2"] = task_data->avl_qty_2;
-		data["orig_own_qty_2"] = task_data->orig_own_qty_2;
-		data["own_qty_2"] = task_data->own_qty_2;
-		data["net_qty"] = task_data->net_qty;
-		data["order_qty"] = task_data->order_qty;
-		data["confirm_qty"] = task_data->confirm_qty;
-		data["avl_qty"] = task_data->avl_qty;
-		data["reserved"] = task_data->reserved;
-		delete task_data;
+		data["market"] = (int)position_info->market;
+		data["cntrt_code_1"] = position_info->cntrt_code_1;
+		data["cntrt_name_1"] = position_info->cntrt_name_1;
+		data["position_side_1"] = (int)position_info->position_side_1;
+		data["call_or_put_1"] = (int)position_info->call_or_put_1;
+		data["avl_qty_1"] = position_info->avl_qty_1;
+		data["orig_own_qty_1"] = position_info->orig_own_qty_1;
+		data["own_qty_1"] = position_info->own_qty_1;
+		data["cntrt_code_2"] = position_info->cntrt_code_2;
+		data["cntrt_name_2"] = position_info->cntrt_name_2;
+		data["position_side_2"] = (int)position_info->position_side_2;
+		data["call_or_put_2"] = (int)position_info->call_or_put_2;
+		data["avl_qty_2"] = position_info->avl_qty_2;
+		data["orig_own_qty_2"] = position_info->orig_own_qty_2;
+		data["own_qty_2"] = position_info->own_qty_2;
+		data["net_qty"] = position_info->net_qty;
+		data["order_qty"] = position_info->order_qty;
+		data["confirm_qty"] = position_info->confirm_qty;
+		data["avl_qty"] = position_info->avl_qty;
+		data["reserved"] = position_info->reserved;
 	}
 	dict error;
-	if (task->task_error)
+	if (error_info)
 	{
-		XTPRI *task_error = (XTPRI*)task->task_error;
-		error["error_id"] = task_error->error_id;
-		error["error_msg"] = task_error->error_msg;
-		delete task_error;
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryOptionCombinedExecPosition(data, error, task->task_id, task->task_last, task->task_extra);
+	this->onQueryOptionCombinedExecPosition(data, error, request_id, is_last, session_id);
 };
-
 
 ///-------------------------------------------------------------------------------------
 ///主动函数
@@ -2429,7 +1124,6 @@ void TdApi::init()
 	if (!this->active)
 	{
 		this->active = true;
-		this->task_thread = thread(&TdApi::processTask, this);
 	}
 };
 
@@ -2445,9 +1139,6 @@ int TdApi::exit()
 	this->api = NULL;
 	
 	this->active = false;
-	this->task_queue.terminate();
-	this->task_thread.join();
-
 	return 1;
 };
 
@@ -2489,7 +1180,6 @@ void TdApi::subscribePublicTopic(int resume_type)
 	this->api->SubscribePublicTopic((XTP_TE_RESUME_TYPE)resume_type);
 }
 
-
 void TdApi::setSoftwareVersion(string version)
 {
 	this->api->SetSoftwareVersion(version.c_str());
@@ -2511,13 +1201,11 @@ long long TdApi::login(string ip, int port, string user, string password, int so
 	return i;
 };
 
-
 int TdApi::logout(long long session_id)
 {
 	int i = this->api->Logout(session_id);
 	return i;
 };
-
 
 long long TdApi::insertOrder(const dict &req, long long session_id)
 {
@@ -2544,315 +1232,317 @@ long long TdApi::cancelOrder(long long order_xtp_id, long long session_id)
 	return i;
 }
 
-int TdApi::queryOrderByXTPID(long long order_xtp_id, long long session_id, int request_id)
+int TdApi::queryOrderByXTPID(uint64_t order_xtp_id, uint64_t session_id, int request_id)
 {
 	int i = this->api->QueryOrderByXTPID(order_xtp_id, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryOrders(const dict &req, long long session_id, int request_id)
+int TdApi::queryOrders(const dict &req, uint64_t session_id, int request_id)
 {
-	XTPQueryOrderReq myreq = XTPQueryOrderReq();
+	XTPQueryOrderReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
 	getString(req, "ticker", myreq.ticker);
-	myreq.begin_time = getIntValue(req, "begin_time");
-	myreq.end_time = getIntValue(req, "end_time");
+	getInt(req, "begin_time", &myreq.begin_time);
+	getInt(req, "end_time", &myreq.end_time);
 	int i = this->api->QueryOrders(&myreq, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryUnfinishedOrders(long long session_id, int request_id)
+int TdApi::queryUnfinishedOrders(uint64_t session_id, int request_id)
 {
 	int i = this->api->QueryUnfinishedOrders(session_id, request_id);
 	return i;
 };
 
-int TdApi::queryOrdersByPage(const dict &req, long long session_id, int request_id)
+int TdApi::queryOrdersByPage(const dict &req, uint64_t session_id, int request_id)
 {
-	XTPQueryOrderByPageReq myreq = XTPQueryOrderByPageReq();
+	XTPQueryOrderByPageReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	myreq.req_count = getIntValue(req, "req_count");
-	myreq.reference = getIntValue(req, "reference");
-	myreq.reserved = getIntValue(req, "reserved");
+	getInt(req, "req_count", &myreq.req_count);
+	getInt(req, "reference", &myreq.reference);
+	getInt(req, "reserved", &myreq.reserved);
 	int i = this->api->QueryOrdersByPage(&myreq, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryTradesByXTPID(long long order_xtp_id, long long session_id, int request_id)
+int TdApi::queryTradesByXTPID(uint64_t order_xtp_id, uint64_t session_id, int request_id)
 {
 	int i = this->api->QueryTradesByXTPID(order_xtp_id, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryTrades(const dict &req, long long session_id, int request_id)
+int TdApi::queryTrades(const dict &req, uint64_t session_id, int request_id)
 {
-	XTPQueryTraderReq myreq = XTPQueryTraderReq();
+	XTPQueryTraderReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
 	getString(req, "ticker", myreq.ticker);
-	myreq.begin_time = getIntValue(req, "begin_time");
-	myreq.end_time = getIntValue(req, "end_time");
+	getInt(req, "begin_time", &myreq.begin_time);
+	getInt(req, "end_time", &myreq.end_time);
 	int i = this->api->QueryTrades(&myreq, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryTradesByPage(const dict &req, long long session_id, int request_id)
+int TdApi::queryTradesByPage(const dict &req, uint64_t session_id, int request_id)
 {
-	XTPQueryTraderByPageReq myreq = XTPQueryTraderByPageReq();
+	XTPQueryTraderByPageReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	myreq.req_count = getIntValue(req, "req_count");
-	myreq.reference = getIntValue(req, "reference");
-	myreq.reserved = getIntValue(req, "reserved");
+	getInt(req, "req_count", &myreq.req_count);
+	getInt(req, "reference", &myreq.reference);
+	getInt(req, "reserved", &myreq.reserved);
 	int i = this->api->QueryTradesByPage(&myreq, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryPosition(string ticker, long long session_id, int request_id)
+int TdApi::queryPosition(char ticker, uint64_t session_id, int request_id, = XTP_MKT_INIT)
 {
-	int i = this->api->QueryPosition(ticker.c_str(), session_id, request_id);
+	int i = this->api->QueryPosition(ticker, session_id, request_id, XTP_MKT_INIT);
 	return i;
 };
 
-int TdApi::queryAsset(long long session_id, int request_id)
+int TdApi::queryAsset(uint64_t session_id, int request_id)
 {
 	int i = this->api->QueryAsset(session_id, request_id);
 	return i;
 };
 
-int TdApi::queryStructuredFund(const dict &req, long long session_id, int request_id)
+int TdApi::queryStructuredFund(const dict &req, uint64_t session_id, int request_id)
 {
-	XTPQueryStructuredFundInfoReq myreq = XTPQueryStructuredFundInfoReq();
+	XTPQueryStructuredFundInfoReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	myreq.exchange_id = (XTP_EXCHANGE_TYPE)getIntValue(req, "exchange_id");
+	getEnum(req, "exchange_id", &myreq.exchange_id);
 	getString(req, "sf_ticker", myreq.sf_ticker);
 	int i = this->api->QueryStructuredFund(&myreq, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryFundTransfer(const dict &req, long long session_id, int request_id)
+int TdApi::queryFundTransfer(const dict &req, uint64_t session_id, int request_id)
 {
-	XTPQueryFundTransferLogReq myreq = XTPQueryFundTransferLogReq();
+	XTPQueryFundTransferLogReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	myreq.serial_id = getIntValue(req, "serial_id");
+	getInt(req, "serial_id", &myreq.serial_id);
 	int i = this->api->QueryFundTransfer(&myreq, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryETF(const dict &req, long long session_id, int request_id)
+int TdApi::queryETF(const dict &req, uint64_t session_id, int request_id)
 {
-	XTPQueryETFBaseReq myreq = XTPQueryETFBaseReq();
+	XTPQueryETFBaseReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	myreq.market = (XTP_MARKET_TYPE)getIntValue(req, "market");
+	getEnum(req, "market", &myreq.market);
 	getString(req, "ticker", myreq.ticker);
 	int i = this->api->QueryETF(&myreq, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryETFTickerBasket(const dict &req, long long session_id, int request_id)
+int TdApi::queryETFTickerBasket(const dict &req, uint64_t session_id, int request_id)
 {
-	XTPQueryETFComponentReq myreq = XTPQueryETFComponentReq();
+	XTPQueryETFComponentReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	myreq.market = (XTP_MARKET_TYPE)getIntValue(req, "market");
+	getEnum(req, "market", &myreq.market);
 	getString(req, "ticker", myreq.ticker);
 	int i = this->api->QueryETFTickerBasket(&myreq, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryIPOInfoList(long long session_id, int request_id)
+int TdApi::queryIPOInfoList(uint64_t session_id, int request_id)
 {
 	int i = this->api->QueryIPOInfoList(session_id, request_id);
 	return i;
 };
 
-int TdApi::queryIPOQuotaInfo(long long session_id, int request_id)
+int TdApi::queryIPOQuotaInfo(uint64_t session_id, int request_id)
 {
 	int i = this->api->QueryIPOQuotaInfo(session_id, request_id);
 	return i;
 };
 
-int TdApi::queryOptionAuctionInfo(const dict &req, long long session_id, int request_id)
+int TdApi::queryOptionAuctionInfo(const dict &req, uint64_t session_id, int request_id)
 {
-	XTPQueryOptionAuctionInfoReq myreq = XTPQueryOptionAuctionInfoReq();
+	XTPQueryOptionAuctionInfoReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	myreq.market = (XTP_MARKET_TYPE)getIntValue(req, "market");
+	getEnum(req, "market", &myreq.market);
 	getString(req, "ticker", myreq.ticker);
 	int i = this->api->QueryOptionAuctionInfo(&myreq, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryCreditCashRepayInfo(long long session_id, int request_id)
+int TdApi::queryCreditCashRepayInfo(uint64_t session_id, int request_id)
 {
 	int i = this->api->QueryCreditCashRepayInfo(session_id, request_id);
 	return i;
 };
 
-int TdApi::queryCreditFundInfo(long long session_id, int request_id)
+int TdApi::queryCreditFundInfo(uint64_t session_id, int request_id)
 {
 	int i = this->api->QueryCreditFundInfo(session_id, request_id);
 	return i;
 };
 
-int TdApi::queryCreditDebtInfo(long long session_id, int request_id)
+int TdApi::queryCreditDebtInfo(uint64_t session_id, int request_id)
 {
 	int i = this->api->QueryCreditDebtInfo(session_id, request_id);
 	return i;
 };
 
-int TdApi::queryCreditTickerDebtInfo(const dict &req, long long session_id, int request_id)
+int TdApi::queryCreditTickerDebtInfo(const dict &req, uint64_t session_id, int request_id)
 {
-	XTPClientQueryCrdDebtStockReq myreq = XTPClientQueryCrdDebtStockReq();
+	XTPClientQueryCrdDebtStockReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	myreq.market = (XTP_MARKET_TYPE)getIntValue(req, "market");
+	getEnum(req, "market", &myreq.market);
 	getString(req, "ticker", myreq.ticker);
 	int i = this->api->QueryCreditTickerDebtInfo(&myreq, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryCreditAssetDebtInfo(long long session_id, int request_id)
+int TdApi::queryCreditAssetDebtInfo(uint64_t session_id, int request_id)
 {
 	int i = this->api->QueryCreditAssetDebtInfo(session_id, request_id);
 	return i;
 };
 
-int TdApi::queryCreditTickerAssignInfo(const dict &req, long long session_id, int request_id)
+int TdApi::queryCreditTickerAssignInfo(const dict &req, uint64_t session_id, int request_id)
 {
-	XTPClientQueryCrdPositionStockReq myreq = XTPClientQueryCrdPositionStockReq();
+	XTPClientQueryCrdPositionStockReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	myreq.market = (XTP_MARKET_TYPE)getIntValue(req, "market");
+	getEnum(req, "market", &myreq.market);
 	getString(req, "ticker", myreq.ticker);
 	int i = this->api->QueryCreditTickerAssignInfo(&myreq, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryCreditExcessStock(const dict &req, long long session_id, int request_id)
+int TdApi::queryCreditExcessStock(const dict &req, uint64_t session_id, int request_id)
 {
-	XTPClientQueryCrdSurplusStkReqInfo myreq = XTPClientQueryCrdSurplusStkReqInfo();
+	XTPClientQueryCrdSurplusStkReqInfo myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	myreq.market = (XTP_MARKET_TYPE)getIntValue(req, "market");
+	getEnum(req, "market", &myreq.market);
 	getString(req, "ticker", myreq.ticker);
 	int i = this->api->QueryCreditExcessStock(&myreq, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryMulCreditExcessStock(const dict &req, long long session_id, int request_id)
+int TdApi::queryMulCreditExcessStock(const dict &req, uint64_t session_id, int request_id)
 {
-	XTPClientQueryCrdSurplusStkReqInfo myreq = XTPClientQueryCrdSurplusStkReqInfo();
+	XTPClientQueryCrdSurplusStkReqInfo myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	myreq.market = (XTP_MARKET_TYPE)getIntValue(req, "market");
+	getEnum(req, "market", &myreq.market);
 	getString(req, "ticker", myreq.ticker);
 	int i = this->api->QueryMulCreditExcessStock(&myreq, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryCreditExtendDebtDateOrders(int xtp_id, long long session_id, int request_id)
+int TdApi::queryCreditExtendDebtDateOrders(uint64_t xtp_id, uint64_t session_id, int request_id)
 {
 	int i = this->api->QueryCreditExtendDebtDateOrders(xtp_id, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryCreditFundExtraInfo(long long session_id, int request_id)
+int TdApi::queryCreditFundExtraInfo(uint64_t session_id, int request_id)
 {
 	int i = this->api->QueryCreditFundExtraInfo(session_id, request_id);
 	return i;
 };
 
-int TdApi::queryCreditPositionExtraInfo(const dict &req, long long session_id, int request_id)
+int TdApi::queryCreditPositionExtraInfo(const dict &req, uint64_t session_id, int request_id)
 {
-	XTPClientQueryCrdPositionStockReq myreq = XTPClientQueryCrdPositionStockReq();
+	XTPClientQueryCrdPositionStockReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	myreq.market = (XTP_MARKET_TYPE)getIntValue(req, "market");
+	getEnum(req, "market", &myreq.market);
 	getString(req, "ticker", myreq.ticker);
 	int i = this->api->QueryCreditPositionExtraInfo(&myreq, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryOptionCombinedUnfinishedOrders(long long session_id, int request_id)
+int TdApi::queryOptionCombinedUnfinishedOrders(uint64_t session_id, int request_id)
 {
 	int i = this->api->QueryOptionCombinedUnfinishedOrders(session_id, request_id);
 	return i;
 };
 
-int TdApi::queryOptionCombinedOrderByXTPID(long long order_xtp_id, long long session_id, int request_id)
+int TdApi::queryOptionCombinedOrderByXTPID(uint64_t order_xtp_id, uint64_t session_id, int request_id)
 {
 	int i = this->api->QueryOptionCombinedOrderByXTPID(order_xtp_id, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryOptionCombinedOrders(const dict &req, long long session_id, int request_id)
+int TdApi::queryOptionCombinedOrders(const dict &req, uint64_t session_id, int request_id)
 {
-	XTPQueryOptCombOrderReq myreq = XTPQueryOptCombOrderReq();
+	XTPQueryOptCombOrderReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
 	getString(req, "comb_num", myreq.comb_num);
-	myreq.begin_time = getIntValue(req, "begin_time");
-	myreq.end_time = getIntValue(req, "end_time");
+	getInt(req, "begin_time", &myreq.begin_time);
+	getInt(req, "end_time", &myreq.end_time);
 	int i = this->api->QueryOptionCombinedOrders(&myreq, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryOptionCombinedOrdersByPage(const dict &req, long long session_id, int request_id)
+int TdApi::queryOptionCombinedOrdersByPage(const dict &req, uint64_t session_id, int request_id)
 {
-	XTPQueryOptCombOrderByPageReq myreq = XTPQueryOptCombOrderByPageReq();
+	XTPQueryOptCombOrderByPageReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	myreq.req_count = getIntValue(req, "req_count");
-	myreq.reference = getIntValue(req, "reference");
-	myreq.reserved = getIntValue(req, "reserved");
+	getInt(req, "req_count", &myreq.req_count);
+	getInt(req, "reference", &myreq.reference);
+	getInt(req, "reserved", &myreq.reserved);
 	int i = this->api->QueryOptionCombinedOrdersByPage(&myreq, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryOptionCombinedTradesByXTPID(long long order_xtp_id, long long session_id, int request_id)
+int TdApi::queryOptionCombinedTradesByXTPID(uint64_t order_xtp_id, uint64_t session_id, int request_id)
 {
 	int i = this->api->QueryOptionCombinedTradesByXTPID(order_xtp_id, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryOptionCombinedTrades(const dict &req, long long session_id, int request_id)
+int TdApi::queryOptionCombinedTrades(const dict &req, uint64_t session_id, int request_id)
 {
-	XTPQueryOptCombTraderReq myreq = XTPQueryOptCombTraderReq();
+	XTPQueryOptCombTraderReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
 	getString(req, "comb_num", myreq.comb_num);
-	myreq.begin_time = getIntValue(req, "begin_time");
-	myreq.end_time = getIntValue(req, "end_time");
+	getInt(req, "begin_time", &myreq.begin_time);
+	getInt(req, "end_time", &myreq.end_time);
 	int i = this->api->QueryOptionCombinedTrades(&myreq, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryOptionCombinedTradesByPage(const dict &req, long long session_id, int request_id)
+int TdApi::queryOptionCombinedTradesByPage(const dict &req, uint64_t session_id, int request_id)
 {
-	XTPQueryOptCombTraderByPageReq myreq = XTPQueryOptCombTraderByPageReq();
+	XTPQueryOptCombTraderByPageReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	myreq.req_count = getIntValue(req, "req_count");
-	myreq.reference = getIntValue(req, "reference");
-	myreq.reserved = getIntValue(req, "reserved");
+	getInt(req, "req_count", &myreq.req_count);
+	getInt(req, "reference", &myreq.reference);
+	getInt(req, "reserved", &myreq.reserved);
 	int i = this->api->QueryOptionCombinedTradesByPage(&myreq, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryOptionCombinedPosition(const dict &req, long long session_id, int request_id)
+int TdApi::queryOptionCombinedPosition(const dict &req, uint64_t session_id, int request_id)
 {
-	XTPQueryOptCombPositionReq myreq = XTPQueryOptCombPositionReq();
+	XTPQueryOptCombPositionReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
 	getString(req, "comb_num", myreq.comb_num);
-	myreq.market = (XTP_MARKET_TYPE)getIntValue(req, "market");
+	getEnum(req, "market", &myreq.market);
 	int i = this->api->QueryOptionCombinedPosition(&myreq, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryOptionCombinedStrategyInfo(long long session_id, int request_id)
+int TdApi::queryOptionCombinedStrategyInfo(uint64_t session_id, int request_id)
 {
 	int i = this->api->QueryOptionCombinedStrategyInfo(session_id, request_id);
 	return i;
 };
 
-int TdApi::queryOptionCombinedExecPosition(const dict &req, long long session_id, int request_id)
+int TdApi::queryOptionCombinedExecPosition(const dict &req, uint64_t session_id, int request_id)
 {
-	XTPQueryOptCombExecPosReq myreq = XTPQueryOptCombExecPosReq();
+	XTPQueryOptCombExecPosReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	myreq.market = (XTP_MARKET_TYPE)getIntValue(req, "market");
+	getEnum(req, "market", &myreq.market);
 	getString(req, "cntrt_code_1", myreq.cntrt_code_1);
 	getString(req, "cntrt_code_2", myreq.cntrt_code_2);
 	int i = this->api->QueryOptionCombinedExecPosition(&myreq, session_id, request_id);
 	return i;
 };
+
+
 
 
 ///-------------------------------------------------------------------------------------
@@ -2864,11 +1554,11 @@ class PyTdApi : public TdApi
 public:
 	using TdApi::TdApi;
 
-	void onDisconnected(int extra, int extra_1) override
+	void onDisconnected(uint64_t session_id, int reason) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onDisconnected, extra, extra_1);
+			PYBIND11_OVERLOAD(void, TdApi, onDisconnected, session_id, reason);
 		}
 		catch (const error_already_set &e)
 		{
@@ -2888,11 +1578,11 @@ public:
 		}
 	};
 
-	void onOrderEvent(const dict &data, const dict &error, int extra) override
+	void onOrderEvent(const dict &data, const dict &error, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onOrderEvent, data, error, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onOrderEvent, data, error, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -2900,11 +1590,11 @@ public:
 		}
 	};
 
-	void onTradeEvent(const dict &data, int extra) override
+	void onTradeEvent(const dict &data, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onTradeEvent, data, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onTradeEvent, data, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -2912,11 +1602,11 @@ public:
 		}
 	};
 
-	void onCancelOrderError(const dict &data, const dict &error, int extra) override
+	void onCancelOrderError(const dict &data, const dict &error, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onCancelOrderError, data, error, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onCancelOrderError, data, error, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -2924,11 +1614,11 @@ public:
 		}
 	};
 
-	void onQueryOrder(const dict &data, const dict &error, int reqid, bool last, int extra) override
+	void onQueryOrder(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryOrder, data, error, reqid, last, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryOrder, data, error, request_id, is_last, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -2948,11 +1638,11 @@ public:
 		}
 	};
 
-	void onQueryTrade(const dict &data, const dict &error, int reqid, bool last, int extra) override
+	void onQueryTrade(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryTrade, data, error, reqid, last, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryTrade, data, error, request_id, is_last, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -2972,11 +1662,11 @@ public:
 		}
 	};
 
-	void onQueryPosition(const dict &data, const dict &error, int reqid, bool last, int extra) override
+	void onQueryPosition(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryPosition, data, error, reqid, last, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryPosition, data, error, request_id, is_last, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -2984,11 +1674,11 @@ public:
 		}
 	};
 
-	void onQueryAsset(const dict &data, const dict &error, int reqid, bool last, int extra) override
+	void onQueryAsset(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryAsset, data, error, reqid, last, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryAsset, data, error, request_id, is_last, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -2996,11 +1686,11 @@ public:
 		}
 	};
 
-	void onQueryStructuredFund(const dict &data, const dict &error, int reqid, bool last, int extra) override
+	void onQueryStructuredFund(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryStructuredFund, data, error, reqid, last, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryStructuredFund, data, error, request_id, is_last, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3008,11 +1698,11 @@ public:
 		}
 	};
 
-	void onQueryFundTransfer(const dict &data, const dict &error, int reqid, bool last, int extra) override
+	void onQueryFundTransfer(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryFundTransfer, data, error, reqid, last, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryFundTransfer, data, error, request_id, is_last, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3020,11 +1710,11 @@ public:
 		}
 	};
 
-	void onFundTransfer(const dict &data, const dict &error, int extra) override
+	void onFundTransfer(const dict &data, const dict &error, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onFundTransfer, data, error, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onFundTransfer, data, error, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3032,11 +1722,11 @@ public:
 		}
 	};
 
-	void onQueryETF(const dict &data, const dict &error, int reqid, bool last, int extra) override
+	void onQueryETF(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryETF, data, error, reqid, last, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryETF, data, error, request_id, is_last, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3044,11 +1734,11 @@ public:
 		}
 	};
 
-	void onQueryETFBasket(const dict &data, const dict &error, int reqid, bool last, int extra) override
+	void onQueryETFBasket(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryETFBasket, data, error, reqid, last, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryETFBasket, data, error, request_id, is_last, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3056,11 +1746,11 @@ public:
 		}
 	};
 
-	void onQueryIPOInfoList(const dict &data, const dict &error, int reqid, bool last, int extra) override
+	void onQueryIPOInfoList(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryIPOInfoList, data, error, reqid, last, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryIPOInfoList, data, error, request_id, is_last, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3068,11 +1758,11 @@ public:
 		}
 	};
 
-	void onQueryIPOQuotaInfo(const dict &data, const dict &error, int reqid, bool last, int extra) override
+	void onQueryIPOQuotaInfo(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryIPOQuotaInfo, data, error, reqid, last, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryIPOQuotaInfo, data, error, request_id, is_last, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3080,11 +1770,11 @@ public:
 		}
 	};
 
-	void onQueryOptionAuctionInfo(const dict &data, const dict &error, int reqid, bool last, int extra) override
+	void onQueryOptionAuctionInfo(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryOptionAuctionInfo, data, error, reqid, last, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryOptionAuctionInfo, data, error, request_id, is_last, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3092,11 +1782,11 @@ public:
 		}
 	};
 
-	void onCreditCashRepay(const dict &data, const dict &error, int extra) override
+	void onCreditCashRepay(const dict &data, const dict &error, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onCreditCashRepay, data, error, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onCreditCashRepay, data, error, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3104,11 +1794,11 @@ public:
 		}
 	};
 
-	void onCreditCashRepayDebtInterestFee(const dict &data, const dict &error, int extra) override
+	void onCreditCashRepayDebtInterestFee(const dict &data, const dict &error, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onCreditCashRepayDebtInterestFee, data, error, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onCreditCashRepayDebtInterestFee, data, error, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3116,11 +1806,11 @@ public:
 		}
 	};
 
-	void onQueryCreditCashRepayInfo(const dict &data, const dict &error, int reqid, bool last, int extra) override
+	void onQueryCreditCashRepayInfo(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryCreditCashRepayInfo, data, error, reqid, last, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryCreditCashRepayInfo, data, error, request_id, is_last, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3128,11 +1818,11 @@ public:
 		}
 	};
 
-	void onQueryCreditFundInfo(const dict &data, const dict &error, int reqid, int extra) override
+	void onQueryCreditFundInfo(const dict &data, const dict &error, int request_id, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryCreditFundInfo, data, error, reqid, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryCreditFundInfo, data, error, request_id, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3140,11 +1830,11 @@ public:
 		}
 	};
 
-	void onQueryCreditDebtInfo(const dict &data, const dict &error, int reqid, bool last, int extra) override
+	void onQueryCreditDebtInfo(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryCreditDebtInfo, data, error, reqid, last, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryCreditDebtInfo, data, error, request_id, is_last, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3152,11 +1842,11 @@ public:
 		}
 	};
 
-	void onQueryCreditTickerDebtInfo(const dict &data, const dict &error, int reqid, bool last, int extra) override
+	void onQueryCreditTickerDebtInfo(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryCreditTickerDebtInfo, data, error, reqid, last, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryCreditTickerDebtInfo, data, error, request_id, is_last, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3164,11 +1854,11 @@ public:
 		}
 	};
 
-	void onQueryCreditAssetDebtInfo(double amount, const dict &error, int reqid, int extra) override
+	void onQueryCreditAssetDebtInfo(double remain_amount, const dict &error, int request_id, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryCreditAssetDebtInfo, amount, error, reqid, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryCreditAssetDebtInfo, remain_amount, error, request_id, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3176,11 +1866,11 @@ public:
 		}
 	};
 
-	void onQueryCreditTickerAssignInfo(const dict &data, const dict &error, int reqid, bool last, int extra) override
+	void onQueryCreditTickerAssignInfo(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryCreditTickerAssignInfo, data, error, reqid, last, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryCreditTickerAssignInfo, data, error, request_id, is_last, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3188,11 +1878,11 @@ public:
 		}
 	};
 
-	void onQueryCreditExcessStock(const dict &data, const dict &error, int reqid, int extra) override
+	void onQueryCreditExcessStock(const dict &data, const dict &error, int request_id, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryCreditExcessStock, data, error, reqid, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryCreditExcessStock, data, error, request_id, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3200,11 +1890,11 @@ public:
 		}
 	};
 
-	void onQueryMulCreditExcessStock(const dict &data, const dict &error, int reqid, bool last, int extra) override
+	void onQueryMulCreditExcessStock(const dict &data, const dict &error, int request_id, uint64_t session_id, bool is_last) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryMulCreditExcessStock, data, error, reqid, last, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryMulCreditExcessStock, data, error, request_id, session_id, is_last);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3212,11 +1902,11 @@ public:
 		}
 	};
 
-	void onCreditExtendDebtDate(const dict &data, const dict &error, int extra) override
+	void onCreditExtendDebtDate(const dict &data, const dict &error, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onCreditExtendDebtDate, data, error, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onCreditExtendDebtDate, data, error, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3224,11 +1914,11 @@ public:
 		}
 	};
 
-	void onQueryCreditExtendDebtDateOrders(const dict &data, const dict &error, int reqid, bool last, int extra) override
+	void onQueryCreditExtendDebtDateOrders(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryCreditExtendDebtDateOrders, data, error, reqid, last, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryCreditExtendDebtDateOrders, data, error, request_id, is_last, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3236,11 +1926,11 @@ public:
 		}
 	};
 
-	void onQueryCreditFundExtraInfo(const dict &data, const dict &error, int reqid, int extra) override
+	void onQueryCreditFundExtraInfo(const dict &data, const dict &error, int request_id, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryCreditFundExtraInfo, data, error, reqid, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryCreditFundExtraInfo, data, error, request_id, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3248,11 +1938,11 @@ public:
 		}
 	};
 
-	void onQueryCreditPositionExtraInfo(const dict &data, const dict &error, int reqid, bool last, int extra) override
+	void onQueryCreditPositionExtraInfo(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryCreditPositionExtraInfo, data, error, reqid, last, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryCreditPositionExtraInfo, data, error, request_id, is_last, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3260,11 +1950,11 @@ public:
 		}
 	};
 
-	void onOptionCombinedOrderEvent(const dict &data, const dict &error, int extra) override
+	void onOptionCombinedOrderEvent(const dict &data, const dict &error, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onOptionCombinedOrderEvent, data, error, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onOptionCombinedOrderEvent, data, error, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3272,11 +1962,11 @@ public:
 		}
 	};
 
-	void onOptionCombinedTradeEvent(const dict &data, int extra) override
+	void onOptionCombinedTradeEvent(const dict &data, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onOptionCombinedTradeEvent, data, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onOptionCombinedTradeEvent, data, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3284,11 +1974,11 @@ public:
 		}
 	};
 
-	void onCancelOptionCombinedOrderError(const dict &data, const dict &error, int extra) override
+	void onCancelOptionCombinedOrderError(const dict &data, const dict &error, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onCancelOptionCombinedOrderError, data, error, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onCancelOptionCombinedOrderError, data, error, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3296,11 +1986,11 @@ public:
 		}
 	};
 
-	void onQueryOptionCombinedOrders(const dict &data, const dict &error, int reqid, bool last, int extra) override
+	void onQueryOptionCombinedOrders(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryOptionCombinedOrders, data, error, reqid, last, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryOptionCombinedOrders, data, error, request_id, is_last, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3320,11 +2010,11 @@ public:
 		}
 	};
 
-	void onQueryOptionCombinedTrades(const dict &data, const dict &error, int reqid, bool last, int extra) override
+	void onQueryOptionCombinedTrades(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryOptionCombinedTrades, data, error, reqid, last, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryOptionCombinedTrades, data, error, request_id, is_last, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3344,11 +2034,11 @@ public:
 		}
 	};
 
-	void onQueryOptionCombinedPosition(const dict &data, const dict &error, int reqid, bool last, int extra) override
+	void onQueryOptionCombinedPosition(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryOptionCombinedPosition, data, error, reqid, last, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryOptionCombinedPosition, data, error, request_id, is_last, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3356,11 +2046,11 @@ public:
 		}
 	};
 
-	void onQueryOptionCombinedStrategyInfo(const dict &data, const dict &error, int reqid, bool last, int extra) override
+	void onQueryOptionCombinedStrategyInfo(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryOptionCombinedStrategyInfo, data, error, reqid, last, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryOptionCombinedStrategyInfo, data, error, request_id, is_last, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -3368,11 +2058,11 @@ public:
 		}
 	};
 
-	void onQueryOptionCombinedExecPosition(const dict &data, const dict &error, int reqid, bool last, int extra) override
+	void onQueryOptionCombinedExecPosition(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryOptionCombinedExecPosition, data, error, reqid, last, extra);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryOptionCombinedExecPosition, data, error, request_id, is_last, session_id);
 		}
 		catch (const error_already_set &e)
 		{

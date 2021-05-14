@@ -12,52 +12,6 @@ using namespace pybind11;
 using namespace XTP::API;
 
 
-//常量
-#define ONDISCONNECTED 0
-#define ONERROR 1
-#define ONORDEREVENT 2
-#define ONTRADEEVENT 3
-#define ONCANCELORDERERROR 4
-#define ONQUERYORDER 5
-#define ONQUERYORDERBYPAGE 6
-#define ONQUERYTRADE 7
-#define ONQUERYTRADEBYPAGE 8
-#define ONQUERYPOSITION 9
-#define ONQUERYASSET 10
-#define ONQUERYSTRUCTUREDFUND 11
-#define ONQUERYFUNDTRANSFER 12
-#define ONFUNDTRANSFER 13
-#define ONQUERYETF 14
-#define ONQUERYETFBASKET 15
-#define ONQUERYIPOINFOLIST 16
-#define ONQUERYIPOQUOTAINFO 17
-#define ONQUERYOPTIONAUCTIONINFO 18
-#define ONCREDITCASHREPAY 19
-#define ONCREDITCASHREPAYDEBTINTERESTFEE 20
-#define ONQUERYCREDITCASHREPAYINFO 21
-#define ONQUERYCREDITFUNDINFO 22
-#define ONQUERYCREDITDEBTINFO 23
-#define ONQUERYCREDITTICKERDEBTINFO 24
-#define ONQUERYCREDITASSETDEBTINFO 25
-#define ONQUERYCREDITTICKERASSIGNINFO 26
-#define ONQUERYCREDITEXCESSSTOCK 27
-#define ONQUERYMULCREDITEXCESSSTOCK 28
-#define ONCREDITEXTENDDEBTDATE 29
-#define ONQUERYCREDITEXTENDDEBTDATEORDERS 30
-#define ONQUERYCREDITFUNDEXTRAINFO 31
-#define ONQUERYCREDITPOSITIONEXTRAINFO 32
-#define ONOPTIONCOMBINEDORDEREVENT 33
-#define ONOPTIONCOMBINEDTRADEEVENT 34
-#define ONCANCELOPTIONCOMBINEDORDERERROR 35
-#define ONQUERYOPTIONCOMBINEDORDERS 36
-#define ONQUERYOPTIONCOMBINEDORDERSBYPAGE 37
-#define ONQUERYOPTIONCOMBINEDTRADES 38
-#define ONQUERYOPTIONCOMBINEDTRADESBYPAGE 39
-#define ONQUERYOPTIONCOMBINEDPOSITION 40
-#define ONQUERYOPTIONCOMBINEDSTRATEGYINFO 41
-#define ONQUERYOPTIONCOMBINEDEXECPOSITION 42
-
-
 ///-------------------------------------------------------------------------------------
 ///C++ SPI的回调函数方法实现
 ///-------------------------------------------------------------------------------------
@@ -67,9 +21,7 @@ class TdApi : public TraderSpi
 {
 private:
 	TraderApi* api;            //API对象
-	thread task_thread;                    //工作线程指针（向python中推送数据）
-	TaskQueue task_queue;                //任务队列
-	bool active = false;                //工作状态
+	bool active = false;       //工作状态
 
 public:
 	TdApi()
@@ -451,189 +403,95 @@ public:
 	virtual void OnQueryOptionCombinedExecPosition(XTPQueryOptCombExecPosRsp *position_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id);
 
 	//-------------------------------------------------------------------------------------
-	//task：任务
-	//-------------------------------------------------------------------------------------
-	void processTask();
-
-	void processDisconnected(Task *task);
-
-	void processError(Task *task);
-
-	void processOrderEvent(Task *task);
-
-	void processTradeEvent(Task *task);
-
-	void processCancelOrderError(Task *task);
-
-	void processQueryOrder(Task *task);
-
-	void processQueryOrderByPage(Task *task);
-
-	void processQueryTrade(Task *task);
-
-	void processQueryTradeByPage(Task *task);
-
-	void processQueryPosition(Task *task);
-
-	void processQueryAsset(Task *task);
-
-	void processQueryStructuredFund(Task *task);
-
-	void processQueryFundTransfer(Task *task);
-
-	void processFundTransfer(Task *task);
-
-	void processQueryETF(Task *task);
-
-	void processQueryETFBasket(Task *task);
-
-	void processQueryIPOInfoList(Task *task);
-
-	void processQueryIPOQuotaInfo(Task *task);
-
-	void processQueryOptionAuctionInfo(Task *task);
-
-	void processCreditCashRepay(Task *task);
-
-	void processCreditCashRepayDebtInterestFee(Task *task);
-
-	void processQueryCreditCashRepayInfo(Task *task);
-
-	void processQueryCreditFundInfo(Task *task);
-
-	void processQueryCreditDebtInfo(Task *task);
-
-	void processQueryCreditTickerDebtInfo(Task *task);
-
-	void processQueryCreditAssetDebtInfo(Task *task);
-
-	void processQueryCreditTickerAssignInfo(Task *task);
-
-	void processQueryCreditExcessStock(Task *task);
-
-	void processQueryMulCreditExcessStock(Task *task);
-
-	void processCreditExtendDebtDate(Task *task);
-
-	void processQueryCreditExtendDebtDateOrders(Task *task);
-
-	void processQueryCreditFundExtraInfo(Task *task);
-
-	void processQueryCreditPositionExtraInfo(Task *task);
-
-	void processOptionCombinedOrderEvent(Task *task);
-
-	void processOptionCombinedTradeEvent(Task *task);
-
-	void processCancelOptionCombinedOrderError(Task *task);
-
-	void processQueryOptionCombinedOrders(Task *task);
-
-	void processQueryOptionCombinedOrdersByPage(Task *task);
-
-	void processQueryOptionCombinedTrades(Task *task);
-
-	void processQueryOptionCombinedTradesByPage(Task *task);
-
-	void processQueryOptionCombinedPosition(Task *task);
-
-	void processQueryOptionCombinedStrategyInfo(Task *task);
-
-	void processQueryOptionCombinedExecPosition(Task *task);
-
-	//-------------------------------------------------------------------------------------
 	//data：回调函数的数据字典
 	//error：回调函数的错误字典
-	//id：请求id
-	//last：是否为最后返回
-	//i：整数
 	//-------------------------------------------------------------------------------------
 
-	virtual void onDisconnected(int extra, int extra_1) {};
+	virtual void onDisconnected(uint64_t session_id, int reason) {};
 
 	virtual void onError(const dict &error) {};
 
-	virtual void onOrderEvent(const dict &data, const dict &error, int extra) {};
+	virtual void onOrderEvent(const dict &data, const dict &error, uint64_t session_id) {};
 
-	virtual void onTradeEvent(const dict &data, int extra) {};
+	virtual void onTradeEvent(const dict &data, uint64_t session_id) {};
 
-	virtual void onCancelOrderError(const dict &data, const dict &error, int extra) {};
+	virtual void onCancelOrderError(const dict &data, const dict &error, uint64_t session_id) {};
 
-	virtual void onQueryOrder(const dict &data, const dict &error, int reqid, bool last, int extra) {};
+	virtual void onQueryOrder(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
 	virtual void onQueryOrderByPage(const dict &data, int64_t req_count, int64_t order_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id) {};
 
-	virtual void onQueryTrade(const dict &data, const dict &error, int reqid, bool last, int extra) {};
+	virtual void onQueryTrade(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
 	virtual void onQueryTradeByPage(const dict &data, int64_t req_count, int64_t trade_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id) {};
 
-	virtual void onQueryPosition(const dict &data, const dict &error, int reqid, bool last, int extra) {};
+	virtual void onQueryPosition(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
-	virtual void onQueryAsset(const dict &data, const dict &error, int reqid, bool last, int extra) {};
+	virtual void onQueryAsset(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
-	virtual void onQueryStructuredFund(const dict &data, const dict &error, int reqid, bool last, int extra) {};
+	virtual void onQueryStructuredFund(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
-	virtual void onQueryFundTransfer(const dict &data, const dict &error, int reqid, bool last, int extra) {};
+	virtual void onQueryFundTransfer(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
-	virtual void onFundTransfer(const dict &data, const dict &error, int extra) {};
+	virtual void onFundTransfer(const dict &data, const dict &error, uint64_t session_id) {};
 
-	virtual void onQueryETF(const dict &data, const dict &error, int reqid, bool last, int extra) {};
+	virtual void onQueryETF(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
-	virtual void onQueryETFBasket(const dict &data, const dict &error, int reqid, bool last, int extra) {};
+	virtual void onQueryETFBasket(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
-	virtual void onQueryIPOInfoList(const dict &data, const dict &error, int reqid, bool last, int extra) {};
+	virtual void onQueryIPOInfoList(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
-	virtual void onQueryIPOQuotaInfo(const dict &data, const dict &error, int reqid, bool last, int extra) {};
+	virtual void onQueryIPOQuotaInfo(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
-	virtual void onQueryOptionAuctionInfo(const dict &data, const dict &error, int reqid, bool last, int extra) {};
+	virtual void onQueryOptionAuctionInfo(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
-	virtual void onCreditCashRepay(const dict &data, const dict &error, int extra) {};
+	virtual void onCreditCashRepay(const dict &data, const dict &error, uint64_t session_id) {};
 
-	virtual void onCreditCashRepayDebtInterestFee(const dict &data, const dict &error, int extra) {};
+	virtual void onCreditCashRepayDebtInterestFee(const dict &data, const dict &error, uint64_t session_id) {};
 
-	virtual void onQueryCreditCashRepayInfo(const dict &data, const dict &error, int reqid, bool last, int extra) {};
+	virtual void onQueryCreditCashRepayInfo(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
-	virtual void onQueryCreditFundInfo(const dict &data, const dict &error, int reqid, int extra) {};
+	virtual void onQueryCreditFundInfo(const dict &data, const dict &error, int request_id, uint64_t session_id) {};
 
-	virtual void onQueryCreditDebtInfo(const dict &data, const dict &error, int reqid, bool last, int extra) {};
+	virtual void onQueryCreditDebtInfo(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
-	virtual void onQueryCreditTickerDebtInfo(const dict &data, const dict &error, int reqid, bool last, int extra) {};
+	virtual void onQueryCreditTickerDebtInfo(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
-	virtual void onQueryCreditAssetDebtInfo(double amount, const dict &error, int reqid, int extra) {};
+	virtual void onQueryCreditAssetDebtInfo(double remain_amount, const dict &error, int request_id, uint64_t session_id) {};
 
-	virtual void onQueryCreditTickerAssignInfo(const dict &data, const dict &error, int reqid, bool last, int extra) {};
+	virtual void onQueryCreditTickerAssignInfo(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
-	virtual void onQueryCreditExcessStock(const dict &data, const dict &error, int reqid, int extra) {};
+	virtual void onQueryCreditExcessStock(const dict &data, const dict &error, int request_id, uint64_t session_id) {};
 
-	virtual void onQueryMulCreditExcessStock(const dict &data, const dict &error, int reqid, bool last, int extra) {};
+	virtual void onQueryMulCreditExcessStock(const dict &data, const dict &error, int request_id, uint64_t session_id, bool is_last) {};
 
-	virtual void onCreditExtendDebtDate(const dict &data, const dict &error, int extra) {};
+	virtual void onCreditExtendDebtDate(const dict &data, const dict &error, uint64_t session_id) {};
 
-	virtual void onQueryCreditExtendDebtDateOrders(const dict &data, const dict &error, int reqid, bool last, int extra) {};
+	virtual void onQueryCreditExtendDebtDateOrders(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
-	virtual void onQueryCreditFundExtraInfo(const dict &data, const dict &error, int reqid, int extra) {};
+	virtual void onQueryCreditFundExtraInfo(const dict &data, const dict &error, int request_id, uint64_t session_id) {};
 
-	virtual void onQueryCreditPositionExtraInfo(const dict &data, const dict &error, int reqid, bool last, int extra) {};
+	virtual void onQueryCreditPositionExtraInfo(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
-	virtual void onOptionCombinedOrderEvent(const dict &data, const dict &error, int extra) {};
+	virtual void onOptionCombinedOrderEvent(const dict &data, const dict &error, uint64_t session_id) {};
 
-	virtual void onOptionCombinedTradeEvent(const dict &data, int extra) {};
+	virtual void onOptionCombinedTradeEvent(const dict &data, uint64_t session_id) {};
 
-	virtual void onCancelOptionCombinedOrderError(const dict &data, const dict &error, int extra) {};
+	virtual void onCancelOptionCombinedOrderError(const dict &data, const dict &error, uint64_t session_id) {};
 
-	virtual void onQueryOptionCombinedOrders(const dict &data, const dict &error, int reqid, bool last, int extra) {};
+	virtual void onQueryOptionCombinedOrders(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
 	virtual void onQueryOptionCombinedOrdersByPage(const dict &data, int64_t req_count, int64_t order_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id) {};
 
-	virtual void onQueryOptionCombinedTrades(const dict &data, const dict &error, int reqid, bool last, int extra) {};
+	virtual void onQueryOptionCombinedTrades(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
 	virtual void onQueryOptionCombinedTradesByPage(const dict &data, int64_t req_count, int64_t trade_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id) {};
 
-	virtual void onQueryOptionCombinedPosition(const dict &data, const dict &error, int reqid, bool last, int extra) {};
+	virtual void onQueryOptionCombinedPosition(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
-	virtual void onQueryOptionCombinedStrategyInfo(const dict &data, const dict &error, int reqid, bool last, int extra) {};
+	virtual void onQueryOptionCombinedStrategyInfo(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
-	virtual void onQueryOptionCombinedExecPosition(const dict &data, const dict &error, int reqid, bool last, int extra) {};
+	virtual void onQueryOptionCombinedExecPosition(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
 	//-------------------------------------------------------------------------------------
 	//req:主动函数的请求字典
@@ -673,77 +531,77 @@ public:
 
 	long long cancelOrder(long long order_xtp_id, long long session_id);
 
-	int queryOrderByXTPID(long long order_xtp_id, long long session_id, int request_id);
+	int queryOrderByXTPID(uint64_t order_xtp_id, uint64_t session_id, int request_id);
 
-	int queryOrders(const dict &req, long long session_id, int request_id);
+	int queryOrders(const dict &req, uint64_t session_id, int request_id);
 
-	int queryUnfinishedOrders(long long session_id, int request_id);
+	int queryUnfinishedOrders(uint64_t session_id, int request_id);
 
-	int queryOrdersByPage(const dict &req, long long session_id, int request_id);
+	int queryOrdersByPage(const dict &req, uint64_t session_id, int request_id);
 
-	int queryTradesByXTPID(long long order_xtp_id, long long session_id, int request_id);
+	int queryTradesByXTPID(uint64_t order_xtp_id, uint64_t session_id, int request_id);
 
-	int queryTrades(const dict &req, long long session_id, int request_id);
+	int queryTrades(const dict &req, uint64_t session_id, int request_id);
 
-	int queryTradesByPage(const dict &req, long long session_id, int request_id);
+	int queryTradesByPage(const dict &req, uint64_t session_id, int request_id);
 
-	int queryPosition(string ticker, long long session_id, int request_id);
+	int queryPosition(char ticker, uint64_t session_id, int request_id);
 
-	int queryAsset(long long session_id, int request_id);
+	int queryAsset(uint64_t session_id, int request_id);
 
-	int queryStructuredFund(const dict &req, long long session_id, int request_id);
+	int queryStructuredFund(const dict &req, uint64_t session_id, int request_id);
 
-	int queryFundTransfer(const dict &req, long long session_id, int request_id);
+	int queryFundTransfer(const dict &req, uint64_t session_id, int request_id);
 
-	int queryETF(const dict &req, long long session_id, int request_id);
+	int queryETF(const dict &req, uint64_t session_id, int request_id);
 
-	int queryETFTickerBasket(const dict &req, long long session_id, int request_id);
+	int queryETFTickerBasket(const dict &req, uint64_t session_id, int request_id);
 
-	int queryIPOInfoList(long long session_id, int request_id);
+	int queryIPOInfoList(uint64_t session_id, int request_id);
 
-	int queryIPOQuotaInfo(long long session_id, int request_id);
+	int queryIPOQuotaInfo(uint64_t session_id, int request_id);
 
-	int queryOptionAuctionInfo(const dict &req, long long session_id, int request_id);
+	int queryOptionAuctionInfo(const dict &req, uint64_t session_id, int request_id);
 
-	int queryCreditCashRepayInfo(long long session_id, int request_id);
+	int queryCreditCashRepayInfo(uint64_t session_id, int request_id);
 
-	int queryCreditFundInfo(long long session_id, int request_id);
+	int queryCreditFundInfo(uint64_t session_id, int request_id);
 
-	int queryCreditDebtInfo(long long session_id, int request_id);
+	int queryCreditDebtInfo(uint64_t session_id, int request_id);
 
-	int queryCreditTickerDebtInfo(const dict &req, long long session_id, int request_id);
+	int queryCreditTickerDebtInfo(const dict &req, uint64_t session_id, int request_id);
 
-	int queryCreditAssetDebtInfo(long long session_id, int request_id);
+	int queryCreditAssetDebtInfo(uint64_t session_id, int request_id);
 
-	int queryCreditTickerAssignInfo(const dict &req, long long session_id, int request_id);
+	int queryCreditTickerAssignInfo(const dict &req, uint64_t session_id, int request_id);
 
-	int queryCreditExcessStock(const dict &req, long long session_id, int request_id);
+	int queryCreditExcessStock(const dict &req, uint64_t session_id, int request_id);
 
-	int queryMulCreditExcessStock(const dict &req, long long session_id, int request_id);
+	int queryMulCreditExcessStock(const dict &req, uint64_t session_id, int request_id);
 
-	int queryCreditExtendDebtDateOrders(int xtp_id, long long session_id, int request_id);
+	int queryCreditExtendDebtDateOrders(uint64_t xtp_id, uint64_t session_id, int request_id);
 
-	int queryCreditFundExtraInfo(long long session_id, int request_id);
+	int queryCreditFundExtraInfo(uint64_t session_id, int request_id);
 
-	int queryCreditPositionExtraInfo(const dict &req, long long session_id, int request_id);
+	int queryCreditPositionExtraInfo(const dict &req, uint64_t session_id, int request_id);
 
-	int queryOptionCombinedUnfinishedOrders(long long session_id, int request_id);
+	int queryOptionCombinedUnfinishedOrders(uint64_t session_id, int request_id);
 
-	int queryOptionCombinedOrderByXTPID(long long order_xtp_id, long long session_id, int request_id);
+	int queryOptionCombinedOrderByXTPID(uint64_t order_xtp_id, uint64_t session_id, int request_id);
 
-	int queryOptionCombinedOrders(const dict &req, long long session_id, int request_id);
+	int queryOptionCombinedOrders(const dict &req, uint64_t session_id, int request_id);
 
-	int queryOptionCombinedOrdersByPage(const dict &req, long long session_id, int request_id);
+	int queryOptionCombinedOrdersByPage(const dict &req, uint64_t session_id, int request_id);
 
-	int queryOptionCombinedTradesByXTPID(long long order_xtp_id, long long session_id, int request_id);
+	int queryOptionCombinedTradesByXTPID(uint64_t order_xtp_id, uint64_t session_id, int request_id);
 
-	int queryOptionCombinedTrades(const dict &req, long long session_id, int request_id);
+	int queryOptionCombinedTrades(const dict &req, uint64_t session_id, int request_id);
 
-	int queryOptionCombinedTradesByPage(const dict &req, long long session_id, int request_id);
+	int queryOptionCombinedTradesByPage(const dict &req, uint64_t session_id, int request_id);
 
-	int queryOptionCombinedPosition(const dict &req, long long session_id, int request_id);
+	int queryOptionCombinedPosition(const dict &req, uint64_t session_id, int request_id);
 
-	int queryOptionCombinedStrategyInfo(long long session_id, int request_id);
+	int queryOptionCombinedStrategyInfo(uint64_t session_id, int request_id);
 
-	int queryOptionCombinedExecPosition(const dict &req, long long session_id, int request_id);
+	int queryOptionCombinedExecPosition(const dict &req, uint64_t session_id, int request_id);
 };

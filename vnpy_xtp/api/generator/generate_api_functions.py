@@ -153,21 +153,13 @@ class ApiGenerator:
             for key, d in self.functions.items():
 
                 args_list = []
-
-                length = len(d)
-
-                if length < 3:
-                    for name_, ptype in d.items():
-                        args_list.append(f"int {name_}")
-                elif length == 3:
-                    for name_, ptype in d.items():
-                        if ptype == "int" or ptype in self.enums:
-                            args_list.append(f"int {name_}")
-                        elif ptype == "char":
-                            args_list.append(f"string {name_}")
-
-                        elif ptype in self.structs:
-                            args_list.append("const dict &req")
+                for pname, ptype in d.items():
+                    if ptype == "int" or ptype in self.enums:
+                        args_list.append(f"int {pname}")
+                    elif ptype in self.structs:
+                        args_list.append("const dict &req")
+                    else:
+                        args_list.append(f"{ptype} {pname}")
 
                 content = ", ".join(args_list)
 
@@ -237,71 +229,43 @@ class ApiGenerator:
                 req_name = name.replace("Query", "query")
 
                 args_list = []
-
-                length = len(d)
-
-                if length < 3:
-                    for name_, ptype in d.items():
-                        args_list.append(f"int {name_}")
-                elif length == 3:
-                    for name_, ptype in d.items():
-                        if ptype == "int" or ptype in self.enums:
-                            args_list.append(f"int {name_}")
-                        elif ptype == "char":
-                            args_list.append(f"string {name_}")
-
-                        elif ptype in self.structs:
-                            args_list.append("const dict &req")
+                call_args = []
+                for pname, ptype in d.items():
+                    if ptype == "int" or ptype in self.enums:
+                        args_list.append(f"int {pname}")
+                        call_args.append(pname)
+                    elif ptype in self.structs:
+                        args_list.append("const dict &req")
+                        call_args.append("&myreq")
+                    else:
+                        args_list.append(f"{ptype} {pname}")
+                        call_args.append(pname)
 
                 content = ", ".join(args_list)
 
-                if list(d.values()):
-                    ptype = list(d.values())[0]
-                else:
-                    pass
-
-                f.write(
-                    f"int {self.class_name}::{req_name}({content})\n")
+                f.write(f"int {self.class_name}::{req_name}({content})\n")
                 f.write("{\n")
-                f.write(f"\t{ptype} myreq = {ptype}();\n")
-                f.write("\tmemset(&myreq, 0, sizeof(myreq));\n")
 
-                reqid = "reqid"
-                if ptype in self.enums:
-                    c = {v: k for k, v in d.items()}[ptype]
-                    reqid = f"({ptype}) {c}"
+                for pname, ptype in d.items():
+                    if ptype == "int" or ptype in self.enums:
+                        args_list.append(f"int {pname}")
+                    elif ptype in self.structs:
+                        f.write(f"\t{ptype} myreq;\n")
+                        f.write("\tmemset(&myreq, 0, sizeof(myreq));\n")
 
-                elif ptype in self.structs:
-                    reqid = "reqid"
-                    struct_fields = self.structs[ptype]
-                    for struct_field, struct_type in struct_fields.items():
-                        if struct_type == "string":
-                            line = f"\tgetString(req, \"{struct_field}\", myreq.{struct_field});\n"
-                        elif struct_type == "int":
-                            line = f"\tmyreq.{struct_field} = getIntValue(req, \"{struct_field}\");\n"
-                        elif struct_type == "enum":
-                            if struct_field == "market":
-                                line = f"\tmyreq.{struct_field} = (XTP_MARKET_TYPE) getIntValue(req, \"{struct_field}\");\n"
+                        struct_fields = self.structs[ptype]
 
-                            elif struct_field == "exchange_id":
-                                line = f"\tmyreq.{struct_field} = (XTP_EXCHANGE_TYPE) getIntValue(req, \"{struct_field}\");\n"
-                            # line = f"\tmyreq.{struct_field} = getIntValue(req, \"{struct_field}\");\n"
-                        else:
-                            line = f"\tget{struct_type.capitalize()}(req, \"{struct_field}\", &myreq.{struct_field});\n"
-                        f.write(line)
+                        for struct_field, struct_type in struct_fields.items():
+                            func_name = f"get{struct_type.capitalize()}"
+                            if struct_type == "string":
+                                line = f'\t{func_name}(req, "{struct_field}", myreq.{struct_field});\n'
+                            else:
+                                line = f'\t{func_name}(req, "{struct_field}", &myreq.{struct_field});\n'
+                            f.write(line)
+                    else:
+                        args_list.append(f"{ptype} {pname}")
 
-                words = []
-                a = content.split(",")[1:]
-                if not a:
-                    reqid = ""
-                else:
-                    for i in a:
-                        if "int" in i:
-                            words.append(i.replace("int", "").strip())
-
-                    reqid = ", ".join(words)
-
-                f.write(f"\tint i = this->api->{name}(&myreq, {reqid});\n")
+                f.write(f"\tint i = this->api->{name}({','.join(call_args)});\n")
                 f.write("\treturn i;\n")
                 f.write("};\n\n")
 
