@@ -2,20 +2,6 @@
 import importlib
 from typing import Dict, List
 
-type_dict = {
-    'uint64_t': 'uint64_t',
-    'uint32_t': 'uint32_t',
-    'int64_t': 'int64_t',
-    'int32_t': 'int32_t',
-    'char': 'string',
-    'double': 'float',
-    "string": "string",
-    "bool": "bool",
-    "int": "int",
-    "enum": "enum",
-}
-
-
 class ApiGenerator:
     """API生成器"""""
 
@@ -31,20 +17,11 @@ class ApiGenerator:
         self.lines: Dict[str, str] = {}
 
         self.structs: Dict[str, dict] = {}
-        self.enums: List[str] = []
         self.load_struct()
-        self.check_enum()
-
-    def check_enum(self):
-        module = importlib.import_module("xtp_typedef")
-
-        for name in dir(module):
-            if "__" not in name:
-                self.enums.append(name)
 
     def load_struct(self):
         """加载Struct"""
-        module_names = ["xtp_struct_common", "xtp_struct_oms", "xtp_struct_quote"]
+        module_names = ["xtp_oms_struct", "xtp_quote_struct"]
 
         for module_name in module_names:
             module = importlib.import_module(module_name)
@@ -52,6 +29,18 @@ class ApiGenerator:
             for name in dir(module):
                 if "__" not in name:
                     self.structs[name] = getattr(module, name)
+
+        self.structs["XTPST"] = self.structs["XTPSpecificTickerStruct"]
+        self.structs["XTPMD"] = self.structs["XTPMarketDataStruct"]
+        self.structs["XTPQSI"] = self.structs["XTPQuoteStaticInfo"]
+        self.structs["XTPOB"] = self.structs["OrderBookStruct"]
+        self.structs["XTPTBT"] = self.structs["XTPTickByTickStruct"]
+        self.structs["XTPTPI"] = self.structs["XTPTickerPriceInfo"]
+        self.structs["XTPQFI"] = self.structs["XTPQuoteFullInfo"]
+        self.structs["XTPRI"] = {
+            "error_id": "int32_t",
+            "error_msg": "char"
+        }
 
     def run(self):
         """运行生成"""
@@ -132,11 +121,12 @@ class ApiGenerator:
                 args_list = []
 
                 for pname, ptype in d.items():
+                    print(pname, ptype)
                     if ptype == "XTPRI":
                         args_list.append("const dict &error")
                     elif ptype in self.structs:
                         args_list.append("const dict &data")
-                    elif ptype in self.enums:
+                    elif ptype.startswith("XTP_"):
                         args_list.append(f"int {pname}")
                     else:
                         args_list.append(f"{ptype} {pname}")
@@ -154,10 +144,10 @@ class ApiGenerator:
 
                 args_list = []
                 for pname, ptype in d.items():
-                    if ptype == "int" or ptype in self.enums:
-                        args_list.append(f"int {pname}")
-                    elif ptype in self.structs:
+                    if ptype in self.structs:
                         args_list.append("const dict &req")
+                    elif ptype.startswith("XTP_"):
+                        args_list.append(f"int {pname}")
                     else:
                         args_list.append(f"{ptype} {pname}")
 
@@ -231,7 +221,7 @@ class ApiGenerator:
                 args_list = []
                 call_args = []
                 for pname, ptype in d.items():
-                    if ptype == "int" or ptype in self.enums:
+                    if ptype == "int" or ptype.startswith("XTP_"):
                         args_list.append(f"int {pname}")
                         call_args.append(pname)
                     elif ptype in self.structs:
@@ -247,7 +237,7 @@ class ApiGenerator:
                 f.write("{\n")
 
                 for pname, ptype in d.items():
-                    if ptype == "int" or ptype in self.enums:
+                    if ptype == "int" or ptype.startswith("XTP_"):
                         args_list.append(f"int {pname}")
                     elif ptype in self.structs:
                         f.write(f"\t{ptype} myreq;\n")
@@ -265,7 +255,7 @@ class ApiGenerator:
                     else:
                         args_list.append(f"{ptype} {pname}")
 
-                f.write(f"\tint i = this->api->{name}({','.join(call_args)});\n")
+                f.write(f"\tint i = this->api->{name}({', '.join(call_args)});\n")
                 f.write("\treturn i;\n")
                 f.write("};\n\n")
 
@@ -286,7 +276,7 @@ class ApiGenerator:
                     elif ptype in self.structs:
                         args.append("const dict &data")
                         bind_args.append("data")
-                    elif ptype in self.enums:
+                    elif ptype.startswith("XTP_"):
                         args.append(f"int {pname}")
                         bind_args.append(pname)
                     else:

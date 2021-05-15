@@ -1,4 +1,4 @@
-struct = {
+XTPSpecificTickerStruct = {
 	"exchange_id": "enum",
 	"ticker": "char",
 }
@@ -44,7 +44,7 @@ XTPMarketDataOptionExData = {
 	"last_enquiry_time": "int64_t",
 }
 
-struct = {
+XTPMarketDataStruct = {
 	"exchange_id": "enum",
 	"ticker": "char",
 	"last_price": "double",
@@ -77,7 +77,7 @@ struct = {
 	"r4": "int32_t",
 }
 
-struct = {
+XTPQuoteStaticInfo = {
 	"exchange_id": "enum",
 	"ticker": "char",
 	"ticker_name": "char",
@@ -90,7 +90,7 @@ struct = {
 	"sell_qty_unit": "int32_t",
 }
 
-struct = {
+OrderBookStruct = {
 	"exchange_id": "enum",
 	"ticker": "char",
 	"last_price": "double",
@@ -124,7 +124,7 @@ XTPTickByTickTrade = {
 	"trade_flag": "char",
 }
 
-struct = {
+XTPTickByTickStruct = {
 	"exchange_id": "enum",
 	"ticker": "char",
 	"seq": "int64_t",
@@ -134,13 +134,13 @@ struct = {
 	"trade": "XTPTickByTickTrade",
 }
 
-struct = {
+XTPTickerPriceInfo = {
 	"exchange_id": "enum",
 	"ticker": "char",
 	"last_price": "double",
 }
 
-struct = {
+XTPQuoteFullInfo = {
 	"exchange_id": "enum",
 	"ticker": "char",
 	"ticker_name": "char",

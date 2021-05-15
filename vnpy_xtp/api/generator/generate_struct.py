@@ -40,7 +40,7 @@ class StructGenerator:
         if line.startswith("///") or line.startswith("#"):
             return
 
-        print(line)
+        #print(line)
         line = line.replace("\t", "    ")
         line = line.replace("\n", "")
 
@@ -56,12 +56,13 @@ class StructGenerator:
             a, b = content
             new_line = f"{b} = {a}\n\n"
             self.f_py.write(new_line)
-
         # 结构体定义
         elif "struct" in line and not self.in_struct:
             self.in_struct = True
-
-            struct_name = line.split(" ")[1]
+            line = line.replace("{", "")
+            content = line.split(" ")
+            content = [c for c in content if c]
+            struct_name = content[-1]
             new_line = f"{struct_name} = " + "{\n"
             self.f_py.write(new_line)
         # 结构体结束

@@ -204,7 +204,7 @@ XTPQueryETFBaseReq = {
 	"ticker": "char",
 }
 
-struct = {
+XTPQueryETFBaseRsp = {
 	"market": "enum",
 	"etf": "char",
 	"subscribe_redemption_ticker": "char",
@@ -218,7 +218,7 @@ struct = {
 	"total_amount": "double",
 }
 
-struct = {
+XTPQueryETFComponentReq = {
 	"market": "enum",
 	"ticker": "char",
 }
@@ -340,7 +340,7 @@ XTPCombLegStrategy = {
 	"leg_qty": "int64_t",
 }
 
-struct = {
+XTPQueryOptCombineReq = {
 	"strategy_id": "char",
 	"market": "enum",
 }
@@ -357,7 +357,7 @@ XTPQueryCombineStrategyInfoRsp = {
 	"reserved": "uint64_t",
 }
 
-struct = {
+XTPOptCombLegInfo = {
 	"leg_security_id": "char",
 	"leg_cntr_type": "enum",
 	"leg_side": "enum",
@@ -365,7 +365,7 @@ struct = {
 	"leg_qty": "int32_t",
 }
 
-struct = {
+XTPOptCombPlugin = {
 	"strategy_id": "char",
 	"comb_num": "char",
 	"num_legs": "int32_t",
@@ -457,7 +457,7 @@ XTPCrdCashRepayInfo = {
 	"error_info": "XTPRI",
 }
 
-struct = {
+XTPCrdDebtInfo = {
 	"debt_type": "int32_t",
 	"debt_id": "char",
 	"position_id": "int64_t",
@@ -476,7 +476,7 @@ struct = {
 	"unknown": "int64_t",
 }
 
-struct = {
+XTPCrdFundInfo = {
 	"maintenance_ratio": "double",
 	"all_asset": "double",
 	"all_debt": "double",
@@ -485,24 +485,24 @@ struct = {
 	"reserved": "double",
 }
 
-struct = {
+XTPClientQueryCrdDebtStockReq = {
 	"market": "enum",
 	"ticker": "char",
 }
 
-struct = {
+XTPCrdDebtStockInfo = {
 	"market": "enum",
 	"ticker": "char",
 	"stock_repay_quantity": "int64_t",
 	"stock_total_quantity": "int64_t",
 }
 
-struct = {
+XTPClientQueryCrdPositionStockReq = {
 	"market": "enum",
 	"ticker": "char",
 }
 
-struct = {
+XTPClientQueryCrdPositionStkInfo = {
 	"market": "enum",
 	"ticker": "char",
 	"limit_qty": "int64_t",
@@ -511,12 +511,12 @@ struct = {
 	"frozen_qty": "int64_t",
 }
 
-struct = {
+XTPClientQueryCrdSurplusStkReqInfo = {
 	"market": "enum",
 	"ticker": "char",
 }
 
-struct = {
+XTPClientQueryCrdSurplusStkRspInfo = {
 	"market": "enum",
 	"ticker": "char",
 	"transferable_quantity": "int64_t",
@@ -533,12 +533,12 @@ XTPCreditDebtExtendReq = {
 
 XTPCreditDebtExtendAck = XTPCreditDebtExtendNotice
 
-struct = {
+XTPCrdFundExtraInfo = {
 	"mf_rs_avl_used": "double",
 	"reserve": "char",
 }
 
-struct = {
+XTPCrdPositionExtraInfo = {
 	"market": "enum",
 	"ticker": "char",
 	"mf_rs_avl_used": "double",
