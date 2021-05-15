@@ -1,14 +1,3 @@
-""""""
-
-TYPE_CPP2PY = {
-    "uint8_t": "int",    # 3
-    "char": "string",       # 2
-    "double": "double",   # 1
-    "short": "int",
-    "XTP_EXCHANGE_TYPE": "enum"
-}
-
-
 class DataTypeGenerator:
     """DataType生成器"""
 
@@ -18,12 +7,14 @@ class DataTypeGenerator:
         self.prefix: str = prefix
         self.count: int = 0
 
+        self.in_enum: bool = False
+        self.enum_value: int = 0
+
     def run(self):
         """主函数"""
         self.f_cpp = open(self.filename, "r", encoding="UTF-8")
         self.f_define = open(f"{self.prefix}_constant.py", "w", encoding="UTF-8")
         self.f_typedef = open(f"{self.prefix}_typedef.py", "w", encoding="UTF-8")
-        self.f_struct = open(f"{self.prefix}_enum.py", "w", encoding="UTF-8")
 
         for line in self.f_cpp:
             self.process_line(line)
@@ -40,60 +31,52 @@ class DataTypeGenerator:
         line = line.replace(";", "")
         line = line.replace("\t", "    ")
 
+        # 注释行
         if line[:3] == "///":
-            pass
-        # elif "enum" in line:
-        #     self.process_enum(line)
+            return
+        # 常量定义
         elif line.startswith("#define"):
             self.process_define(line)
-        elif line.startswith("typedef char"):
-            self.process_typedef(line)
-        elif line.startswith("typedef uint8_t"):
-            name = line.split(" ")[2]
-            typedef = "int"
-            new_line = f"{name} = \"{typedef}\"\n"
-            self.f_typedef.write(new_line)
-
-        elif line.startswith("typedef enum"):
+        # 枚举定义
+        elif "enum" in line:
             self.process_enum(line)
-        elif line.startswith("}"):
-            new_line = "}\n\n"
-            self.f_struct.write(new_line)
-        # 处理枚举值表头
-        # elif line.startswith("typedef enum"):
-        #     print(line)
+        # 枚举结束
+        elif "}" in line:
+            self.in_enum = False
+        # 枚举内容
+        elif self.in_enum and "XTP_" in line:
+            self.process_content(line)
+        # 类型定义
+        elif line.startswith("typedef"):
+            self.process_typedef(line)
+        # # 枚举值内容
+        # elif "//<" in line:
+        #     if "=" in line:
+        #         name = line.split("=")[0].strip()
+        #     elif "," in line:
+        #         name = line.split(",")[0].strip()
+        #     else:
+        #         name = line.split("///")[0].strip()
 
-        # 处理枚举值内容
-        elif "//<" in line:
-            if "=" in line:
-                name = line.split("=")[0].strip()
-            elif "," in line:
-                name = line.split(",")[0].strip()
-            else:
-                name = line.split("///")[0].strip()
-
-            py_type = "int"
-            new_line = f"    \"{name}\": \"{py_type}\",\n"
-            self.f_struct.write(new_line)
-
-    def process_comment(self, line: str):
-        """处理注释"""
-        line.replace("/", "#")
+        #     py_type = "int"
+        #     new_line = f"    \"{name}\": \"{py_type}\",\n"
+        #     self.f_struct.write(new_line)
 
     def process_enum(self, line: str):
-        """处理枚举值"""
-        content = line.replace("\n", " ")
-        content = content.replace("\r", " ")
-        content = content.split(" ")
-        type_ = "enum"
-        name = content[2]
+        """处理枚举值定义"""
+        line = line.replace("\n", " ")
+        line = line.replace("\r", " ")
+        line = line.replace("typedef", "")
+        line = line.replace("{", "")
+        content = line.split(" ")
+        content = [c for c in content if c]
 
+        name = content[-1]
+        type_ = content[0]
         new_line = f"{name} = \"{type_}\"\n"
         self.f_typedef.write(new_line)
 
-        end = "{"
-        struct_line = f"{name} = {end}\n"
-        self.f_struct.write(struct_line)
+        self.in_enum = True
 
     def process_define(self, line: str):
         """处理常量定义"""
@@ -112,22 +95,32 @@ class DataTypeGenerator:
         """处理类型定义"""
         word = line.split(" ")[2]
         name = word.split("[")[0]
-        typedef = "string"
-
-        # words = [word for word in words if word != " "]
-
-        # name = words[2]
-        # typedef = TYPE_CPP2PY[words[1]]
-
-        # if typedef == "char":
-        #     if "[" in name:
-        #         typedef = "string"
-        #         name = name[:name.index("[")]
-        #     else:
-        #         typedef = "char"
+        typedef = line.split(" ")[1]
 
         new_line = f"{name} = \"{typedef}\"\n"
         self.f_typedef.write(new_line)
+
+    def process_content(self, line: str):
+        """处理枚举值内容"""
+        if "," in line:
+            line = line[:line.index(",")]
+
+        if "///" in line:
+            line = line[:line.index("///")]
+
+        line = line.replace(" ", "")
+        if "=" in line:
+            content = line.split("=")
+            name = content[0]
+            value = content[1]
+            self.enum_value = int(value)
+        else:
+            name = line
+            self.enum_value += 1
+            value = self.enum_value
+
+        new_line = f"{name} = {value}\n"
+        self.f_define.write(new_line)
 
 
 if __name__ == "__main__":
