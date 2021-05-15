@@ -38,8 +38,11 @@ void TdApi::OnOrderEvent(XTPOrderInfo *order_info, XTPRI *error_info, uint64_t s
 		data["price"] = order_info->price;
 		data["quantity"] = order_info->quantity;
 		data["price_type"] = (int)order_info->price_type;
+		data["u32"] = order_info->u32;
 		data["side"] = order_info->side;
 		data["position_effect"] = order_info->position_effect;
+		data["reserved1"] = order_info->reserved1;
+		data["reserved2"] = order_info->reserved2;
 		data["business_type"] = (int)order_info->business_type;
 		data["qty_traded"] = order_info->qty_traded;
 		data["qty_left"] = order_info->qty_left;
@@ -80,8 +83,11 @@ void TdApi::OnTradeEvent(XTPTradeReport *trade_info, uint64_t session_id)
 		data["report_index"] = trade_info->report_index;
 		data["order_exch_id"] = trade_info->order_exch_id;
 		data["trade_type"] = trade_info->trade_type;
+		data["u32"] = trade_info->u32;
 		data["side"] = trade_info->side;
 		data["position_effect"] = trade_info->position_effect;
+		data["reserved1"] = trade_info->reserved1;
+		data["reserved2"] = trade_info->reserved2;
 		data["business_type"] = (int)trade_info->business_type;
 		data["branch_pbu"] = trade_info->branch_pbu;
 	}
@@ -121,8 +127,11 @@ void TdApi::OnQueryOrder(XTPQueryOrderRsp *order_info, XTPRI *error_info, int re
 		data["price"] = order_info->price;
 		data["quantity"] = order_info->quantity;
 		data["price_type"] = (int)order_info->price_type;
+		data["u32"] = order_info->u32;
 		data["side"] = order_info->side;
 		data["position_effect"] = order_info->position_effect;
+		data["reserved1"] = order_info->reserved1;
+		data["reserved2"] = order_info->reserved2;
 		data["business_type"] = (int)order_info->business_type;
 		data["qty_traded"] = order_info->qty_traded;
 		data["qty_left"] = order_info->qty_left;
@@ -159,8 +168,11 @@ void TdApi::OnQueryOrderByPage(XTPQueryOrderRsp *order_info, int64_t req_count, 
 		data["price"] = order_info->price;
 		data["quantity"] = order_info->quantity;
 		data["price_type"] = (int)order_info->price_type;
+		data["u32"] = order_info->u32;
 		data["side"] = order_info->side;
 		data["position_effect"] = order_info->position_effect;
+		data["reserved1"] = order_info->reserved1;
+		data["reserved2"] = order_info->reserved2;
 		data["business_type"] = (int)order_info->business_type;
 		data["qty_traded"] = order_info->qty_traded;
 		data["qty_left"] = order_info->qty_left;
@@ -195,8 +207,11 @@ void TdApi::OnQueryTrade(XTPQueryTradeRsp *trade_info, XTPRI *error_info, int re
 		data["report_index"] = trade_info->report_index;
 		data["order_exch_id"] = trade_info->order_exch_id;
 		data["trade_type"] = trade_info->trade_type;
+		data["u32"] = trade_info->u32;
 		data["side"] = trade_info->side;
 		data["position_effect"] = trade_info->position_effect;
+		data["reserved1"] = trade_info->reserved1;
+		data["reserved2"] = trade_info->reserved2;
 		data["business_type"] = (int)trade_info->business_type;
 		data["branch_pbu"] = trade_info->branch_pbu;
 	}
@@ -228,8 +243,11 @@ void TdApi::OnQueryTradeByPage(XTPQueryTradeRsp *trade_info, int64_t req_count, 
 		data["report_index"] = trade_info->report_index;
 		data["order_exch_id"] = trade_info->order_exch_id;
 		data["trade_type"] = trade_info->trade_type;
+		data["u32"] = trade_info->u32;
 		data["side"] = trade_info->side;
 		data["position_effect"] = trade_info->position_effect;
+		data["reserved1"] = trade_info->reserved1;
+		data["reserved2"] = trade_info->reserved2;
 		data["business_type"] = (int)trade_info->business_type;
 		data["branch_pbu"] = trade_info->branch_pbu;
 	}
@@ -584,11 +602,7 @@ void TdApi::OnQueryCreditCashRepayInfo(XTPCrdCashRepayInfo *cash_repay_info, XTP
 		data["request_amount"] = cash_repay_info->request_amount;
 		data["cash_repay_amount"] = cash_repay_info->cash_repay_amount;
 		data["position_effect"] = cash_repay_info->position_effect;
-
-		dict error_info;
-		error_info["error_id"] = cash_repay_info->error_info.error_id;
-		error_info["error_msg"] = cash_repay_info->error_info.error_msg;
-		data["error_info"] = error_info;
+		data["error_info"] = cash_repay_info->error_info;
 	}
 	dict error;
 	if (error_info)
@@ -1035,6 +1049,7 @@ void TdApi::OnQueryOptionCombinedPosition(XTPQueryOptCombPositionRsp *position_i
 		data["total_qty"] = position_info->total_qty;
 		data["available_qty"] = position_info->available_qty;
 		data["yesterday_position"] = position_info->yesterday_position;
+		data["opt_comb_info"] = position_info->opt_comb_info;
 		data["reserved"] = position_info->reserved;
 	}
 	dict error;
@@ -1056,6 +1071,7 @@ void TdApi::OnQueryOptionCombinedStrategyInfo(XTPQueryCombineStrategyInfoRsp *st
 		data["strategy_name"] = strategy_info->strategy_name;
 		data["market"] = (int)strategy_info->market;
 		data["leg_num"] = strategy_info->leg_num;
+		data["leg_strategy"] = strategy_info->leg_strategy;
 		data["expire_date_type"] = (int)strategy_info->expire_date_type;
 		data["underlying_type"] = (int)strategy_info->underlying_type;
 		data["auto_sep_type"] = (int)strategy_info->auto_sep_type;
@@ -1163,13 +1179,13 @@ dict TdApi::getApiLastError()
 	return error;
 };
 
-int TdApi::getClientIDByXTPID(long long order_xtp_id)
+int TdApi::getClientIDByXTPID(uint64_t order_xtp_id)
 {
 	int i = this->api->GetClientIDByXTPID(order_xtp_id);
 	return i;
 };
 
-string TdApi::getAccountByXTPID(long long order_xtp_id)
+string TdApi::getAccountByXTPID(uint64_t order_xtp_id)
 {
 	string account = this->api->GetAccountByXTPID(order_xtp_id);
 	return account;
@@ -1195,40 +1211,66 @@ void TdApi::setHeartBeatInterval(int interval)
 	this->api->SetHeartBeatInterval(interval);
 }
 
-long long TdApi::login(string ip, int port, string user, string password, int sock_type)
+uint64_t TdApi::login(string ip, int port, string user, string password, int sock_type)
 {
-	long long i = this->api->Login(ip.c_str(), port, user.c_str(), password.c_str(), (XTP_PROTOCOL_TYPE)sock_type);
+	uint64_t i = this->api->Login(ip.c_str(), port, user.c_str(), password.c_str(), (XTP_PROTOCOL_TYPE)sock_type);
 	return i;
 };
 
-int TdApi::logout(long long session_id)
+int TdApi::logout(uint64_t session_id)
 {
 	int i = this->api->Logout(session_id);
 	return i;
 };
 
-long long TdApi::insertOrder(const dict &req, long long session_id)
+bool TdApi::isServerRestart(uint64_t session_id)
 {
-	XTPOrderInsertInfo myreq = XTPOrderInsertInfo();
+	return this->api->IsServerRestart(session_id);
+};
+
+int TdApi::modifyUserTerminalInfo(const dict &req, uint64_t session_id)
+{
+	XTPUserTerminalInfoReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	myreq.order_xtp_id = getIntValue(req, "order_xtp_id");
-	myreq.order_client_id = getIntValue(req, "order_client_id");
+
+	getString(req, "local_ip", myreq.local_ip);
+	getString(req, "mac_addr", myreq.mac_addr);
+	getString(req, "hd", myreq.hd);
+	getString(req, "internet_ip", myreq.internet_ip);
+	getInt32_t(req, "internet_port", &myreq.internet_port);
+	getString(req, "client_version", myreq.client_version);
+	getString(req, "macos_sno", myreq.macos_sno);
+	getString(req, "unused", myreq.unused);
+	myreq.term_type = (XTPTerminalType)getIntValue(req, "term_type");
+
+	return this->api->ModifyUserTerminalInfo(&myreq, session_id);
+};
+
+uint64_t TdApi::insertOrder(const dict &req, uint64_t session_id)
+{
+	XTPOrderInsertInfo myreq;
+	memset(&myreq, 0, sizeof(myreq));
+
+	getUint64_t(req, "order_xtp_id", &myreq.order_xtp_id);
+	getUint32_t(req, "order_client_id", &myreq.order_client_id);
 	getString(req, "ticker", myreq.ticker);
-	myreq.market = (XTP_MARKET_TYPE)getIntValue(req, "market");
 	getDouble(req, "price", &myreq.price);
 	getDouble(req, "stop_price", &myreq.stop_price);
-	myreq.quantity = getIntValue(req, "quantity");
+	getInt64_t(req, "quantity", &myreq.quantity);
+	
+	myreq.market = (XTP_MARKET_TYPE)getIntValue(req, "market");
 	myreq.price_type = (XTP_PRICE_TYPE)getIntValue(req, "price_type");
-	myreq.side = getIntValue(req, "side");
-	myreq.position_effect = getIntValue(req, "position_effect");
+	myreq.side = (XTP_SIDE_TYPE)getIntValue(req, "side");
+	myreq.position_effect = (XTP_POSITION_EFFECT_TYPE)getIntValue(req, "position_effect");
 	myreq.business_type = (XTP_BUSINESS_TYPE)getIntValue(req, "business_type");
-	long long i = this->api->InsertOrder(&myreq, session_id);
+
+	uint64_t i = this->api->InsertOrder(&myreq, session_id);
 	return i;
 };
 
-long long TdApi::cancelOrder(long long order_xtp_id, long long session_id)
+uint64_t TdApi::cancelOrder(uint64_t order_xtp_id, uint64_t session_id)
 {
-	long long i = this->api->CancelOrder(order_xtp_id, session_id);
+	uint64_t i = this->api->CancelOrder(order_xtp_id, session_id);
 	return i;
 }
 
@@ -1243,8 +1285,8 @@ int TdApi::queryOrders(const dict &req, uint64_t session_id, int request_id)
 	XTPQueryOrderReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
 	getString(req, "ticker", myreq.ticker);
-	getInt(req, "begin_time", &myreq.begin_time);
-	getInt(req, "end_time", &myreq.end_time);
+	getInt64_t(req, "begin_time", &myreq.begin_time);
+	getInt64_t(req, "end_time", &myreq.end_time);
 	int i = this->api->QueryOrders(&myreq, session_id, request_id);
 	return i;
 };
@@ -1259,9 +1301,9 @@ int TdApi::queryOrdersByPage(const dict &req, uint64_t session_id, int request_i
 {
 	XTPQueryOrderByPageReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	getInt(req, "req_count", &myreq.req_count);
-	getInt(req, "reference", &myreq.reference);
-	getInt(req, "reserved", &myreq.reserved);
+	getInt64_t(req, "req_count", &myreq.req_count);
+	getInt64_t(req, "reference", &myreq.reference);
+	getInt64_t(req, "reserved", &myreq.reserved);
 	int i = this->api->QueryOrdersByPage(&myreq, session_id, request_id);
 	return i;
 };
@@ -1277,8 +1319,8 @@ int TdApi::queryTrades(const dict &req, uint64_t session_id, int request_id)
 	XTPQueryTraderReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
 	getString(req, "ticker", myreq.ticker);
-	getInt(req, "begin_time", &myreq.begin_time);
-	getInt(req, "end_time", &myreq.end_time);
+	getInt64_t(req, "begin_time", &myreq.begin_time);
+	getInt64_t(req, "end_time", &myreq.end_time);
 	int i = this->api->QueryTrades(&myreq, session_id, request_id);
 	return i;
 };
@@ -1287,16 +1329,16 @@ int TdApi::queryTradesByPage(const dict &req, uint64_t session_id, int request_i
 {
 	XTPQueryTraderByPageReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	getInt(req, "req_count", &myreq.req_count);
-	getInt(req, "reference", &myreq.reference);
-	getInt(req, "reserved", &myreq.reserved);
+	getInt64_t(req, "req_count", &myreq.req_count);
+	getInt64_t(req, "reference", &myreq.reference);
+	getInt64_t(req, "reserved", &myreq.reserved);
 	int i = this->api->QueryTradesByPage(&myreq, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryPosition(char ticker, uint64_t session_id, int request_id, = XTP_MKT_INIT)
+int TdApi::queryPosition(string ticker, uint64_t session_id, int request_id)
 {
-	int i = this->api->QueryPosition(ticker, session_id, request_id, XTP_MKT_INIT);
+	int i = this->api->QueryPosition(ticker.c_str(), session_id, request_id, XTP_MKT_INIT);
 	return i;
 };
 
@@ -1310,7 +1352,7 @@ int TdApi::queryStructuredFund(const dict &req, uint64_t session_id, int request
 {
 	XTPQueryStructuredFundInfoReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	getEnum(req, "exchange_id", &myreq.exchange_id);
+	myreq.exchange_id = (XTP_EXCHANGE_TYPE)getIntValue(req, "exchange_id");
 	getString(req, "sf_ticker", myreq.sf_ticker);
 	int i = this->api->QueryStructuredFund(&myreq, session_id, request_id);
 	return i;
@@ -1320,7 +1362,7 @@ int TdApi::queryFundTransfer(const dict &req, uint64_t session_id, int request_i
 {
 	XTPQueryFundTransferLogReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	getInt(req, "serial_id", &myreq.serial_id);
+	getUint64_t(req, "serial_id", &myreq.serial_id);
 	int i = this->api->QueryFundTransfer(&myreq, session_id, request_id);
 	return i;
 };
@@ -1329,7 +1371,7 @@ int TdApi::queryETF(const dict &req, uint64_t session_id, int request_id)
 {
 	XTPQueryETFBaseReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	getEnum(req, "market", &myreq.market);
+	myreq.market = (XTP_MARKET_TYPE)getIntValue(req, "market");
 	getString(req, "ticker", myreq.ticker);
 	int i = this->api->QueryETF(&myreq, session_id, request_id);
 	return i;
@@ -1339,7 +1381,7 @@ int TdApi::queryETFTickerBasket(const dict &req, uint64_t session_id, int reques
 {
 	XTPQueryETFComponentReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	getEnum(req, "market", &myreq.market);
+	myreq.market = (XTP_MARKET_TYPE)getIntValue(req, "market");
 	getString(req, "ticker", myreq.ticker);
 	int i = this->api->QueryETFTickerBasket(&myreq, session_id, request_id);
 	return i;
@@ -1361,7 +1403,7 @@ int TdApi::queryOptionAuctionInfo(const dict &req, uint64_t session_id, int requ
 {
 	XTPQueryOptionAuctionInfoReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	getEnum(req, "market", &myreq.market);
+	myreq.market = (XTP_MARKET_TYPE)getIntValue(req, "market");
 	getString(req, "ticker", myreq.ticker);
 	int i = this->api->QueryOptionAuctionInfo(&myreq, session_id, request_id);
 	return i;
@@ -1389,7 +1431,7 @@ int TdApi::queryCreditTickerDebtInfo(const dict &req, uint64_t session_id, int r
 {
 	XTPClientQueryCrdDebtStockReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	getEnum(req, "market", &myreq.market);
+	myreq.market = (XTP_MARKET_TYPE)getIntValue(req, "market");
 	getString(req, "ticker", myreq.ticker);
 	int i = this->api->QueryCreditTickerDebtInfo(&myreq, session_id, request_id);
 	return i;
@@ -1405,7 +1447,7 @@ int TdApi::queryCreditTickerAssignInfo(const dict &req, uint64_t session_id, int
 {
 	XTPClientQueryCrdPositionStockReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	getEnum(req, "market", &myreq.market);
+	myreq.market = (XTP_MARKET_TYPE)getIntValue(req, "market");
 	getString(req, "ticker", myreq.ticker);
 	int i = this->api->QueryCreditTickerAssignInfo(&myreq, session_id, request_id);
 	return i;
@@ -1415,7 +1457,7 @@ int TdApi::queryCreditExcessStock(const dict &req, uint64_t session_id, int requ
 {
 	XTPClientQueryCrdSurplusStkReqInfo myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	getEnum(req, "market", &myreq.market);
+	myreq.market = (XTP_MARKET_TYPE)getIntValue(req, "market");
 	getString(req, "ticker", myreq.ticker);
 	int i = this->api->QueryCreditExcessStock(&myreq, session_id, request_id);
 	return i;
@@ -1425,7 +1467,7 @@ int TdApi::queryMulCreditExcessStock(const dict &req, uint64_t session_id, int r
 {
 	XTPClientQueryCrdSurplusStkReqInfo myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	getEnum(req, "market", &myreq.market);
+	myreq.market = (XTP_MARKET_TYPE)getIntValue(req, "market");
 	getString(req, "ticker", myreq.ticker);
 	int i = this->api->QueryMulCreditExcessStock(&myreq, session_id, request_id);
 	return i;
@@ -1447,7 +1489,7 @@ int TdApi::queryCreditPositionExtraInfo(const dict &req, uint64_t session_id, in
 {
 	XTPClientQueryCrdPositionStockReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	getEnum(req, "market", &myreq.market);
+	myreq.market = (XTP_MARKET_TYPE)getIntValue(req, "market");
 	getString(req, "ticker", myreq.ticker);
 	int i = this->api->QueryCreditPositionExtraInfo(&myreq, session_id, request_id);
 	return i;
@@ -1470,8 +1512,8 @@ int TdApi::queryOptionCombinedOrders(const dict &req, uint64_t session_id, int r
 	XTPQueryOptCombOrderReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
 	getString(req, "comb_num", myreq.comb_num);
-	getInt(req, "begin_time", &myreq.begin_time);
-	getInt(req, "end_time", &myreq.end_time);
+	getInt64_t(req, "begin_time", &myreq.begin_time);
+	getInt64_t(req, "end_time", &myreq.end_time);
 	int i = this->api->QueryOptionCombinedOrders(&myreq, session_id, request_id);
 	return i;
 };
@@ -1480,9 +1522,9 @@ int TdApi::queryOptionCombinedOrdersByPage(const dict &req, uint64_t session_id,
 {
 	XTPQueryOptCombOrderByPageReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	getInt(req, "req_count", &myreq.req_count);
-	getInt(req, "reference", &myreq.reference);
-	getInt(req, "reserved", &myreq.reserved);
+	getInt64_t(req, "req_count", &myreq.req_count);
+	getInt64_t(req, "reference", &myreq.reference);
+	getInt64_t(req, "reserved", &myreq.reserved);
 	int i = this->api->QueryOptionCombinedOrdersByPage(&myreq, session_id, request_id);
 	return i;
 };
@@ -1498,8 +1540,8 @@ int TdApi::queryOptionCombinedTrades(const dict &req, uint64_t session_id, int r
 	XTPQueryOptCombTraderReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
 	getString(req, "comb_num", myreq.comb_num);
-	getInt(req, "begin_time", &myreq.begin_time);
-	getInt(req, "end_time", &myreq.end_time);
+	getInt64_t(req, "begin_time", &myreq.begin_time);
+	getInt64_t(req, "end_time", &myreq.end_time);
 	int i = this->api->QueryOptionCombinedTrades(&myreq, session_id, request_id);
 	return i;
 };
@@ -1508,9 +1550,9 @@ int TdApi::queryOptionCombinedTradesByPage(const dict &req, uint64_t session_id,
 {
 	XTPQueryOptCombTraderByPageReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	getInt(req, "req_count", &myreq.req_count);
-	getInt(req, "reference", &myreq.reference);
-	getInt(req, "reserved", &myreq.reserved);
+	getInt64_t(req, "req_count", &myreq.req_count);
+	getInt64_t(req, "reference", &myreq.reference);
+	getInt64_t(req, "reserved", &myreq.reserved);
 	int i = this->api->QueryOptionCombinedTradesByPage(&myreq, session_id, request_id);
 	return i;
 };
@@ -1520,7 +1562,7 @@ int TdApi::queryOptionCombinedPosition(const dict &req, uint64_t session_id, int
 	XTPQueryOptCombPositionReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
 	getString(req, "comb_num", myreq.comb_num);
-	getEnum(req, "market", &myreq.market);
+	myreq.market = (XTP_MARKET_TYPE)getIntValue(req, "market");
 	int i = this->api->QueryOptionCombinedPosition(&myreq, session_id, request_id);
 	return i;
 };
@@ -1535,14 +1577,12 @@ int TdApi::queryOptionCombinedExecPosition(const dict &req, uint64_t session_id,
 {
 	XTPQueryOptCombExecPosReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	getEnum(req, "market", &myreq.market);
+	myreq.market = (XTP_MARKET_TYPE)getIntValue(req, "market");
 	getString(req, "cntrt_code_1", myreq.cntrt_code_1);
 	getString(req, "cntrt_code_2", myreq.cntrt_code_2);
 	int i = this->api->QueryOptionCombinedExecPosition(&myreq, session_id, request_id);
 	return i;
 };
-
-
 
 
 ///-------------------------------------------------------------------------------------
@@ -2092,6 +2132,8 @@ PYBIND11_MODULE(vnxtptd, m)
 		.def("setHeartBeatInterval", &TdApi::setHeartBeatInterval)
 		.def("login", &TdApi::login)
 		.def("logout", &TdApi::logout)
+		.def("isServerRestart", &TdApi::isServerRestart)
+		.def("modifyUserTerminalInfo", &TdApi::modifyUserTerminalInfo)
 		.def("insertOrder", &TdApi::insertOrder)
 		.def("cancelOrder", &TdApi::cancelOrder)
 

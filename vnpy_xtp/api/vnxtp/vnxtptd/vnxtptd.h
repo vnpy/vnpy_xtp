@@ -511,9 +511,9 @@ public:
 
 	dict getApiLastError();
 
-	int getClientIDByXTPID(long long order_xtp_id);
+	int getClientIDByXTPID(uint64_t order_xtp_id);
 
-	string getAccountByXTPID(long long order_xtp_id);
+	string getAccountByXTPID(uint64_t order_xtp_id);
 
 	void subscribePublicTopic(int resume_type);
 
@@ -523,13 +523,17 @@ public:
 
 	void setHeartBeatInterval(int interval);
 
-	long long login(string ip, int port, string user, string password, int sock_type);
+	uint64_t login(string ip, int port, string user, string password, int sock_type);
 
-	int logout(long long session_id);
+	int logout(uint64_t session_id);
 
-	long long insertOrder(const dict &req, long long session_id);
+	bool isServerRestart(uint64_t session_id);
 
-	long long cancelOrder(long long order_xtp_id, long long session_id);
+	int modifyUserTerminalInfo(const dict &req, uint64_t session_id);
+
+	uint64_t insertOrder(const dict &req, uint64_t session_id);
+
+	uint64_t cancelOrder(uint64_t order_xtp_id, uint64_t session_id);
 
 	int queryOrderByXTPID(uint64_t order_xtp_id, uint64_t session_id, int request_id);
 
@@ -545,7 +549,7 @@ public:
 
 	int queryTradesByPage(const dict &req, uint64_t session_id, int request_id);
 
-	int queryPosition(char ticker, uint64_t session_id, int request_id);
+	int queryPosition(string ticker, uint64_t session_id, int request_id);
 
 	int queryAsset(uint64_t session_id, int request_id);
 

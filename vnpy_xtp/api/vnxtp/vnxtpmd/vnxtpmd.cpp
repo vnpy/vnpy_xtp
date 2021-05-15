@@ -90,7 +90,9 @@ void MdApi::OnDepthMarketData(XTPMD *market_data, int64_t bid1_qty[], int32_t bi
 		data["avg_price"] = market_data->avg_price;
 		data["trades_count"] = market_data->trades_count;
 		data["ticker_status"] = market_data->ticker_status;
-		data["data_type"] = (int)market_data->data_type;
+		data["stk"] = market_data->stk;
+		data["opt"] = market_data->opt;
+		data["data_type"] = market_data->data_type;
 		data["r4"] = market_data->r4;
 
 		//Solve UDP protocol error text
@@ -222,6 +224,8 @@ void MdApi::OnTickByTick(XTPTBT *tbt_data)
 		data["seq"] = tbt_data->seq;
 		data["data_time"] = tbt_data->data_time;
 		data["type"] = (int)tbt_data->type;
+		data["entrust"] = tbt_data->entrust;
+		data["trade"] = tbt_data->trade;
 	}
 	this->onTickByTick(data);
 };
@@ -624,10 +628,8 @@ int MdApi::logout()
 
 int MdApi::queryAllTickers(int exchange_id)
 {
-
 	int i = this->api->QueryAllTickers((XTP_EXCHANGE_TYPE)exchange_id);
 	return i;
-
 };
 
 int MdApi::queryTickersPriceInfo(string ticker, int count, int exchange_id)
@@ -642,7 +644,6 @@ int MdApi::queryAllTickersPriceInfo()
 {
 	int i = this->api->QueryAllTickersPriceInfo();
 	return i;
-
 };
 
 int MdApi::queryAllTickersFullInfo(int exchange_id)
@@ -650,6 +651,8 @@ int MdApi::queryAllTickersFullInfo(int exchange_id)
 	int i = this->api->QueryAllTickersFullInfo((XTP_EXCHANGE_TYPE)exchange_id);
 	return i;
 };
+
+
 
 
 ///-------------------------------------------------------------------------------------
@@ -660,6 +663,7 @@ class PyMdApi : public MdApi
 {
 public:
 	using MdApi::MdApi;
+
 	void onDisconnected(int reason) override
 	{
 		try

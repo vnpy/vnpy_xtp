@@ -247,7 +247,8 @@ class ApiGenerator:
 
                         for struct_field, struct_type in struct_fields.items():
                             func_name = f"get{struct_type.capitalize()}"
-                            if struct_type == "string":
+                            if struct_type == "char":
+                                func_name = "getString"
                                 line = f'\t{func_name}(req, "{struct_field}", myreq.{struct_field});\n'
                             else:
                                 line = f'\t{func_name}(req, "{struct_field}", &myreq.{struct_field});\n'

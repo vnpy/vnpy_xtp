@@ -8,7 +8,7 @@ int TdApi::queryOrders(const dict &req, uint64_t session_id, int request_id)
 {
 	XTPQueryOrderReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	getChar(req, "ticker", &myreq.ticker);
+	getString(req, "ticker", myreq.ticker);
 	getInt64_t(req, "begin_time", &myreq.begin_time);
 	getInt64_t(req, "end_time", &myreq.end_time);
 	int i = this->api->QueryOrders(&myreq, session_id, request_id);
@@ -42,7 +42,7 @@ int TdApi::queryTrades(const dict &req, uint64_t session_id, int request_id)
 {
 	XTPQueryTraderReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	getChar(req, "ticker", &myreq.ticker);
+	getString(req, "ticker", myreq.ticker);
 	getInt64_t(req, "begin_time", &myreq.begin_time);
 	getInt64_t(req, "end_time", &myreq.end_time);
 	int i = this->api->QueryTrades(&myreq, session_id, request_id);
@@ -77,7 +77,7 @@ int TdApi::queryStructuredFund(const dict &req, uint64_t session_id, int request
 	XTPQueryStructuredFundInfoReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
 	getEnum(req, "exchange_id", &myreq.exchange_id);
-	getChar(req, "sf_ticker", &myreq.sf_ticker);
+	getString(req, "sf_ticker", myreq.sf_ticker);
 	int i = this->api->QueryStructuredFund(&myreq, session_id, request_id);
 	return i;
 };
@@ -96,7 +96,7 @@ int TdApi::queryETF(const dict &req, uint64_t session_id, int request_id)
 	XTPQueryETFBaseReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
 	getEnum(req, "market", &myreq.market);
-	getChar(req, "ticker", &myreq.ticker);
+	getString(req, "ticker", myreq.ticker);
 	int i = this->api->QueryETF(&myreq, session_id, request_id);
 	return i;
 };
@@ -106,7 +106,7 @@ int TdApi::queryETFTickerBasket(const dict &req, uint64_t session_id, int reques
 	XTPQueryETFComponentReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
 	getEnum(req, "market", &myreq.market);
-	getChar(req, "ticker", &myreq.ticker);
+	getString(req, "ticker", myreq.ticker);
 	int i = this->api->QueryETFTickerBasket(&myreq, session_id, request_id);
 	return i;
 };
@@ -128,7 +128,7 @@ int TdApi::queryOptionAuctionInfo(const dict &req, uint64_t session_id, int requ
 	XTPQueryOptionAuctionInfoReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
 	getEnum(req, "market", &myreq.market);
-	getChar(req, "ticker", &myreq.ticker);
+	getString(req, "ticker", myreq.ticker);
 	int i = this->api->QueryOptionAuctionInfo(&myreq, session_id, request_id);
 	return i;
 };
@@ -156,7 +156,7 @@ int TdApi::queryCreditTickerDebtInfo(const dict &req, uint64_t session_id, int r
 	XTPClientQueryCrdDebtStockReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
 	getEnum(req, "market", &myreq.market);
-	getChar(req, "ticker", &myreq.ticker);
+	getString(req, "ticker", myreq.ticker);
 	int i = this->api->QueryCreditTickerDebtInfo(&myreq, session_id, request_id);
 	return i;
 };
@@ -172,7 +172,7 @@ int TdApi::queryCreditTickerAssignInfo(const dict &req, uint64_t session_id, int
 	XTPClientQueryCrdPositionStockReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
 	getEnum(req, "market", &myreq.market);
-	getChar(req, "ticker", &myreq.ticker);
+	getString(req, "ticker", myreq.ticker);
 	int i = this->api->QueryCreditTickerAssignInfo(&myreq, session_id, request_id);
 	return i;
 };
@@ -182,7 +182,7 @@ int TdApi::queryCreditExcessStock(const dict &req, uint64_t session_id, int requ
 	XTPClientQueryCrdSurplusStkReqInfo myreq;
 	memset(&myreq, 0, sizeof(myreq));
 	getEnum(req, "market", &myreq.market);
-	getChar(req, "ticker", &myreq.ticker);
+	getString(req, "ticker", myreq.ticker);
 	int i = this->api->QueryCreditExcessStock(&myreq, session_id, request_id);
 	return i;
 };
@@ -192,7 +192,7 @@ int TdApi::queryMulCreditExcessStock(const dict &req, uint64_t session_id, int r
 	XTPClientQueryCrdSurplusStkReqInfo myreq;
 	memset(&myreq, 0, sizeof(myreq));
 	getEnum(req, "market", &myreq.market);
-	getChar(req, "ticker", &myreq.ticker);
+	getString(req, "ticker", myreq.ticker);
 	int i = this->api->QueryMulCreditExcessStock(&myreq, session_id, request_id);
 	return i;
 };
@@ -214,7 +214,7 @@ int TdApi::queryCreditPositionExtraInfo(const dict &req, uint64_t session_id, in
 	XTPClientQueryCrdPositionStockReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
 	getEnum(req, "market", &myreq.market);
-	getChar(req, "ticker", &myreq.ticker);
+	getString(req, "ticker", myreq.ticker);
 	int i = this->api->QueryCreditPositionExtraInfo(&myreq, session_id, request_id);
 	return i;
 };
@@ -235,7 +235,7 @@ int TdApi::queryOptionCombinedOrders(const dict &req, uint64_t session_id, int r
 {
 	XTPQueryOptCombOrderReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	getChar(req, "comb_num", &myreq.comb_num);
+	getString(req, "comb_num", myreq.comb_num);
 	getInt64_t(req, "begin_time", &myreq.begin_time);
 	getInt64_t(req, "end_time", &myreq.end_time);
 	int i = this->api->QueryOptionCombinedOrders(&myreq, session_id, request_id);
@@ -263,7 +263,7 @@ int TdApi::queryOptionCombinedTrades(const dict &req, uint64_t session_id, int r
 {
 	XTPQueryOptCombTraderReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	getChar(req, "comb_num", &myreq.comb_num);
+	getString(req, "comb_num", myreq.comb_num);
 	getInt64_t(req, "begin_time", &myreq.begin_time);
 	getInt64_t(req, "end_time", &myreq.end_time);
 	int i = this->api->QueryOptionCombinedTrades(&myreq, session_id, request_id);
@@ -285,7 +285,7 @@ int TdApi::queryOptionCombinedPosition(const dict &req, uint64_t session_id, int
 {
 	XTPQueryOptCombPositionReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
-	getChar(req, "comb_num", &myreq.comb_num);
+	getString(req, "comb_num", myreq.comb_num);
 	getEnum(req, "market", &myreq.market);
 	int i = this->api->QueryOptionCombinedPosition(&myreq, session_id, request_id);
 	return i;
@@ -302,8 +302,8 @@ int TdApi::queryOptionCombinedExecPosition(const dict &req, uint64_t session_id,
 	XTPQueryOptCombExecPosReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
 	getEnum(req, "market", &myreq.market);
-	getChar(req, "cntrt_code_1", &myreq.cntrt_code_1);
-	getChar(req, "cntrt_code_2", &myreq.cntrt_code_2);
+	getString(req, "cntrt_code_1", myreq.cntrt_code_1);
+	getString(req, "cntrt_code_2", myreq.cntrt_code_2);
 	int i = this->api->QueryOptionCombinedExecPosition(&myreq, session_id, request_id);
 	return i;
 };

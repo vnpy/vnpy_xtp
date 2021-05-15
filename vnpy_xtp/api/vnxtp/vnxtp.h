@@ -84,11 +84,47 @@ void getInt(const dict &d, const char *key, int *value)
     }
 };
 
-int getIntValue(const dict &d, const char *key)
+void getInt64_t(const dict &d, const char *key, int64_t *value)
 {
 	if (d.contains(key))
 	{
 		object o = d[key];
+		*value = o.cast<int64_t>();
+	}
+};
+
+void getUint64_t(const dict &d, const char *key, uint64_t *value)
+{
+	if (d.contains(key))
+	{
+		object o = d[key];
+		*value = o.cast<uint64_t>();
+	}
+};
+
+void getUint32_t(const dict &d, const char *key, uint32_t *value)
+{
+	if (d.contains(key))
+	{
+		object o = d[key];
+		*value = o.cast<uint32_t>();
+	}
+};
+
+void getInt32_t(const dict &d, const char *key, int32_t *value)
+{
+	if (d.contains(key))
+	{
+		object o = d[key];
+		*value = o.cast<int32_t>();
+	}
+};
+
+int getIntValue(const dict &d, const char *key)
+{
+	if (d.contains(key))		//检查字典中是否存在该键值
+	{
+		object o = d[key];		//获取该键值
 		return o.cast<int>();
 	}
 	else
@@ -96,8 +132,6 @@ int getIntValue(const dict &d, const char *key)
 		return 0;
 	}
 };
-
-
 
 //从字典中获取某个建值对应的浮点数，并赋值到请求结构体对象的值上
 void getDouble(const dict &d, const char *key, double *value)
