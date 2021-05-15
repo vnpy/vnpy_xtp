@@ -224,8 +224,33 @@ void MdApi::OnTickByTick(XTPTBT *tbt_data)
 		data["seq"] = tbt_data->seq;
 		data["data_time"] = tbt_data->data_time;
 		data["type"] = (int)tbt_data->type;
-		data["entrust"] = tbt_data->entrust;
-		data["trade"] = tbt_data->trade;
+
+		dict entrust;
+		dict trade;
+
+		if (tbt_data->type == XTP_TBT_ENTRUST)
+		{
+			entrust["channel_no"] = tbt_data->entrust.channel_no;
+			entrust["seq"] = tbt_data->entrust.seq;
+			entrust["price"] = tbt_data->entrust.price;
+			entrust["qty"] = tbt_data->entrust.qty;
+			entrust["side"] = tbt_data->entrust.side;
+			entrust["ord_type"] = tbt_data->entrust.ord_type;
+		}
+		else
+		{
+			trade["channel_no"] = tbt_data->trade.channel_no;
+			trade["seq"] = tbt_data->trade.seq;
+			trade["price"] = tbt_data->trade.price;
+			trade["qty"] = tbt_data->trade.qty;
+			trade["money"] = tbt_data->trade.money;
+			trade["bid_no"] = tbt_data->trade.bid_no;
+			trade["ask_no"] = tbt_data->trade.ask_no;
+			trade["trade_flag"] = tbt_data->trade.trade_flag;
+		}
+
+		data["entrust"] = entrust;
+		data["trade"] = trade;
 	}
 	this->onTickByTick(data);
 };

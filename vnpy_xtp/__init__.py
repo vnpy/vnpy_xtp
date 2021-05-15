@@ -25,7 +25,6 @@ try:
 except ImportError:
     pass
 
-
 import importlib_metadata
 
 
