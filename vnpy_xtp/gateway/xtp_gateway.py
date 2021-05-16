@@ -784,7 +784,7 @@ class XtpTdApi(TdApi):
             return ""
 
         if self.margin_trading and req.offset == Offset.NONE:
-            self.gateway.write_log(f"委托失败，两融交易需要选择开平方向")
+            self.gateway.write_log("委托失败，两融交易需要选择开平方向")
             return ""
 
         # 期权委托

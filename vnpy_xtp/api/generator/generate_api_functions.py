@@ -1,6 +1,7 @@
 """"""
 import importlib
-from typing import Dict, List
+from typing import Dict
+
 
 class ApiGenerator:
     """API生成器"""""
@@ -179,7 +180,7 @@ class ApiGenerator:
                         f.write("\tdict error;\n")
                         f.write(f"\tif ({pname})\n")
                         f.write("\t{\n")
-                        
+
                         struct_fields = self.structs[ptype]
                         for struct_field, struct_type in struct_fields.items():
                             f.write(
@@ -284,7 +285,6 @@ class ApiGenerator:
                         args.append(f"{ptype} {pname}")
                         bind_args.append(pname)
 
-
                 args_str = ", ".join(args)
                 bind_args_str = ", ".join(bind_args)
 
@@ -296,7 +296,7 @@ class ApiGenerator:
                 f.write("\t}\n")
                 f.write("\tcatch (const error_already_set &e)\n")
                 f.write("\t{\n")
-                f.write(f"\t\tcout << e.what() << endl;\n")
+                f.write("\t\tcout << e.what() << endl;\n")
                 f.write("\t}\n")
                 f.write("};\n\n")
 

@@ -40,7 +40,6 @@ class StructGenerator:
         if line.startswith("///") or line.startswith("#"):
             return
 
-        #print(line)
         line = line.replace("\t", "    ")
         line = line.replace("\n", "")
 
@@ -80,13 +79,13 @@ class StructGenerator:
             line = line[:line.index(";")]
             content = line.split(" ")
             content = [c for c in content if c]
-            
+
             ptype = content[0]
             ptype = self.typedef.get(ptype, ptype)
             pname = content[1]
             if "[" in pname:
                 pname = pname[:pname.index("[")]
-            
+
             new_line = f'\t"{pname}": "{ptype}",\n'
             self.f_py.write(new_line)
 
