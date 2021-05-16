@@ -3,7 +3,6 @@ from typing import Any, Dict, List
 from datetime import datetime
 from copy import copy
 
-from vnpy.api.xtp import MdApi, TdApi
 from vnpy.event import EventEngine
 from vnpy.trader.event import EVENT_TIMER
 from vnpy.trader.constant import (
