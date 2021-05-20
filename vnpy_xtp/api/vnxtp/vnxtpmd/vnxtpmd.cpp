@@ -66,6 +66,7 @@ void MdApi::OnDepthMarketData(XTPMD *market_data, int64_t bid1_qty[], int32_t bi
 {
 	gil_scoped_acquire acquire;
 	dict data;
+
 	if (market_data)
 	{
 		data["exchange_id"] = (int)market_data->exchange_id;
@@ -90,10 +91,11 @@ void MdApi::OnDepthMarketData(XTPMD *market_data, int64_t bid1_qty[], int32_t bi
 		data["avg_price"] = market_data->avg_price;
 		data["trades_count"] = market_data->trades_count;
 		data["ticker_status"] = market_data->ticker_status;
-		data["stk"] = market_data->stk;
-		data["opt"] = market_data->opt;
-		data["data_type"] = market_data->data_type;
 		data["r4"] = market_data->r4;
+
+		//data["stk"] = market_data->stk;
+		//data["opt"] = market_data->opt;
+		//data["data_type"] = market_data->data_type
 
 		//Solve UDP protocol error text
 		string status = market_data->ticker_status;

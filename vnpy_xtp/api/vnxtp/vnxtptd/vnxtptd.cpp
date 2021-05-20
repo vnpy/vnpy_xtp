@@ -1258,10 +1258,10 @@ uint64_t TdApi::insertOrder(const dict &req, uint64_t session_id)
 	getDouble(req, "stop_price", &myreq.stop_price);
 	getInt64_t(req, "quantity", &myreq.quantity);
 	
+	myreq.side = getIntValue(req, "side");
+	myreq.position_effect = getIntValue(req, "position_effect");
 	myreq.market = (XTP_MARKET_TYPE)getIntValue(req, "market");
 	myreq.price_type = (XTP_PRICE_TYPE)getIntValue(req, "price_type");
-	myreq.side = (XTP_SIDE_TYPE)getIntValue(req, "side");
-	myreq.position_effect = (XTP_POSITION_EFFECT_TYPE)getIntValue(req, "position_effect");
 	myreq.business_type = (XTP_BUSINESS_TYPE)getIntValue(req, "business_type");
 
 	uint64_t i = this->api->InsertOrder(&myreq, session_id);
