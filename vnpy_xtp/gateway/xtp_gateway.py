@@ -436,7 +436,6 @@ class XtpMdApi(MdApi):
         else:
             msg = f"行情服务器登录失败，原因：{n}"
             d = self.getApiLastError()
-            print(d)
 
         self.gateway.write_log(msg)
 
@@ -830,8 +829,7 @@ class XtpTdApi(TdApi):
             else:
                 xtp_req["side"] = DIRECTION_STOCK_VT2XTP.get((req.direction, Offset.NONE), "")
                 xtp_req["business_type"] = 0
-        print("fuck")
-        print(xtp_req)
+
         orderid = self.insertOrder(xtp_req, self.session_id)
         orderid = str(orderid)
 
