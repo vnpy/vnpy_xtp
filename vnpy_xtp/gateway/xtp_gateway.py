@@ -424,7 +424,8 @@ class XtpMdApi(MdApi):
             self.server_port,
             self.userid,
             self.password,
-            self.protocol
+            self.protocol,
+            ""
         )
 
         if not n:

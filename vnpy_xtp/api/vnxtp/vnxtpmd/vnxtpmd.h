@@ -307,7 +307,7 @@ public:
 
 	int unSubscribeAllTickByTick(int exchange_id);
 
-	int login(string ip, int port, string user, string password, int sock_type);
+	int login(string ip, int port, string user, string password, int sock_type, string local_ip);
 
 	int logout();
 

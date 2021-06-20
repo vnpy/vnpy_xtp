@@ -641,9 +641,20 @@ int MdApi::unSubscribeAllTickByTick(int exchange_id)
 	return i;
 };
 
-int MdApi::login(string ip, int port, string user, string password, int sock_type)
+int MdApi::login(string ip, int port, string user, string password, int sock_type, string local_ip)
 {
-	int i = this->api->Login(ip.c_str(), port, user.c_str(), password.c_str(), (XTP_PROTOCOL_TYPE)sock_type);
+	int i;
+
+	//默认不设置本地网卡地址
+	if (local_ip == "") 
+	{
+		i = this->api->Login(ip.c_str(), port, user.c_str(), password.c_str(), (XTP_PROTOCOL_TYPE)sock_type);
+	}
+	else
+	{
+		i = this->api->Login(ip.c_str(), port, user.c_str(), password.c_str(), (XTP_PROTOCOL_TYPE)sock_type, local_ip.c_str());
+	}
+	
 	return i;
 };
 
