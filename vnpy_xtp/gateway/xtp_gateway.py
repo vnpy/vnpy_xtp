@@ -117,7 +117,7 @@ PRODUCT_XTP2VT: Dict[int, Product] = {
     3: Product.BOND,
     4: Product.OPTION,
     5: Product.EQUITY,
-    6: Product.OPTION
+    6: Product.FUND
 }
 
 # 开平方向映射
