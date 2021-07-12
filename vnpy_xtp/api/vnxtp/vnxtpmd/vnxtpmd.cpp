@@ -90,7 +90,6 @@ void MdApi::OnDepthMarketData(XTPMD *market_data, int64_t bid1_qty[], int32_t bi
 		data["turnover"] = market_data->turnover;
 		data["avg_price"] = market_data->avg_price;
 		data["trades_count"] = market_data->trades_count;
-		data["ticker_status"] = market_data->ticker_status;
 		data["r4"] = market_data->r4;
 
 		//data["stk"] = market_data->stk;
