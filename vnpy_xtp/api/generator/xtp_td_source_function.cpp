@@ -91,6 +91,12 @@ int TdApi::queryFundTransfer(const dict &req, uint64_t session_id, int request_i
 	return i;
 };
 
+int TdApi::queryOtherServerFund(XTPFundQueryReq query_param, uint64_t session_id, int request_id)
+{
+	int i = this->api->QueryOtherServerFund(query_param, session_id, request_id);
+	return i;
+};
+
 int TdApi::queryETF(const dict &req, uint64_t session_id, int request_id)
 {
 	XTPQueryETFBaseReq myreq;

@@ -166,6 +166,18 @@ void onFundTransfer(const dict &data, const dict &error, uint64_t session_id) ov
 	}
 };
 
+void onQueryOtherServerFund(XTPFundQueryRsp fund_info, const dict &error, int request_id, uint64_t session_id) override
+{
+	try
+	{
+		PYBIND11_OVERLOAD(void, TdApi, onQueryOtherServerFund, fund_info, error, request_id, session_id);
+	}
+	catch (const error_already_set &e)
+	{
+		cout << e.what() << endl;
+	}
+};
+
 void onQueryETF(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) override
 {
 	try

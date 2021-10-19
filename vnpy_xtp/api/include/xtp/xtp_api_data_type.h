@@ -338,6 +338,16 @@ typedef enum XTP_FUND_TRANSFER_TYPE
 }XTP_FUND_TRANSFER_TYPE;
 
 /////////////////////////////////////////////////////////////////////////
+///@brief XTP_FUND_QUERY_TYPE是柜台资金查询类型
+/////////////////////////////////////////////////////////////////////////
+typedef enum XTP_FUND_QUERY_TYPE
+{
+	XTP_FUND_QUERY_JZ = 0,		///<查询金证主柜台可转资金
+	XTP_FUND_QUERY_INTERNAL,	///<查询一账号两中心设置时，对方节点的资金
+	XTP_FUND_QUERY_UNKNOWN		///<未知类型
+}XTP_FUND_QUERY_TYPE;
+
+/////////////////////////////////////////////////////////////////////////
 ///@brief XTP_FUND_OPER_STATUS柜台资金操作结果
 /////////////////////////////////////////////////////////////////////////
 typedef enum XTP_FUND_OPER_STATUS {
@@ -524,7 +534,7 @@ typedef char TXTPExerciseSeqType;
 /////////////////////////////////////////////////////////////////////////
 ///@brief XTP_QUALIFICATION_TYPE是一个证券适当性枚举类型
 /////////////////////////////////////////////////////////////////////////
-typedef enum XTP_QUALIFICATION_TYPE
+typedef enum  XTP_QUALIFICATION_TYPE
 {
 	XTP_QUALIFICATION_PUBLIC = 0,			///<公众投资者，合格投资者与机构投资者均可
 	XTP_QUALIFICATION_COMMON = 1,			///<仅合格投资者与公众投资者
@@ -560,6 +570,8 @@ typedef enum XTP_SECURITY_TYPE {
 	XTP_SECURITY_ETF_SINGLE_MARKET_STOCK = 14,
 	/// 跨市场股票 ETF
 	XTP_SECURITY_ETF_INTER_MARKET_STOCK,
+	// 跨境股票 ETF
+	XTP_SECURITY_ETF_CROSS_BORDER_STOCK = 16,
 	/// 本市场实物债券 ETF
 	XTP_SECURITY_ETF_SINGLE_MARKET_BOND = 17,
 	/// 黄金 ETF
@@ -585,6 +597,29 @@ typedef enum XTP_SECURITY_TYPE {
 	/// 其他
 	XTP_SECURITY_OTHERS = 255
 }XTP_SECURITY_TYPE;
+
+/////////////////////////////////////////////////////////////////////////
+///@brief XTP_POSITION_SECURITY_TYPE是一个持仓证券枚举类型
+/////////////////////////////////////////////////////////////////////////
+typedef enum  XTP_POSITION_SECURITY_TYPE
+{
+	XTP_POSITION_SECURITY_NORMAL = 0,			///<普通持仓
+	XTP_POSITION_SECURITY_PLACEMENT = 1,		///<配售类型的持仓，包含配股、配债等
+	XTP_POSITION_SECURITY_UNKNOWN = 2			///<未知类型
+}XTP_POSITION_SECURITY_TYPE;
+
+/////////////////////////////////////////////////////////////////////////
+///@brief XTP_SECURITY_STATUS是一个证券状态枚举类型
+/////////////////////////////////////////////////////////////////////////
+typedef enum  XTP_SECURITY_STATUS
+{
+	XTP_SECURITY_STATUS_ST = 0,         ///< 风险警示板
+	XTP_SECURITY_STATUS_N_IPO,          ///< 首日上市
+	XTP_SECURITY_STATUS_COMMON,         ///< 普通
+	XTP_SECURITY_STATUS_RESUME,         ///< 恢复上市
+	XTP_SECURITY_STATUS_DELISTING = 10, ///< 退市整理期
+	XTP_SECURITY_STATUS_OTHERS = 255    ///< 其他
+}XTP_SECURITY_STATUS;
 
 #pragma pack()
 

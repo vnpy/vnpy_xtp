@@ -20,6 +20,8 @@ int queryStructuredFund(const dict &req, uint64_t session_id, int request_id);
 
 int queryFundTransfer(const dict &req, uint64_t session_id, int request_id);
 
+int queryOtherServerFund(XTPFundQueryReq query_param, uint64_t session_id, int request_id);
+
 int queryETF(const dict &req, uint64_t session_id, int request_id);
 
 int queryETFTickerBasket(const dict &req, uint64_t session_id, int request_id);

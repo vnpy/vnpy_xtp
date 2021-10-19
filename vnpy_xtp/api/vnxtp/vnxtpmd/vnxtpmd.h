@@ -13,15 +13,15 @@ using namespace XTP::API;
 
 
 ///-------------------------------------------------------------------------------------
-///C++ SPIµÄ»Øµ÷º¯Êý·½·¨ÊµÏÖ
+///C++ SPIï¿½Ä»Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½
 ///-------------------------------------------------------------------------------------
 
-//APIµÄ¼Ì³ÐÊµÏÖ
+//APIï¿½Ä¼Ì³ï¿½Êµï¿½ï¿½
 class MdApi : public QuoteSpi
 {
 private:
-	QuoteApi* api;				//API¶ÔÏó
-	bool active = false;		//¹¤×÷×´Ì¬
+	QuoteApi* api;				//APIï¿½ï¿½ï¿½ï¿½
+	bool active = false;		//ï¿½ï¿½ï¿½ï¿½×´Ì¬
 
 public:
 	MdApi()
@@ -37,176 +37,176 @@ public:
 	};
 
 	//-------------------------------------------------------------------------------------
-	//API»Øµ÷º¯Êý
+	//APIï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½
 	//-------------------------------------------------------------------------------------
 
-	///µ±¿Í»§¶ËÓëÐÐÇéºóÌ¨Í¨ÐÅÁ¬½Ó¶Ï¿ªÊ±£¬¸Ã·½·¨±»µ÷ÓÃ¡£
-	///@param reason ´íÎóÔ­Òò£¬ÇëÓë´íÎó´úÂë±í¶ÔÓ¦
-	///@remark api²»»á×Ô¶¯ÖØÁ¬£¬µ±¶ÏÏß·¢ÉúÊ±£¬ÇëÓÃ»§×ÔÐÐÑ¡ÔñºóÐø²Ù×÷¡£¿ÉÒÔÔÚ´Ëº¯ÊýÖÐµ÷ÓÃLoginÖØÐÂµÇÂ¼¡£×¢ÒâÓÃ»§ÖØÐÂµÇÂ¼ºó£¬ÐèÒªÖØÐÂ¶©ÔÄÐÐÇé
+	///ï¿½ï¿½ï¿½Í»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¨Í¨ï¿½ï¿½ï¿½ï¿½ï¿½Ó¶Ï¿ï¿½Ê±ï¿½ï¿½ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¡ï¿½
+	///@param reason ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦
+	///@remark apiï¿½ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß·ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú´Ëºï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½Loginï¿½ï¿½ï¿½Âµï¿½Â¼ï¿½ï¿½×¢ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½Âµï¿½Â¼ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Â¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	virtual void OnDisconnected(int reason);
 
 
-	///´íÎóÓ¦´ð
-	///@param error_info µ±·þÎñÆ÷ÏìÓ¦·¢Éú´íÎóÊ±µÄ¾ßÌåµÄ´íÎó´úÂëºÍ´íÎóÐÅÏ¢£¬µ±error_infoÎª¿Õ£¬»òÕßerror_info.error_idÎª0Ê±£¬±íÃ÷Ã»ÓÐ´íÎó
-	///@remark ´Ëº¯ÊýÖ»ÓÐÔÚ·þÎñÆ÷·¢Éú´íÎóÊ±²Å»áµ÷ÓÃ£¬Ò»°ãÎÞÐèÓÃ»§´¦Àí
+	///ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½
+	///@param error_info ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½Ä¾ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í´ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½error_infoÎªï¿½Õ£ï¿½ï¿½ï¿½ï¿½ï¿½error_info.error_idÎª0Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð´ï¿½ï¿½ï¿½
+	///@remark ï¿½Ëºï¿½ï¿½ï¿½Ö»ï¿½ï¿½ï¿½Ú·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½Å»ï¿½ï¿½ï¿½Ã£ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½
 	virtual void OnError(XTPRI *error_info);
 
-	///¶©ÔÄÐÐÇéÓ¦´ð£¬°üÀ¨¹ÉÆ±¡¢Ö¸ÊýºÍÆÚÈ¨
-	///@param ticker ÏêÏ¸µÄºÏÔ¼¶©ÔÄÇé¿ö
-	///@param error_info ¶©ÔÄºÏÔ¼·¢Éú´íÎóÊ±µÄ´íÎóÐÅÏ¢£¬µ±error_infoÎª¿Õ£¬»òÕßerror_info.error_idÎª0Ê±£¬±íÃ÷Ã»ÓÐ´íÎó
-	///@param is_last ÊÇ·ñ´Ë´Î¶©ÔÄµÄ×îºóÒ»¸öÓ¦´ð£¬µ±Îª×îºóÒ»¸öµÄÊ±ºòÎªtrue£¬Èç¹ûÎªfalse£¬±íÊ¾»¹ÓÐÆäËûºóÐøÏûÏ¢ÏìÓ¦
-	///@remark Ã¿Ìõ¶©ÔÄµÄºÏÔ¼¾ù¶ÔÓ¦Ò»Ìõ¶©ÔÄÓ¦´ð£¬ÐèÒª¿ìËÙ·µ»Ø£¬·ñÔò»á¶ÂÈûºóÐøÏûÏ¢£¬µ±¶ÂÈûÑÏÖØÊ±£¬»á´¥·¢¶ÏÏß
+	///ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ð£¬°ï¿½ï¿½ï¿½ï¿½ï¿½Æ±ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¨
+	///@param ticker ï¿½ï¿½Ï¸ï¿½Äºï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	///@param error_info ï¿½ï¿½ï¿½Äºï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½error_infoÎªï¿½Õ£ï¿½ï¿½ï¿½ï¿½ï¿½error_info.error_idÎª0Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð´ï¿½ï¿½ï¿½
+	///@param is_last ï¿½Ç·ï¿½Ë´Î¶ï¿½ï¿½Äµï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ó¦ï¿½ð£¬µï¿½Îªï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Îªtrueï¿½ï¿½ï¿½ï¿½ï¿½Îªfalseï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¦
+	///@remark Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ÄµÄºï¿½Ô¼ï¿½ï¿½ï¿½ï¿½Ó¦Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ù·ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½á´¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	virtual void OnSubMarketData(XTPST *ticker, XTPRI *error_info, bool is_last);
 
-	///ÍË¶©ÐÐÇéÓ¦´ð£¬°üÀ¨¹ÉÆ±¡¢Ö¸ÊýºÍÆÚÈ¨
-	///@param ticker ÏêÏ¸µÄºÏÔ¼È¡Ïû¶©ÔÄÇé¿ö
-	///@param error_info È¡Ïû¶©ÔÄºÏÔ¼Ê±·¢Éú´íÎóÊ±·µ»ØµÄ´íÎóÐÅÏ¢£¬µ±error_infoÎª¿Õ£¬»òÕßerror_info.error_idÎª0Ê±£¬±íÃ÷Ã»ÓÐ´íÎó
-	///@param is_last ÊÇ·ñ´Ë´ÎÈ¡Ïû¶©ÔÄµÄ×îºóÒ»¸öÓ¦´ð£¬µ±Îª×îºóÒ»¸öµÄÊ±ºòÎªtrue£¬Èç¹ûÎªfalse£¬±íÊ¾»¹ÓÐÆäËûºóÐøÏûÏ¢ÏìÓ¦
-	///@remark Ã¿ÌõÈ¡Ïû¶©ÔÄµÄºÏÔ¼¾ù¶ÔÓ¦Ò»ÌõÈ¡Ïû¶©ÔÄÓ¦´ð£¬ÐèÒª¿ìËÙ·µ»Ø£¬·ñÔò»á¶ÂÈûºóÐøÏûÏ¢£¬µ±¶ÂÈûÑÏÖØÊ±£¬»á´¥·¢¶ÏÏß
+	///ï¿½Ë¶ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ð£¬°ï¿½ï¿½ï¿½ï¿½ï¿½Æ±ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¨
+	///@param ticker ï¿½ï¿½Ï¸ï¿½Äºï¿½Ô¼È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	///@param error_info È¡ï¿½ï¿½ï¿½ï¿½ï¿½Äºï¿½Ô¼Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ØµÄ´ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½error_infoÎªï¿½Õ£ï¿½ï¿½ï¿½ï¿½ï¿½error_info.error_idÎª0Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð´ï¿½ï¿½ï¿½
+	///@param is_last ï¿½Ç·ï¿½Ë´ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Äµï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ó¦ï¿½ð£¬µï¿½Îªï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Îªtrueï¿½ï¿½ï¿½ï¿½ï¿½Îªfalseï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¦
+	///@remark Ã¿ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ÄµÄºï¿½Ô¼ï¿½ï¿½ï¿½ï¿½Ó¦Ò»ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ù·ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½á´¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	virtual void OnUnSubMarketData(XTPST *ticker, XTPRI *error_info, bool is_last);
 
-	///Éî¶ÈÐÐÇéÍ¨Öª£¬°üº¬ÂòÒ»ÂôÒ»¶ÓÁÐ
-	///@param market_data ÐÐÇéÊý¾Ý
-	///@param bid1_qty ÂòÒ»¶ÓÁÐÊý¾Ý
-	///@param bid1_count ÂòÒ»¶ÓÁÐµÄÓÐÐ§Î¯ÍÐ±ÊÊý
-	///@param max_bid1_count ÂòÒ»¶ÓÁÐ×ÜÎ¯ÍÐ±ÊÊý
-	///@param ask1_qty ÂôÒ»¶ÓÁÐÊý¾Ý
-	///@param ask1_count ÂôÒ»¶ÓÁÐµÄÓÐÐ§Î¯ÍÐ±ÊÊý
-	///@param max_ask1_count ÂôÒ»¶ÓÁÐ×ÜÎ¯ÍÐ±ÊÊý
-	///@remark ÐèÒª¿ìËÙ·µ»Ø£¬·ñÔò»á¶ÂÈûºóÐøÏûÏ¢£¬µ±¶ÂÈûÑÏÖØÊ±£¬»á´¥·¢¶ÏÏß
+	///ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¨Öªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½
+	///@param market_data ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	///@param bid1_qty ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	///@param bid1_count ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½Ð§Î¯ï¿½Ð±ï¿½ï¿½ï¿½
+	///@param max_bid1_count ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¯ï¿½Ð±ï¿½ï¿½ï¿½
+	///@param ask1_qty ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	///@param ask1_count ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½Ð§Î¯ï¿½Ð±ï¿½ï¿½ï¿½
+	///@param max_ask1_count ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¯ï¿½Ð±ï¿½ï¿½ï¿½
+	///@remark ï¿½ï¿½Òªï¿½ï¿½ï¿½Ù·ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½á´¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	virtual void OnDepthMarketData(XTPMD *market_data, int64_t bid1_qty[], int32_t bid1_count, int32_t max_bid1_count, int64_t ask1_qty[], int32_t ask1_count, int32_t max_ask1_count);
 
-	///¶©ÔÄÐÐÇé¶©µ¥²¾Ó¦´ð£¬°üÀ¨¹ÉÆ±¡¢Ö¸ÊýºÍÆÚÈ¨
-	///@param ticker ÏêÏ¸µÄºÏÔ¼¶©ÔÄÇé¿ö
-	///@param error_info ¶©ÔÄºÏÔ¼·¢Éú´íÎóÊ±µÄ´íÎóÐÅÏ¢£¬µ±error_infoÎª¿Õ£¬»òÕßerror_info.error_idÎª0Ê±£¬±íÃ÷Ã»ÓÐ´íÎó
-	///@param is_last ÊÇ·ñ´Ë´Î¶©ÔÄµÄ×îºóÒ»¸öÓ¦´ð£¬µ±Îª×îºóÒ»¸öµÄÊ±ºòÎªtrue£¬Èç¹ûÎªfalse£¬±íÊ¾»¹ÓÐÆäËûºóÐøÏûÏ¢ÏìÓ¦
-	///@remark Ã¿Ìõ¶©ÔÄµÄºÏÔ¼¾ù¶ÔÓ¦Ò»Ìõ¶©ÔÄÓ¦´ð£¬ÐèÒª¿ìËÙ·µ»Ø£¬·ñÔò»á¶ÂÈûºóÐøÏûÏ¢£¬µ±¶ÂÈûÑÏÖØÊ±£¬»á´¥·¢¶ÏÏß
+	///ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½é¶©ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ð£¬°ï¿½ï¿½ï¿½ï¿½ï¿½Æ±ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¨
+	///@param ticker ï¿½ï¿½Ï¸ï¿½Äºï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	///@param error_info ï¿½ï¿½ï¿½Äºï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½error_infoÎªï¿½Õ£ï¿½ï¿½ï¿½ï¿½ï¿½error_info.error_idÎª0Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð´ï¿½ï¿½ï¿½
+	///@param is_last ï¿½Ç·ï¿½Ë´Î¶ï¿½ï¿½Äµï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ó¦ï¿½ð£¬µï¿½Îªï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Îªtrueï¿½ï¿½ï¿½ï¿½ï¿½Îªfalseï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¦
+	///@remark Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ÄµÄºï¿½Ô¼ï¿½ï¿½ï¿½ï¿½Ó¦Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ù·ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½á´¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	virtual void OnSubOrderBook(XTPST *ticker, XTPRI *error_info, bool is_last);
 
-	///ÍË¶©ÐÐÇé¶©µ¥²¾Ó¦´ð£¬°üÀ¨¹ÉÆ±¡¢Ö¸ÊýºÍÆÚÈ¨
-	///@param ticker ÏêÏ¸µÄºÏÔ¼È¡Ïû¶©ÔÄÇé¿ö
-	///@param error_info È¡Ïû¶©ÔÄºÏÔ¼Ê±·¢Éú´íÎóÊ±·µ»ØµÄ´íÎóÐÅÏ¢£¬µ±error_infoÎª¿Õ£¬»òÕßerror_info.error_idÎª0Ê±£¬±íÃ÷Ã»ÓÐ´íÎó
-	///@param is_last ÊÇ·ñ´Ë´ÎÈ¡Ïû¶©ÔÄµÄ×îºóÒ»¸öÓ¦´ð£¬µ±Îª×îºóÒ»¸öµÄÊ±ºòÎªtrue£¬Èç¹ûÎªfalse£¬±íÊ¾»¹ÓÐÆäËûºóÐøÏûÏ¢ÏìÓ¦
-	///@remark Ã¿ÌõÈ¡Ïû¶©ÔÄµÄºÏÔ¼¾ù¶ÔÓ¦Ò»ÌõÈ¡Ïû¶©ÔÄÓ¦´ð£¬ÐèÒª¿ìËÙ·µ»Ø£¬·ñÔò»á¶ÂÈûºóÐøÏûÏ¢£¬µ±¶ÂÈûÑÏÖØÊ±£¬»á´¥·¢¶ÏÏß
+	///ï¿½Ë¶ï¿½ï¿½ï¿½ï¿½é¶©ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ð£¬°ï¿½ï¿½ï¿½ï¿½ï¿½Æ±ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¨
+	///@param ticker ï¿½ï¿½Ï¸ï¿½Äºï¿½Ô¼È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	///@param error_info È¡ï¿½ï¿½ï¿½ï¿½ï¿½Äºï¿½Ô¼Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ØµÄ´ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½error_infoÎªï¿½Õ£ï¿½ï¿½ï¿½ï¿½ï¿½error_info.error_idÎª0Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð´ï¿½ï¿½ï¿½
+	///@param is_last ï¿½Ç·ï¿½Ë´ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Äµï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ó¦ï¿½ð£¬µï¿½Îªï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Îªtrueï¿½ï¿½ï¿½ï¿½ï¿½Îªfalseï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¦
+	///@remark Ã¿ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ÄµÄºï¿½Ô¼ï¿½ï¿½ï¿½ï¿½Ó¦Ò»ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ù·ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½á´¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	virtual void OnUnSubOrderBook(XTPST *ticker, XTPRI *error_info, bool is_last);
 
-	///ÐÐÇé¶©µ¥²¾Í¨Öª£¬°üÀ¨¹ÉÆ±¡¢Ö¸ÊýºÍÆÚÈ¨
-	///@param order_book ÐÐÇé¶©µ¥²¾Êý¾Ý£¬ÐèÒª¿ìËÙ·µ»Ø£¬·ñÔò»á¶ÂÈûºóÐøÏûÏ¢£¬µ±¶ÂÈûÑÏÖØÊ±£¬»á´¥·¢¶ÏÏß
+	///ï¿½ï¿½ï¿½é¶©ï¿½ï¿½ï¿½ï¿½Í¨Öªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ±ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¨
+	///@param order_book ï¿½ï¿½ï¿½é¶©ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ù·ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½á´¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	virtual void OnOrderBook(XTPOB *order_book);
 
-	///¶©ÔÄÖð±ÊÐÐÇéÓ¦´ð£¬°üÀ¨¹ÉÆ±¡¢Ö¸ÊýºÍÆÚÈ¨
-	///@param ticker ÏêÏ¸µÄºÏÔ¼¶©ÔÄÇé¿ö
-	///@param error_info ¶©ÔÄºÏÔ¼·¢Éú´íÎóÊ±µÄ´íÎóÐÅÏ¢£¬µ±error_infoÎª¿Õ£¬»òÕßerror_info.error_idÎª0Ê±£¬±íÃ÷Ã»ÓÐ´íÎó
-	///@param is_last ÊÇ·ñ´Ë´Î¶©ÔÄµÄ×îºóÒ»¸öÓ¦´ð£¬µ±Îª×îºóÒ»¸öµÄÊ±ºòÎªtrue£¬Èç¹ûÎªfalse£¬±íÊ¾»¹ÓÐÆäËûºóÐøÏûÏ¢ÏìÓ¦
-	///@remark Ã¿Ìõ¶©ÔÄµÄºÏÔ¼¾ù¶ÔÓ¦Ò»Ìõ¶©ÔÄÓ¦´ð£¬ÐèÒª¿ìËÙ·µ»Ø£¬·ñÔò»á¶ÂÈûºóÐøÏûÏ¢£¬µ±¶ÂÈûÑÏÖØÊ±£¬»á´¥·¢¶ÏÏß
+	///ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ð£¬°ï¿½ï¿½ï¿½ï¿½ï¿½Æ±ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¨
+	///@param ticker ï¿½ï¿½Ï¸ï¿½Äºï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	///@param error_info ï¿½ï¿½ï¿½Äºï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½error_infoÎªï¿½Õ£ï¿½ï¿½ï¿½ï¿½ï¿½error_info.error_idÎª0Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð´ï¿½ï¿½ï¿½
+	///@param is_last ï¿½Ç·ï¿½Ë´Î¶ï¿½ï¿½Äµï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ó¦ï¿½ð£¬µï¿½Îªï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Îªtrueï¿½ï¿½ï¿½ï¿½ï¿½Îªfalseï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¦
+	///@remark Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ÄµÄºï¿½Ô¼ï¿½ï¿½ï¿½ï¿½Ó¦Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ù·ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½á´¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	virtual void OnSubTickByTick(XTPST *ticker, XTPRI *error_info, bool is_last);
 
-	///ÍË¶©Öð±ÊÐÐÇéÓ¦´ð£¬°üÀ¨¹ÉÆ±¡¢Ö¸ÊýºÍÆÚÈ¨
-	///@param ticker ÏêÏ¸µÄºÏÔ¼È¡Ïû¶©ÔÄÇé¿ö
-	///@param error_info È¡Ïû¶©ÔÄºÏÔ¼Ê±·¢Éú´íÎóÊ±·µ»ØµÄ´íÎóÐÅÏ¢£¬µ±error_infoÎª¿Õ£¬»òÕßerror_info.error_idÎª0Ê±£¬±íÃ÷Ã»ÓÐ´íÎó
-	///@param is_last ÊÇ·ñ´Ë´ÎÈ¡Ïû¶©ÔÄµÄ×îºóÒ»¸öÓ¦´ð£¬µ±Îª×îºóÒ»¸öµÄÊ±ºòÎªtrue£¬Èç¹ûÎªfalse£¬±íÊ¾»¹ÓÐÆäËûºóÐøÏûÏ¢ÏìÓ¦
-	///@remark Ã¿ÌõÈ¡Ïû¶©ÔÄµÄºÏÔ¼¾ù¶ÔÓ¦Ò»ÌõÈ¡Ïû¶©ÔÄÓ¦´ð£¬ÐèÒª¿ìËÙ·µ»Ø£¬·ñÔò»á¶ÂÈûºóÐøÏûÏ¢£¬µ±¶ÂÈûÑÏÖØÊ±£¬»á´¥·¢¶ÏÏß
+	///ï¿½Ë¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ð£¬°ï¿½ï¿½ï¿½ï¿½ï¿½Æ±ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¨
+	///@param ticker ï¿½ï¿½Ï¸ï¿½Äºï¿½Ô¼È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	///@param error_info È¡ï¿½ï¿½ï¿½ï¿½ï¿½Äºï¿½Ô¼Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ØµÄ´ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½error_infoÎªï¿½Õ£ï¿½ï¿½ï¿½ï¿½ï¿½error_info.error_idÎª0Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð´ï¿½ï¿½ï¿½
+	///@param is_last ï¿½Ç·ï¿½Ë´ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Äµï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ó¦ï¿½ð£¬µï¿½Îªï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Îªtrueï¿½ï¿½ï¿½ï¿½ï¿½Îªfalseï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¦
+	///@remark Ã¿ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ÄµÄºï¿½Ô¼ï¿½ï¿½ï¿½ï¿½Ó¦Ò»ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ù·ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½á´¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	virtual void OnUnSubTickByTick(XTPST *ticker, XTPRI *error_info, bool is_last);
 
-	///Öð±ÊÐÐÇéÍ¨Öª£¬°üÀ¨¹ÉÆ±¡¢Ö¸ÊýºÍÆÚÈ¨
-	///@param tbt_data Öð±ÊÐÐÇéÊý¾Ý£¬°üÀ¨Öð±ÊÎ¯ÍÐºÍÖð±Ê³É½»£¬´ËÎª¹²ÓÃ½á¹¹Ìå£¬ÐèÒª¸ù¾ÝtypeÀ´Çø·ÖÊÇÖð±ÊÎ¯ÍÐ»¹ÊÇÖð±Ê³É½»£¬ÐèÒª¿ìËÙ·µ»Ø£¬·ñÔò»á¶ÂÈûºóÐøÏûÏ¢£¬µ±¶ÂÈûÑÏÖØÊ±£¬»á´¥·¢¶ÏÏß
+	///ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¨Öªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ±ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¨
+	///@param tbt_data ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¯ï¿½Ðºï¿½ï¿½ï¿½Ê³É½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½Ã½á¹¹ï¿½å£¬ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½typeï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¯ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ï¿½Ê³É½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ù·ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½á´¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	virtual void OnTickByTick(XTPTBT *tbt_data);
 
-	///¶©ÔÄÈ«ÊÐ³¡µÄ¹ÉÆ±ÐÐÇéÓ¦´ð
-	///@param exchange_id ±íÊ¾µ±Ç°È«¶©ÔÄµÄÊÐ³¡£¬Èç¹ûÎªXTP_EXCHANGE_UNKNOWN£¬±íÊ¾»¦ÉîÈ«ÊÐ³¡£¬XTP_EXCHANGE_SH±íÊ¾ÎªÉÏº£È«ÊÐ³¡£¬XTP_EXCHANGE_SZ±íÊ¾ÎªÉîÛÚÈ«ÊÐ³¡
-	///@param error_info È¡Ïû¶©ÔÄºÏÔ¼Ê±·¢Éú´íÎóÊ±·µ»ØµÄ´íÎóÐÅÏ¢£¬µ±error_infoÎª¿Õ£¬»òÕßerror_info.error_idÎª0Ê±£¬±íÃ÷Ã»ÓÐ´íÎó
-	///@remark ÐèÒª¿ìËÙ·µ»Ø
+	///ï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½ï¿½Ä¹ï¿½Æ±ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½
+	///@param exchange_id ï¿½ï¿½Ê¾ï¿½ï¿½Ç°È«ï¿½ï¿½ï¿½Äµï¿½ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎªXTP_EXCHANGE_UNKNOWNï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½XTP_EXCHANGE_SHï¿½ï¿½Ê¾Îªï¿½Ïºï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½XTP_EXCHANGE_SZï¿½ï¿½Ê¾Îªï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½
+	///@param error_info È¡ï¿½ï¿½ï¿½ï¿½ï¿½Äºï¿½Ô¼Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ØµÄ´ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½error_infoÎªï¿½Õ£ï¿½ï¿½ï¿½ï¿½ï¿½error_info.error_idÎª0Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð´ï¿½ï¿½ï¿½
+	///@remark ï¿½ï¿½Òªï¿½ï¿½ï¿½Ù·ï¿½ï¿½ï¿½
 	virtual void OnSubscribeAllMarketData(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info);
 
-	///ÍË¶©È«ÊÐ³¡µÄ¹ÉÆ±ÐÐÇéÓ¦´ð
-	///@param exchange_id ±íÊ¾µ±Ç°ÍË¶©µÄÊÐ³¡£¬Èç¹ûÎªXTP_EXCHANGE_UNKNOWN£¬±íÊ¾»¦ÉîÈ«ÊÐ³¡£¬XTP_EXCHANGE_SH±íÊ¾ÎªÉÏº£È«ÊÐ³¡£¬XTP_EXCHANGE_SZ±íÊ¾ÎªÉîÛÚÈ«ÊÐ³¡
-	///@param error_info È¡Ïû¶©ÔÄºÏÔ¼Ê±·¢Éú´íÎóÊ±·µ»ØµÄ´íÎóÐÅÏ¢£¬µ±error_infoÎª¿Õ£¬»òÕßerror_info.error_idÎª0Ê±£¬±íÃ÷Ã»ÓÐ´íÎó
-	///@remark ÐèÒª¿ìËÙ·µ»Ø
+	///ï¿½Ë¶ï¿½È«ï¿½Ð³ï¿½ï¿½Ä¹ï¿½Æ±ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½
+	///@param exchange_id ï¿½ï¿½Ê¾ï¿½ï¿½Ç°ï¿½Ë¶ï¿½ï¿½ï¿½ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎªXTP_EXCHANGE_UNKNOWNï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½XTP_EXCHANGE_SHï¿½ï¿½Ê¾Îªï¿½Ïºï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½XTP_EXCHANGE_SZï¿½ï¿½Ê¾Îªï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½
+	///@param error_info È¡ï¿½ï¿½ï¿½ï¿½ï¿½Äºï¿½Ô¼Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ØµÄ´ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½error_infoÎªï¿½Õ£ï¿½ï¿½ï¿½ï¿½ï¿½error_info.error_idÎª0Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð´ï¿½ï¿½ï¿½
+	///@remark ï¿½ï¿½Òªï¿½ï¿½ï¿½Ù·ï¿½ï¿½ï¿½
 	virtual void OnUnSubscribeAllMarketData(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info);
 
-	///¶©ÔÄÈ«ÊÐ³¡µÄ¹ÉÆ±ÐÐÇé¶©µ¥²¾Ó¦´ð
-	///@param exchange_id ±íÊ¾µ±Ç°È«¶©ÔÄµÄÊÐ³¡£¬Èç¹ûÎªXTP_EXCHANGE_UNKNOWN£¬±íÊ¾»¦ÉîÈ«ÊÐ³¡£¬XTP_EXCHANGE_SH±íÊ¾ÎªÉÏº£È«ÊÐ³¡£¬XTP_EXCHANGE_SZ±íÊ¾ÎªÉîÛÚÈ«ÊÐ³¡
-	///@param error_info È¡Ïû¶©ÔÄºÏÔ¼Ê±·¢Éú´íÎóÊ±·µ»ØµÄ´íÎóÐÅÏ¢£¬µ±error_infoÎª¿Õ£¬»òÕßerror_info.error_idÎª0Ê±£¬±íÃ÷Ã»ÓÐ´íÎó
-	///@remark ÐèÒª¿ìËÙ·µ»Ø
+	///ï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½ï¿½Ä¹ï¿½Æ±ï¿½ï¿½ï¿½é¶©ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½
+	///@param exchange_id ï¿½ï¿½Ê¾ï¿½ï¿½Ç°È«ï¿½ï¿½ï¿½Äµï¿½ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎªXTP_EXCHANGE_UNKNOWNï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½XTP_EXCHANGE_SHï¿½ï¿½Ê¾Îªï¿½Ïºï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½XTP_EXCHANGE_SZï¿½ï¿½Ê¾Îªï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½
+	///@param error_info È¡ï¿½ï¿½ï¿½ï¿½ï¿½Äºï¿½Ô¼Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ØµÄ´ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½error_infoÎªï¿½Õ£ï¿½ï¿½ï¿½ï¿½ï¿½error_info.error_idÎª0Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð´ï¿½ï¿½ï¿½
+	///@remark ï¿½ï¿½Òªï¿½ï¿½ï¿½Ù·ï¿½ï¿½ï¿½
 	virtual void OnSubscribeAllOrderBook(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info);
 
-	///ÍË¶©È«ÊÐ³¡µÄ¹ÉÆ±ÐÐÇé¶©µ¥²¾Ó¦´ð
-	///@param exchange_id ±íÊ¾µ±Ç°ÍË¶©µÄÊÐ³¡£¬Èç¹ûÎªXTP_EXCHANGE_UNKNOWN£¬±íÊ¾»¦ÉîÈ«ÊÐ³¡£¬XTP_EXCHANGE_SH±íÊ¾ÎªÉÏº£È«ÊÐ³¡£¬XTP_EXCHANGE_SZ±íÊ¾ÎªÉîÛÚÈ«ÊÐ³¡
-	///@param error_info È¡Ïû¶©ÔÄºÏÔ¼Ê±·¢Éú´íÎóÊ±·µ»ØµÄ´íÎóÐÅÏ¢£¬µ±error_infoÎª¿Õ£¬»òÕßerror_info.error_idÎª0Ê±£¬±íÃ÷Ã»ÓÐ´íÎó
-	///@remark ÐèÒª¿ìËÙ·µ»Ø
+	///ï¿½Ë¶ï¿½È«ï¿½Ð³ï¿½ï¿½Ä¹ï¿½Æ±ï¿½ï¿½ï¿½é¶©ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½
+	///@param exchange_id ï¿½ï¿½Ê¾ï¿½ï¿½Ç°ï¿½Ë¶ï¿½ï¿½ï¿½ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎªXTP_EXCHANGE_UNKNOWNï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½XTP_EXCHANGE_SHï¿½ï¿½Ê¾Îªï¿½Ïºï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½XTP_EXCHANGE_SZï¿½ï¿½Ê¾Îªï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½
+	///@param error_info È¡ï¿½ï¿½ï¿½ï¿½ï¿½Äºï¿½Ô¼Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ØµÄ´ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½error_infoÎªï¿½Õ£ï¿½ï¿½ï¿½ï¿½ï¿½error_info.error_idÎª0Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð´ï¿½ï¿½ï¿½
+	///@remark ï¿½ï¿½Òªï¿½ï¿½ï¿½Ù·ï¿½ï¿½ï¿½
 	virtual void OnUnSubscribeAllOrderBook(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info);
 
-	///¶©ÔÄÈ«ÊÐ³¡µÄ¹ÉÆ±Öð±ÊÐÐÇéÓ¦´ð
-	///@param exchange_id ±íÊ¾µ±Ç°È«¶©ÔÄµÄÊÐ³¡£¬Èç¹ûÎªXTP_EXCHANGE_UNKNOWN£¬±íÊ¾»¦ÉîÈ«ÊÐ³¡£¬XTP_EXCHANGE_SH±íÊ¾ÎªÉÏº£È«ÊÐ³¡£¬XTP_EXCHANGE_SZ±íÊ¾ÎªÉîÛÚÈ«ÊÐ³¡
-	///@param error_info È¡Ïû¶©ÔÄºÏÔ¼Ê±·¢Éú´íÎóÊ±·µ»ØµÄ´íÎóÐÅÏ¢£¬µ±error_infoÎª¿Õ£¬»òÕßerror_info.error_idÎª0Ê±£¬±íÃ÷Ã»ÓÐ´íÎó
-	///@remark ÐèÒª¿ìËÙ·µ»Ø
+	///ï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½ï¿½Ä¹ï¿½Æ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½
+	///@param exchange_id ï¿½ï¿½Ê¾ï¿½ï¿½Ç°È«ï¿½ï¿½ï¿½Äµï¿½ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎªXTP_EXCHANGE_UNKNOWNï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½XTP_EXCHANGE_SHï¿½ï¿½Ê¾Îªï¿½Ïºï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½XTP_EXCHANGE_SZï¿½ï¿½Ê¾Îªï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½
+	///@param error_info È¡ï¿½ï¿½ï¿½ï¿½ï¿½Äºï¿½Ô¼Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ØµÄ´ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½error_infoÎªï¿½Õ£ï¿½ï¿½ï¿½ï¿½ï¿½error_info.error_idÎª0Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð´ï¿½ï¿½ï¿½
+	///@remark ï¿½ï¿½Òªï¿½ï¿½ï¿½Ù·ï¿½ï¿½ï¿½
 	virtual void OnSubscribeAllTickByTick(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info);
 
-	///ÍË¶©È«ÊÐ³¡µÄ¹ÉÆ±Öð±ÊÐÐÇéÓ¦´ð
-	///@param exchange_id ±íÊ¾µ±Ç°ÍË¶©µÄÊÐ³¡£¬Èç¹ûÎªXTP_EXCHANGE_UNKNOWN£¬±íÊ¾»¦ÉîÈ«ÊÐ³¡£¬XTP_EXCHANGE_SH±íÊ¾ÎªÉÏº£È«ÊÐ³¡£¬XTP_EXCHANGE_SZ±íÊ¾ÎªÉîÛÚÈ«ÊÐ³¡
-	///@param error_info È¡Ïû¶©ÔÄºÏÔ¼Ê±·¢Éú´íÎóÊ±·µ»ØµÄ´íÎóÐÅÏ¢£¬µ±error_infoÎª¿Õ£¬»òÕßerror_info.error_idÎª0Ê±£¬±íÃ÷Ã»ÓÐ´íÎó
-	///@remark ÐèÒª¿ìËÙ·µ»Ø
+	///ï¿½Ë¶ï¿½È«ï¿½Ð³ï¿½ï¿½Ä¹ï¿½Æ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½
+	///@param exchange_id ï¿½ï¿½Ê¾ï¿½ï¿½Ç°ï¿½Ë¶ï¿½ï¿½ï¿½ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎªXTP_EXCHANGE_UNKNOWNï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½XTP_EXCHANGE_SHï¿½ï¿½Ê¾Îªï¿½Ïºï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½XTP_EXCHANGE_SZï¿½ï¿½Ê¾Îªï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½
+	///@param error_info È¡ï¿½ï¿½ï¿½ï¿½ï¿½Äºï¿½Ô¼Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ØµÄ´ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½error_infoÎªï¿½Õ£ï¿½ï¿½ï¿½ï¿½ï¿½error_info.error_idÎª0Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð´ï¿½ï¿½ï¿½
+	///@remark ï¿½ï¿½Òªï¿½ï¿½ï¿½Ù·ï¿½ï¿½ï¿½
 	virtual void OnUnSubscribeAllTickByTick(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info);
 
 
-	///²éÑ¯ºÏÔ¼²¿·Ö¾²Ì¬ÐÅÏ¢µÄÓ¦´ð
-	///@param ticker_info ºÏÔ¼²¿·Ö¾²Ì¬ÐÅÏ¢
-	///@param error_info ²éÑ¯ºÏÔ¼²¿·Ö¾²Ì¬ÐÅÏ¢Ê±·¢Éú´íÎóÊ±·µ»ØµÄ´íÎóÐÅÏ¢£¬µ±error_infoÎª¿Õ£¬»òÕßerror_info.error_idÎª0Ê±£¬±íÃ÷Ã»ÓÐ´íÎó
-	///@param is_last ÊÇ·ñ´Ë´Î²éÑ¯ºÏÔ¼²¿·Ö¾²Ì¬ÐÅÏ¢µÄ×îºóÒ»¸öÓ¦´ð£¬µ±Îª×îºóÒ»¸öµÄÊ±ºòÎªtrue£¬Èç¹ûÎªfalse£¬±íÊ¾»¹ÓÐÆäËûºóÐøÏûÏ¢ÏìÓ¦
+	///ï¿½ï¿½Ñ¯ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½Ö¾ï¿½Ì¬ï¿½ï¿½Ï¢ï¿½ï¿½Ó¦ï¿½ï¿½
+	///@param ticker_info ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½Ö¾ï¿½Ì¬ï¿½ï¿½Ï¢
+	///@param error_info ï¿½ï¿½Ñ¯ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½Ö¾ï¿½Ì¬ï¿½ï¿½Ï¢Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ØµÄ´ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½error_infoÎªï¿½Õ£ï¿½ï¿½ï¿½ï¿½ï¿½error_info.error_idÎª0Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð´ï¿½ï¿½ï¿½
+	///@param is_last ï¿½Ç·ï¿½Ë´Î²ï¿½Ñ¯ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½Ö¾ï¿½Ì¬ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ó¦ï¿½ð£¬µï¿½Îªï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Îªtrueï¿½ï¿½ï¿½ï¿½ï¿½Îªfalseï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¦
 	virtual void OnQueryAllTickers(XTPQSI* ticker_info, XTPRI *error_info, bool is_last);
 
-	///²éÑ¯ºÏÔ¼µÄ×îÐÂ¼Û¸ñÐÅÏ¢Ó¦´ð
-	///@param ticker_info ºÏÔ¼µÄ×îÐÂ¼Û¸ñÐÅÏ¢
-	///@param error_info ²éÑ¯ºÏÔ¼µÄ×îÐÂ¼Û¸ñÐÅÏ¢Ê±·¢Éú´íÎóÊ±·µ»ØµÄ´íÎóÐÅÏ¢£¬µ±error_infoÎª¿Õ£¬»òÕßerror_info.error_idÎª0Ê±£¬±íÃ÷Ã»ÓÐ´íÎó
-	///@param is_last ÊÇ·ñ´Ë´Î²éÑ¯µÄ×îºóÒ»¸öÓ¦´ð£¬µ±Îª×îºóÒ»¸öµÄÊ±ºòÎªtrue£¬Èç¹ûÎªfalse£¬±íÊ¾»¹ÓÐÆäËûºóÐøÏûÏ¢ÏìÓ¦
+	///ï¿½ï¿½Ñ¯ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½Â¼Û¸ï¿½ï¿½ï¿½Ï¢Ó¦ï¿½ï¿½
+	///@param ticker_info ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½Â¼Û¸ï¿½ï¿½ï¿½Ï¢
+	///@param error_info ï¿½ï¿½Ñ¯ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½Â¼Û¸ï¿½ï¿½ï¿½Ï¢Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ØµÄ´ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½error_infoÎªï¿½Õ£ï¿½ï¿½ï¿½ï¿½ï¿½error_info.error_idÎª0Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð´ï¿½ï¿½ï¿½
+	///@param is_last ï¿½Ç·ï¿½Ë´Î²ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ó¦ï¿½ð£¬µï¿½Îªï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Îªtrueï¿½ï¿½ï¿½ï¿½ï¿½Îªfalseï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¦
 	virtual void OnQueryTickersPriceInfo(XTPTPI* ticker_info, XTPRI *error_info, bool is_last);
 
-	///¶©ÔÄÈ«ÊÐ³¡µÄÆÚÈ¨ÐÐÇéÓ¦´ð
-	///@param exchange_id ±íÊ¾µ±Ç°È«¶©ÔÄµÄÊÐ³¡£¬Èç¹ûÎªXTP_EXCHANGE_UNKNOWN£¬±íÊ¾»¦ÉîÈ«ÊÐ³¡£¬XTP_EXCHANGE_SH±íÊ¾ÎªÉÏº£È«ÊÐ³¡£¬XTP_EXCHANGE_SZ±íÊ¾ÎªÉîÛÚÈ«ÊÐ³¡
-	///@param error_info È¡Ïû¶©ÔÄºÏÔ¼Ê±·¢Éú´íÎóÊ±·µ»ØµÄ´íÎóÐÅÏ¢£¬µ±error_infoÎª¿Õ£¬»òÕßerror_info.error_idÎª0Ê±£¬±íÃ÷Ã»ÓÐ´íÎó
-	///@remark ÐèÒª¿ìËÙ·µ»Ø
+	///ï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½È¨ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½
+	///@param exchange_id ï¿½ï¿½Ê¾ï¿½ï¿½Ç°È«ï¿½ï¿½ï¿½Äµï¿½ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎªXTP_EXCHANGE_UNKNOWNï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½XTP_EXCHANGE_SHï¿½ï¿½Ê¾Îªï¿½Ïºï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½XTP_EXCHANGE_SZï¿½ï¿½Ê¾Îªï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½
+	///@param error_info È¡ï¿½ï¿½ï¿½ï¿½ï¿½Äºï¿½Ô¼Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ØµÄ´ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½error_infoÎªï¿½Õ£ï¿½ï¿½ï¿½ï¿½ï¿½error_info.error_idÎª0Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð´ï¿½ï¿½ï¿½
+	///@remark ï¿½ï¿½Òªï¿½ï¿½ï¿½Ù·ï¿½ï¿½ï¿½
 	virtual void OnSubscribeAllOptionMarketData(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info);
 
-	///ÍË¶©È«ÊÐ³¡µÄÆÚÈ¨ÐÐÇéÓ¦´ð
-	///@param exchange_id ±íÊ¾µ±Ç°ÍË¶©µÄÊÐ³¡£¬Èç¹ûÎªXTP_EXCHANGE_UNKNOWN£¬±íÊ¾»¦ÉîÈ«ÊÐ³¡£¬XTP_EXCHANGE_SH±íÊ¾ÎªÉÏº£È«ÊÐ³¡£¬XTP_EXCHANGE_SZ±íÊ¾ÎªÉîÛÚÈ«ÊÐ³¡
-	///@param error_info È¡Ïû¶©ÔÄºÏÔ¼Ê±·¢Éú´íÎóÊ±·µ»ØµÄ´íÎóÐÅÏ¢£¬µ±error_infoÎª¿Õ£¬»òÕßerror_info.error_idÎª0Ê±£¬±íÃ÷Ã»ÓÐ´íÎó
-	///@remark ÐèÒª¿ìËÙ·µ»Ø
+	///ï¿½Ë¶ï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½È¨ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½
+	///@param exchange_id ï¿½ï¿½Ê¾ï¿½ï¿½Ç°ï¿½Ë¶ï¿½ï¿½ï¿½ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎªXTP_EXCHANGE_UNKNOWNï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½XTP_EXCHANGE_SHï¿½ï¿½Ê¾Îªï¿½Ïºï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½XTP_EXCHANGE_SZï¿½ï¿½Ê¾Îªï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½
+	///@param error_info È¡ï¿½ï¿½ï¿½ï¿½ï¿½Äºï¿½Ô¼Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ØµÄ´ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½error_infoÎªï¿½Õ£ï¿½ï¿½ï¿½ï¿½ï¿½error_info.error_idÎª0Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð´ï¿½ï¿½ï¿½
+	///@remark ï¿½ï¿½Òªï¿½ï¿½ï¿½Ù·ï¿½ï¿½ï¿½
 	virtual void OnUnSubscribeAllOptionMarketData(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info);
 
-	///¶©ÔÄÈ«ÊÐ³¡µÄÆÚÈ¨ÐÐÇé¶©µ¥²¾Ó¦´ð
-	///@param exchange_id ±íÊ¾µ±Ç°È«¶©ÔÄµÄÊÐ³¡£¬Èç¹ûÎªXTP_EXCHANGE_UNKNOWN£¬±íÊ¾»¦ÉîÈ«ÊÐ³¡£¬XTP_EXCHANGE_SH±íÊ¾ÎªÉÏº£È«ÊÐ³¡£¬XTP_EXCHANGE_SZ±íÊ¾ÎªÉîÛÚÈ«ÊÐ³¡
-	///@param error_info È¡Ïû¶©ÔÄºÏÔ¼Ê±·¢Éú´íÎóÊ±·µ»ØµÄ´íÎóÐÅÏ¢£¬µ±error_infoÎª¿Õ£¬»òÕßerror_info.error_idÎª0Ê±£¬±íÃ÷Ã»ÓÐ´íÎó
-	///@remark ÐèÒª¿ìËÙ·µ»Ø
+	///ï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½È¨ï¿½ï¿½ï¿½é¶©ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½
+	///@param exchange_id ï¿½ï¿½Ê¾ï¿½ï¿½Ç°È«ï¿½ï¿½ï¿½Äµï¿½ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎªXTP_EXCHANGE_UNKNOWNï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½XTP_EXCHANGE_SHï¿½ï¿½Ê¾Îªï¿½Ïºï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½XTP_EXCHANGE_SZï¿½ï¿½Ê¾Îªï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½
+	///@param error_info È¡ï¿½ï¿½ï¿½ï¿½ï¿½Äºï¿½Ô¼Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ØµÄ´ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½error_infoÎªï¿½Õ£ï¿½ï¿½ï¿½ï¿½ï¿½error_info.error_idÎª0Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð´ï¿½ï¿½ï¿½
+	///@remark ï¿½ï¿½Òªï¿½ï¿½ï¿½Ù·ï¿½ï¿½ï¿½
 	virtual void OnSubscribeAllOptionOrderBook(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info);
 
-	///ÍË¶©È«ÊÐ³¡µÄÆÚÈ¨ÐÐÇé¶©µ¥²¾Ó¦´ð
-	///@param exchange_id ±íÊ¾µ±Ç°ÍË¶©µÄÊÐ³¡£¬Èç¹ûÎªXTP_EXCHANGE_UNKNOWN£¬±íÊ¾»¦ÉîÈ«ÊÐ³¡£¬XTP_EXCHANGE_SH±íÊ¾ÎªÉÏº£È«ÊÐ³¡£¬XTP_EXCHANGE_SZ±íÊ¾ÎªÉîÛÚÈ«ÊÐ³¡
-	///@param error_info È¡Ïû¶©ÔÄºÏÔ¼Ê±·¢Éú´íÎóÊ±·µ»ØµÄ´íÎóÐÅÏ¢£¬µ±error_infoÎª¿Õ£¬»òÕßerror_info.error_idÎª0Ê±£¬±íÃ÷Ã»ÓÐ´íÎó
-	///@remark ÐèÒª¿ìËÙ·µ»Ø
+	///ï¿½Ë¶ï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½È¨ï¿½ï¿½ï¿½é¶©ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½
+	///@param exchange_id ï¿½ï¿½Ê¾ï¿½ï¿½Ç°ï¿½Ë¶ï¿½ï¿½ï¿½ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎªXTP_EXCHANGE_UNKNOWNï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½XTP_EXCHANGE_SHï¿½ï¿½Ê¾Îªï¿½Ïºï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½XTP_EXCHANGE_SZï¿½ï¿½Ê¾Îªï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½
+	///@param error_info È¡ï¿½ï¿½ï¿½ï¿½ï¿½Äºï¿½Ô¼Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ØµÄ´ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½error_infoÎªï¿½Õ£ï¿½ï¿½ï¿½ï¿½ï¿½error_info.error_idÎª0Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð´ï¿½ï¿½ï¿½
+	///@remark ï¿½ï¿½Òªï¿½ï¿½ï¿½Ù·ï¿½ï¿½ï¿½
 	virtual void OnUnSubscribeAllOptionOrderBook(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info);
 
-	///¶©ÔÄÈ«ÊÐ³¡µÄÆÚÈ¨Öð±ÊÐÐÇéÓ¦´ð
-	///@param exchange_id ±íÊ¾µ±Ç°È«¶©ÔÄµÄÊÐ³¡£¬Èç¹ûÎªXTP_EXCHANGE_UNKNOWN£¬±íÊ¾»¦ÉîÈ«ÊÐ³¡£¬XTP_EXCHANGE_SH±íÊ¾ÎªÉÏº£È«ÊÐ³¡£¬XTP_EXCHANGE_SZ±íÊ¾ÎªÉîÛÚÈ«ÊÐ³¡
-	///@param error_info È¡Ïû¶©ÔÄºÏÔ¼Ê±·¢Éú´íÎóÊ±·µ»ØµÄ´íÎóÐÅÏ¢£¬µ±error_infoÎª¿Õ£¬»òÕßerror_info.error_idÎª0Ê±£¬±íÃ÷Ã»ÓÐ´íÎó
-	///@remark ÐèÒª¿ìËÙ·µ»Ø
+	///ï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½È¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½
+	///@param exchange_id ï¿½ï¿½Ê¾ï¿½ï¿½Ç°È«ï¿½ï¿½ï¿½Äµï¿½ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎªXTP_EXCHANGE_UNKNOWNï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½XTP_EXCHANGE_SHï¿½ï¿½Ê¾Îªï¿½Ïºï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½XTP_EXCHANGE_SZï¿½ï¿½Ê¾Îªï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½
+	///@param error_info È¡ï¿½ï¿½ï¿½ï¿½ï¿½Äºï¿½Ô¼Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ØµÄ´ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½error_infoÎªï¿½Õ£ï¿½ï¿½ï¿½ï¿½ï¿½error_info.error_idÎª0Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð´ï¿½ï¿½ï¿½
+	///@remark ï¿½ï¿½Òªï¿½ï¿½ï¿½Ù·ï¿½ï¿½ï¿½
 	virtual void OnSubscribeAllOptionTickByTick(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info);
 
-	///ÍË¶©È«ÊÐ³¡µÄÆÚÈ¨Öð±ÊÐÐÇéÓ¦´ð
-	///@param exchange_id ±íÊ¾µ±Ç°ÍË¶©µÄÊÐ³¡£¬Èç¹ûÎªXTP_EXCHANGE_UNKNOWN£¬±íÊ¾»¦ÉîÈ«ÊÐ³¡£¬XTP_EXCHANGE_SH±íÊ¾ÎªÉÏº£È«ÊÐ³¡£¬XTP_EXCHANGE_SZ±íÊ¾ÎªÉîÛÚÈ«ÊÐ³¡
-	///@param error_info È¡Ïû¶©ÔÄºÏÔ¼Ê±·¢Éú´íÎóÊ±·µ»ØµÄ´íÎóÐÅÏ¢£¬µ±error_infoÎª¿Õ£¬»òÕßerror_info.error_idÎª0Ê±£¬±íÃ÷Ã»ÓÐ´íÎó
-	///@remark ÐèÒª¿ìËÙ·µ»Ø
+	///ï¿½Ë¶ï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½È¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½
+	///@param exchange_id ï¿½ï¿½Ê¾ï¿½ï¿½Ç°ï¿½Ë¶ï¿½ï¿½ï¿½ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎªXTP_EXCHANGE_UNKNOWNï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½XTP_EXCHANGE_SHï¿½ï¿½Ê¾Îªï¿½Ïºï¿½È«ï¿½Ð³ï¿½ï¿½ï¿½XTP_EXCHANGE_SZï¿½ï¿½Ê¾Îªï¿½ï¿½ï¿½ï¿½È«ï¿½Ð³ï¿½
+	///@param error_info È¡ï¿½ï¿½ï¿½ï¿½ï¿½Äºï¿½Ô¼Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ØµÄ´ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½error_infoÎªï¿½Õ£ï¿½ï¿½ï¿½ï¿½ï¿½error_info.error_idÎª0Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð´ï¿½ï¿½ï¿½
+	///@remark ï¿½ï¿½Òªï¿½ï¿½ï¿½Ù·ï¿½ï¿½ï¿½
 	virtual void OnUnSubscribeAllOptionTickByTick(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info);
 
-	///²éÑ¯ºÏÔ¼ÍêÕû¾²Ì¬ÐÅÏ¢µÄÓ¦´ð
-	///@param ticker_info ºÏÔ¼ÍêÕû¾²Ì¬ÐÅÏ¢
-	///@param error_info ²éÑ¯ºÏÔ¼ÍêÕû¾²Ì¬ÐÅÏ¢Ê±·¢Éú´íÎóÊ±·µ»ØµÄ´íÎóÐÅÏ¢£¬µ±error_infoÎª¿Õ£¬»òÕßerror_info.error_idÎª0Ê±£¬±íÃ÷Ã»ÓÐ´íÎó
-	///@param is_last ÊÇ·ñ´Ë´Î²éÑ¯ºÏÔ¼ÍêÕû¾²Ì¬ÐÅÏ¢µÄ×îºóÒ»¸öÓ¦´ð£¬µ±Îª×îºóÒ»¸öµÄÊ±ºòÎªtrue£¬Èç¹ûÎªfalse£¬±íÊ¾»¹ÓÐÆäËûºóÐøÏûÏ¢ÏìÓ¦
+	///ï¿½ï¿½Ñ¯ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¬ï¿½ï¿½Ï¢ï¿½ï¿½Ó¦ï¿½ï¿½
+	///@param ticker_info ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¬ï¿½ï¿½Ï¢
+	///@param error_info ï¿½ï¿½Ñ¯ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¬ï¿½ï¿½Ï¢Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ØµÄ´ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½error_infoÎªï¿½Õ£ï¿½ï¿½ï¿½ï¿½ï¿½error_info.error_idÎª0Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð´ï¿½ï¿½ï¿½
+	///@param is_last ï¿½Ç·ï¿½Ë´Î²ï¿½Ñ¯ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¬ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ó¦ï¿½ð£¬µï¿½Îªï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Îªtrueï¿½ï¿½ï¿½ï¿½ï¿½Îªfalseï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ó¦
 	virtual void OnQueryAllTickersFullInfo(XTPQFI* ticker_info, XTPRI *error_info, bool is_last);
 
 	//-------------------------------------------------------------------------------------
-	//data£º»Øµ÷º¯ÊýµÄÊý¾Ý×Öµä
-	//error£º»Øµ÷º¯ÊýµÄ´íÎó×Öµä
-	//ÆäËû²ÎÊý²ÉÓÃÔ­Ãû³Æ
+	//dataï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½
+	//errorï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½ï¿½Öµï¿½
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½ï¿½ï¿½
 	//-------------------------------------------------------------------------------------
 
 	virtual void onDisconnected(int reason) {};
@@ -262,7 +262,7 @@ public:
 	virtual void onQueryAllTickersFullInfo(const dict &data, const dict &error, bool is_last) {};
 
 	//-------------------------------------------------------------------------------------
-	//req:Ö÷¶¯º¯ÊýµÄÇëÇó×Öµä
+	//req:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½
 	//-------------------------------------------------------------------------------------
 
 	void createQuoteApi(int client_id, string save_file_path, int log_level);

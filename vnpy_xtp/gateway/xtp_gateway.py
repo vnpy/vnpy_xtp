@@ -737,7 +737,6 @@ class XtpTdApi(TdApi):
         if not self.connect_status:
             path = str(get_folder_path(self.gateway_name.lower()))
             self.createTraderApi(self.client_id, path, log_level)
-
             self.setSoftwareKey(self.software_key)
             self.subscribePublicTopic(0)
             self.login_server()

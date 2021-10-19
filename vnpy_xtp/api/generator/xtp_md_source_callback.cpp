@@ -423,6 +423,8 @@ void MdApi::OnQueryAllTickersFullInfo(XTPQFI* ticker_info, XTPRI *error_info, bo
 		data["market_ask_qty_upper_limit"] = ticker_info->market_ask_qty_upper_limit;
 		data["market_ask_qty_lower_limit"] = ticker_info->market_ask_qty_lower_limit;
 		data["market_ask_qty_unit"] = ticker_info->market_ask_qty_unit;
+		data["security_status"] = (int) ticker_info->security_status;
+		data["unknown1"] = ticker_info->unknown1;
 		data["unknown"] = ticker_info->unknown;
 	}
 	dict error;

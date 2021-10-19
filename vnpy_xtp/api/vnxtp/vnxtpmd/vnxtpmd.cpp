@@ -8,13 +8,13 @@
 ///C++的回调函数将数据保存到队列中
 ///-------------------------------------------------------------------------------------
 
-void MdApi::OnDisconnected(int reason)
+void MdApi::OnDisconnected(int reason) 
 {
 	gil_scoped_acquire acquire;
 	this->onDisconnected(reason);
 };
 
-void MdApi::OnError(XTPRI *error_info)
+void MdApi::OnError(XTPRI *error_info) 
 {
 	gil_scoped_acquire acquire;
 	dict error;
@@ -26,13 +26,13 @@ void MdApi::OnError(XTPRI *error_info)
 	this->onError(error);
 };
 
-void MdApi::OnSubMarketData(XTPST *ticker, XTPRI *error_info, bool is_last)
+void MdApi::OnSubMarketData(XTPST *ticker, XTPRI *error_info, bool is_last) 
 {
 	gil_scoped_acquire acquire;
 	dict data;
 	if (ticker)
 	{
-		data["exchange_id"] = (int)ticker->exchange_id;
+		data["exchange_id"] = (int) ticker->exchange_id;
 		data["ticker"] = ticker->ticker;
 	}
 	dict error;
@@ -44,13 +44,13 @@ void MdApi::OnSubMarketData(XTPST *ticker, XTPRI *error_info, bool is_last)
 	this->onSubMarketData(data, error, is_last);
 };
 
-void MdApi::OnUnSubMarketData(XTPST *ticker, XTPRI *error_info, bool is_last)
+void MdApi::OnUnSubMarketData(XTPST *ticker, XTPRI *error_info, bool is_last) 
 {
 	gil_scoped_acquire acquire;
 	dict data;
 	if (ticker)
 	{
-		data["exchange_id"] = (int)ticker->exchange_id;
+		data["exchange_id"] = (int) ticker->exchange_id;
 		data["ticker"] = ticker->ticker;
 	}
 	dict error;
@@ -62,14 +62,13 @@ void MdApi::OnUnSubMarketData(XTPST *ticker, XTPRI *error_info, bool is_last)
 	this->onUnSubMarketData(data, error, is_last);
 };
 
-void MdApi::OnDepthMarketData(XTPMD *market_data, int64_t bid1_qty[], int32_t bid1_count, int32_t max_bid1_count, int64_t ask1_qty[], int32_t ask1_count, int32_t max_ask1_count)
+void MdApi::OnDepthMarketData(XTPMD *market_data, int64_t bid1_qty[], int32_t bid1_count, int32_t max_bid1_count, int64_t ask1_qty[], int32_t ask1_count, int32_t max_ask1_count) 
 {
 	gil_scoped_acquire acquire;
 	dict data;
-
 	if (market_data)
 	{
-		data["exchange_id"] = (int)market_data->exchange_id;
+		data["exchange_id"] = (int) market_data->exchange_id;
 		data["ticker"] = market_data->ticker;
 		data["last_price"] = market_data->last_price;
 		data["pre_close_price"] = market_data->pre_close_price;
@@ -89,14 +88,17 @@ void MdApi::OnDepthMarketData(XTPMD *market_data, int64_t bid1_qty[], int32_t bi
 		data["qty"] = market_data->qty;
 		data["turnover"] = market_data->turnover;
 		data["avg_price"] = market_data->avg_price;
+		data["bid"] = market_data->bid;
+		data["ask"] = market_data->ask;
+		data["bid_qty"] = market_data->bid_qty;
+		data["ask_qty"] = market_data->ask_qty;
 		data["trades_count"] = market_data->trades_count;
+		data["ticker_status"] = market_data->ticker_status;
+		data["stk"] = market_data->stk;
+		data["opt"] = market_data->opt;
+		data["data_type"] = market_data->data_type;
 		data["r4"] = market_data->r4;
 
-		//data["stk"] = market_data->stk;
-		//data["opt"] = market_data->opt;
-		//data["data_type"] = market_data->data_type
-
-		//Solve UDP protocol error text
 		string status = market_data->ticker_status;
 		data["ticker_status"] = status.substr(0, 4);
 
@@ -105,7 +107,7 @@ void MdApi::OnDepthMarketData(XTPMD *market_data, int64_t bid1_qty[], int32_t bi
 		pybind11::list ask_qty;
 		pybind11::list bid_qty;
 
-		for (int i = 0; i < 10; i++)
+		for (int i = 1; i < 10; i++)
 		{
 			ask.append(market_data->ask[i]);
 			bid.append(market_data->bid[i]);
@@ -115,19 +117,19 @@ void MdApi::OnDepthMarketData(XTPMD *market_data, int64_t bid1_qty[], int32_t bi
 
 		data["ask"] = ask;
 		data["bid"] = bid;
-		data["bid_qty"] = bid_qty;
 		data["ask_qty"] = ask_qty;
+		data["bid_qty"] = bid_qty;
 	}
 	this->onDepthMarketData(data);
 };
 
-void MdApi::OnSubOrderBook(XTPST *ticker, XTPRI *error_info, bool is_last)
+void MdApi::OnSubOrderBook(XTPST *ticker, XTPRI *error_info, bool is_last) 
 {
 	gil_scoped_acquire acquire;
 	dict data;
 	if (ticker)
 	{
-		data["exchange_id"] = (int)ticker->exchange_id;
+		data["exchange_id"] = (int) ticker->exchange_id;
 		data["ticker"] = ticker->ticker;
 	}
 	dict error;
@@ -139,13 +141,13 @@ void MdApi::OnSubOrderBook(XTPST *ticker, XTPRI *error_info, bool is_last)
 	this->onSubOrderBook(data, error, is_last);
 };
 
-void MdApi::OnUnSubOrderBook(XTPST *ticker, XTPRI *error_info, bool is_last)
+void MdApi::OnUnSubOrderBook(XTPST *ticker, XTPRI *error_info, bool is_last) 
 {
 	gil_scoped_acquire acquire;
 	dict data;
 	if (ticker)
 	{
-		data["exchange_id"] = (int)ticker->exchange_id;
+		data["exchange_id"] = (int) ticker->exchange_id;
 		data["ticker"] = ticker->ticker;
 	}
 	dict error;
@@ -157,13 +159,13 @@ void MdApi::OnUnSubOrderBook(XTPST *ticker, XTPRI *error_info, bool is_last)
 	this->onUnSubOrderBook(data, error, is_last);
 };
 
-void MdApi::OnOrderBook(XTPOB *order_book)
+void MdApi::OnOrderBook(XTPOB *order_book) 
 {
 	gil_scoped_acquire acquire;
 	dict data;
 	if (order_book)
 	{
-		data["exchange_id"] = (int)order_book->exchange_id;
+		data["exchange_id"] = (int) order_book->exchange_id;
 		data["ticker"] = order_book->ticker;
 		data["last_price"] = order_book->last_price;
 		data["qty"] = order_book->qty;
@@ -178,13 +180,13 @@ void MdApi::OnOrderBook(XTPOB *order_book)
 	this->onOrderBook(data);
 };
 
-void MdApi::OnSubTickByTick(XTPST *ticker, XTPRI *error_info, bool is_last)
+void MdApi::OnSubTickByTick(XTPST *ticker, XTPRI *error_info, bool is_last) 
 {
 	gil_scoped_acquire acquire;
 	dict data;
 	if (ticker)
 	{
-		data["exchange_id"] = (int)ticker->exchange_id;
+		data["exchange_id"] = (int) ticker->exchange_id;
 		data["ticker"] = ticker->ticker;
 	}
 	dict error;
@@ -196,13 +198,13 @@ void MdApi::OnSubTickByTick(XTPST *ticker, XTPRI *error_info, bool is_last)
 	this->onSubTickByTick(data, error, is_last);
 };
 
-void MdApi::OnUnSubTickByTick(XTPST *ticker, XTPRI *error_info, bool is_last)
+void MdApi::OnUnSubTickByTick(XTPST *ticker, XTPRI *error_info, bool is_last) 
 {
 	gil_scoped_acquire acquire;
 	dict data;
 	if (ticker)
 	{
-		data["exchange_id"] = (int)ticker->exchange_id;
+		data["exchange_id"] = (int) ticker->exchange_id;
 		data["ticker"] = ticker->ticker;
 	}
 	dict error;
@@ -214,49 +216,24 @@ void MdApi::OnUnSubTickByTick(XTPST *ticker, XTPRI *error_info, bool is_last)
 	this->onUnSubTickByTick(data, error, is_last);
 };
 
-void MdApi::OnTickByTick(XTPTBT *tbt_data)
+void MdApi::OnTickByTick(XTPTBT *tbt_data) 
 {
 	gil_scoped_acquire acquire;
 	dict data;
 	if (tbt_data)
 	{
-		data["exchange_id"] = (int)tbt_data->exchange_id;
+		data["exchange_id"] = (int) tbt_data->exchange_id;
 		data["ticker"] = tbt_data->ticker;
 		data["seq"] = tbt_data->seq;
 		data["data_time"] = tbt_data->data_time;
-		data["type"] = (int)tbt_data->type;
-
-		dict entrust;
-		dict trade;
-
-		if (tbt_data->type == XTP_TBT_ENTRUST)
-		{
-			entrust["channel_no"] = tbt_data->entrust.channel_no;
-			entrust["seq"] = tbt_data->entrust.seq;
-			entrust["price"] = tbt_data->entrust.price;
-			entrust["qty"] = tbt_data->entrust.qty;
-			entrust["side"] = tbt_data->entrust.side;
-			entrust["ord_type"] = tbt_data->entrust.ord_type;
-		}
-		else
-		{
-			trade["channel_no"] = tbt_data->trade.channel_no;
-			trade["seq"] = tbt_data->trade.seq;
-			trade["price"] = tbt_data->trade.price;
-			trade["qty"] = tbt_data->trade.qty;
-			trade["money"] = tbt_data->trade.money;
-			trade["bid_no"] = tbt_data->trade.bid_no;
-			trade["ask_no"] = tbt_data->trade.ask_no;
-			trade["trade_flag"] = tbt_data->trade.trade_flag;
-		}
-
-		data["entrust"] = entrust;
-		data["trade"] = trade;
+		data["type"] = (int) tbt_data->type;
+		data["entrust"] = tbt_data->entrust;
+		data["trade"] = tbt_data->trade;
 	}
 	this->onTickByTick(data);
 };
 
-void MdApi::OnSubscribeAllMarketData(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info)
+void MdApi::OnSubscribeAllMarketData(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info) 
 {
 	gil_scoped_acquire acquire;
 	dict error;
@@ -268,7 +245,7 @@ void MdApi::OnSubscribeAllMarketData(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error
 	this->onSubscribeAllMarketData(exchange_id, error);
 };
 
-void MdApi::OnUnSubscribeAllMarketData(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info)
+void MdApi::OnUnSubscribeAllMarketData(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info) 
 {
 	gil_scoped_acquire acquire;
 	dict error;
@@ -280,7 +257,7 @@ void MdApi::OnUnSubscribeAllMarketData(XTP_EXCHANGE_TYPE exchange_id, XTPRI *err
 	this->onUnSubscribeAllMarketData(exchange_id, error);
 };
 
-void MdApi::OnSubscribeAllOrderBook(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info)
+void MdApi::OnSubscribeAllOrderBook(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info) 
 {
 	gil_scoped_acquire acquire;
 	dict error;
@@ -292,7 +269,7 @@ void MdApi::OnSubscribeAllOrderBook(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_
 	this->onSubscribeAllOrderBook(exchange_id, error);
 };
 
-void MdApi::OnUnSubscribeAllOrderBook(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info)
+void MdApi::OnUnSubscribeAllOrderBook(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info) 
 {
 	gil_scoped_acquire acquire;
 	dict error;
@@ -304,7 +281,7 @@ void MdApi::OnUnSubscribeAllOrderBook(XTP_EXCHANGE_TYPE exchange_id, XTPRI *erro
 	this->onUnSubscribeAllOrderBook(exchange_id, error);
 };
 
-void MdApi::OnSubscribeAllTickByTick(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info)
+void MdApi::OnSubscribeAllTickByTick(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info) 
 {
 	gil_scoped_acquire acquire;
 	dict error;
@@ -316,7 +293,7 @@ void MdApi::OnSubscribeAllTickByTick(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error
 	this->onSubscribeAllTickByTick(exchange_id, error);
 };
 
-void MdApi::OnUnSubscribeAllTickByTick(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info)
+void MdApi::OnUnSubscribeAllTickByTick(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info) 
 {
 	gil_scoped_acquire acquire;
 	dict error;
@@ -328,16 +305,16 @@ void MdApi::OnUnSubscribeAllTickByTick(XTP_EXCHANGE_TYPE exchange_id, XTPRI *err
 	this->onUnSubscribeAllTickByTick(exchange_id, error);
 };
 
-void MdApi::OnQueryAllTickers(XTPQSI* ticker_info, XTPRI *error_info, bool is_last)
+void MdApi::OnQueryAllTickers(XTPQSI* ticker_info, XTPRI *error_info, bool is_last) 
 {
 	gil_scoped_acquire acquire;
 	dict data;
 	if (ticker_info)
 	{
-		data["exchange_id"] = (int)ticker_info->exchange_id;
+		data["exchange_id"] = (int) ticker_info->exchange_id;
 		data["ticker"] = ticker_info->ticker;
 		data["ticker_name"] = ticker_info->ticker_name;
-		data["ticker_type"] = (int)ticker_info->ticker_type;
+		data["ticker_type"] = (int) ticker_info->ticker_type;
 		data["pre_close_price"] = ticker_info->pre_close_price;
 		data["upper_limit_price"] = ticker_info->upper_limit_price;
 		data["lower_limit_price"] = ticker_info->lower_limit_price;
@@ -354,13 +331,13 @@ void MdApi::OnQueryAllTickers(XTPQSI* ticker_info, XTPRI *error_info, bool is_la
 	this->onQueryAllTickers(data, error, is_last);
 };
 
-void MdApi::OnQueryTickersPriceInfo(XTPTPI* ticker_info, XTPRI *error_info, bool is_last)
+void MdApi::OnQueryTickersPriceInfo(XTPTPI* ticker_info, XTPRI *error_info, bool is_last) 
 {
 	gil_scoped_acquire acquire;
 	dict data;
 	if (ticker_info)
 	{
-		data["exchange_id"] = (int)ticker_info->exchange_id;
+		data["exchange_id"] = (int) ticker_info->exchange_id;
 		data["ticker"] = ticker_info->ticker;
 		data["last_price"] = ticker_info->last_price;
 	}
@@ -373,7 +350,7 @@ void MdApi::OnQueryTickersPriceInfo(XTPTPI* ticker_info, XTPRI *error_info, bool
 	this->onQueryTickersPriceInfo(data, error, is_last);
 };
 
-void MdApi::OnSubscribeAllOptionMarketData(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info)
+void MdApi::OnSubscribeAllOptionMarketData(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info) 
 {
 	gil_scoped_acquire acquire;
 	dict error;
@@ -385,7 +362,7 @@ void MdApi::OnSubscribeAllOptionMarketData(XTP_EXCHANGE_TYPE exchange_id, XTPRI 
 	this->onSubscribeAllOptionMarketData(exchange_id, error);
 };
 
-void MdApi::OnUnSubscribeAllOptionMarketData(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info)
+void MdApi::OnUnSubscribeAllOptionMarketData(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info) 
 {
 	gil_scoped_acquire acquire;
 	dict error;
@@ -397,7 +374,7 @@ void MdApi::OnUnSubscribeAllOptionMarketData(XTP_EXCHANGE_TYPE exchange_id, XTPR
 	this->onUnSubscribeAllOptionMarketData(exchange_id, error);
 };
 
-void MdApi::OnSubscribeAllOptionOrderBook(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info)
+void MdApi::OnSubscribeAllOptionOrderBook(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info) 
 {
 	gil_scoped_acquire acquire;
 	dict error;
@@ -409,7 +386,7 @@ void MdApi::OnSubscribeAllOptionOrderBook(XTP_EXCHANGE_TYPE exchange_id, XTPRI *
 	this->onSubscribeAllOptionOrderBook(exchange_id, error);
 };
 
-void MdApi::OnUnSubscribeAllOptionOrderBook(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info)
+void MdApi::OnUnSubscribeAllOptionOrderBook(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info) 
 {
 	gil_scoped_acquire acquire;
 	dict error;
@@ -421,7 +398,7 @@ void MdApi::OnUnSubscribeAllOptionOrderBook(XTP_EXCHANGE_TYPE exchange_id, XTPRI
 	this->onUnSubscribeAllOptionOrderBook(exchange_id, error);
 };
 
-void MdApi::OnSubscribeAllOptionTickByTick(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info)
+void MdApi::OnSubscribeAllOptionTickByTick(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info) 
 {
 	gil_scoped_acquire acquire;
 	dict error;
@@ -433,7 +410,7 @@ void MdApi::OnSubscribeAllOptionTickByTick(XTP_EXCHANGE_TYPE exchange_id, XTPRI 
 	this->onSubscribeAllOptionTickByTick(exchange_id, error);
 };
 
-void MdApi::OnUnSubscribeAllOptionTickByTick(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info)
+void MdApi::OnUnSubscribeAllOptionTickByTick(XTP_EXCHANGE_TYPE exchange_id, XTPRI *error_info) 
 {
 	gil_scoped_acquire acquire;
 	dict error;
@@ -445,17 +422,17 @@ void MdApi::OnUnSubscribeAllOptionTickByTick(XTP_EXCHANGE_TYPE exchange_id, XTPR
 	this->onUnSubscribeAllOptionTickByTick(exchange_id, error);
 };
 
-void MdApi::OnQueryAllTickersFullInfo(XTPQFI* ticker_info, XTPRI *error_info, bool is_last)
+void MdApi::OnQueryAllTickersFullInfo(XTPQFI* ticker_info, XTPRI *error_info, bool is_last) 
 {
 	gil_scoped_acquire acquire;
 	dict data;
 	if (ticker_info)
 	{
-		data["exchange_id"] = (int)ticker_info->exchange_id;
+		data["exchange_id"] = (int) ticker_info->exchange_id;
 		data["ticker"] = ticker_info->ticker;
 		data["ticker_name"] = ticker_info->ticker_name;
-		data["security_type"] = (int)ticker_info->security_type;
-		data["ticker_qualification_class"] = (int)ticker_info->ticker_qualification_class;
+		data["security_type"] = (int) ticker_info->security_type;
+		data["ticker_qualification_class"] = (int) ticker_info->ticker_qualification_class;
 		data["is_registration"] = ticker_info->is_registration;
 		data["is_VIE"] = ticker_info->is_VIE;
 		data["is_noprofit"] = ticker_info->is_noprofit;
@@ -477,6 +454,8 @@ void MdApi::OnQueryAllTickersFullInfo(XTPQFI* ticker_info, XTPRI *error_info, bo
 		data["market_ask_qty_upper_limit"] = ticker_info->market_ask_qty_upper_limit;
 		data["market_ask_qty_lower_limit"] = ticker_info->market_ask_qty_lower_limit;
 		data["market_ask_qty_unit"] = ticker_info->market_ask_qty_unit;
+		data["security_status"] = (int) ticker_info->security_status;
+		data["unknown1"] = ticker_info->unknown1;
 		data["unknown"] = ticker_info->unknown;
 	}
 	dict error;
@@ -500,6 +479,7 @@ void MdApi::createQuoteApi(int client_id, string save_file_path, int log_level)
 		this->api = QuoteApi::CreateQuoteApi(client_id, save_file_path.c_str(), XTP_LOG_LEVEL(log_level));
 		this->api->RegisterSpi(this);
 	}
+
 };
 
 void MdApi::init()
@@ -642,7 +622,7 @@ int MdApi::unSubscribeAllTickByTick(int exchange_id)
 
 int MdApi::login(string ip, int port, string user, string password, int sock_type, string local_ip)
 {
-	int i;
+	int i = 0;
 
 	//默认不设置本地网卡地址
 	if (local_ip == "") 
@@ -653,7 +633,7 @@ int MdApi::login(string ip, int port, string user, string password, int sock_typ
 	{
 		i = this->api->Login(ip.c_str(), port, user.c_str(), password.c_str(), (XTP_PROTOCOL_TYPE)sock_type, local_ip.c_str());
 	}
-	
+
 	return i;
 };
 

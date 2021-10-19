@@ -26,6 +26,8 @@ virtual void onQueryFundTransfer(const dict &data, const dict &error, int reques
 
 virtual void onFundTransfer(const dict &data, const dict &error, uint64_t session_id) {};
 
+virtual void onQueryOtherServerFund(XTPFundQueryRsp fund_info, const dict &error, int request_id, uint64_t session_id) {};
+
 virtual void onQueryETF(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
 virtual void onQueryETFBasket(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};

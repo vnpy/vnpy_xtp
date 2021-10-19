@@ -263,7 +263,7 @@ void TdApi::OnQueryPosition(XTPQueryStkPositionRsp *position, XTPRI *error_info,
 		data["yesterday_position"] = position->yesterday_position;
 		data["purchase_redeemable_qty"] = position->purchase_redeemable_qty;
 		data["position_direction"] = (int) position->position_direction;
-		data["reserved1"] = position->reserved1;
+		data["position_security_type"] = (int) position->position_security_type;
 		data["executable_option"] = position->executable_option;
 		data["lockable_position"] = position->lockable_position;
 		data["executable_underlying"] = position->executable_underlying;
@@ -313,6 +313,8 @@ void TdApi::OnQueryAsset(XTPQueryAssetRsp *asset, XTPRI *error_info, int request
 		data["repay_stock_aval_banlance"] = asset->repay_stock_aval_banlance;
 		data["fund_order_data_charges"] = asset->fund_order_data_charges;
 		data["fund_cancel_data_charges"] = asset->fund_cancel_data_charges;
+		data["exchange_cur_risk_degree"] = asset->exchange_cur_risk_degree;
+		data["company_cur_risk_degree"] = asset->company_cur_risk_degree;
 		data["unknown"] = asset->unknown;
 	}
 	dict error;
@@ -390,6 +392,18 @@ void TdApi::OnFundTransfer(XTPFundTransferNotice *fund_transfer_info, XTPRI *err
 		error["error_msg"] = error_info->error_msg;
 	}
 	this->onFundTransfer(data, error, session_id);
+};
+
+void TdApi::OnQueryOtherServerFund(XTPFundQueryRsp *fund_info, XTPRI *error_info, int request_id, uint64_t session_id) 
+{
+	gil_scoped_acquire acquire;
+	dict error;
+	if (error_info)
+	{
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
+	}
+	this->onQueryOtherServerFund(fund_info, error, request_id, session_id);
 };
 
 void TdApi::OnQueryETF(XTPQueryETFBaseRsp *etf_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id) 

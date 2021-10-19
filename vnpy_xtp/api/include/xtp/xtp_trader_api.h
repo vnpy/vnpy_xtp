@@ -152,6 +152,14 @@ namespace XTP {
 			///@remark 当资金划拨订单有状态变化的时候，会被调用，需要快速返回，否则会堵塞后续消息，当堵塞严重时，会触发断线。所有登录了此用户的客户端都将收到此用户的资金划拨通知。
 			virtual void OnFundTransfer(XTPFundTransferNotice *fund_transfer_info, XTPRI *error_info, uint64_t session_id) {};
 
+			///请求查询其他节点可用资金的响应，需要快速返回，否则会堵塞后续消息，当堵塞严重时，会触发断线
+			///@param fund_info 查询到的其他节点可用资金情况
+			///@param error_info 查询其他节点可用资金发生错误时返回的错误信息，当error_info为空，或者error_info.error_id为0时，表明没有错误
+			///@param request_id 此消息响应函数对应的请求ID
+			///@param session_id 资金账户对应的session_id，登录时得到
+			///@remark 需要快速返回，否则会堵塞后续消息，当堵塞严重时，会触发断线
+			virtual void OnQueryOtherServerFund(XTPFundQueryRsp *fund_info, XTPRI *error_info, int request_id, uint64_t session_id) {};
+
 			///请求查询ETF清单文件的响应，需要快速返回，否则会堵塞后续消息，当堵塞严重时，会触发断线
 			///@param etf_info 查询到的ETF清单文件情况
 			///@param error_info 查询ETF清单文件发生错误时返回的错误信息，当error_info为空，或者error_info.error_id为0时，表明没有错误
@@ -622,6 +630,13 @@ namespace XTP {
 			///@param session_id 资金账户对应的session_id,登录时得到
 			///@param request_id 用于用户定位查询响应的ID，由用户自定义
 			virtual int QueryFundTransfer(XTPQueryFundTransferLogReq *query_param, uint64_t session_id, int request_id) = 0;
+
+			///请求查询其他节点可用资金
+			///@return 查询是否成功，“0”表示成功，非“0”表示出错，此时用户可以调用GetApiLastError()来获取错误代码
+			///@param query_param 查询时需要提供的信息
+			///@param session_id 资金账户对应的session_id,登录时得到
+			///@param request_id 用于用户定位查询响应的ID，由用户自定义
+			virtual int QueryOtherServerFund(XTPFundQueryReq *query_param, uint64_t session_id, int request_id) = 0;
 
 			///请求查询ETF清单文件
 			///@return 查询是否成功，“0”表示成功，非“0”表示出错，此时用户可以调用GetApiLastError()来获取错误代码

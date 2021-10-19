@@ -73,10 +73,11 @@ XTPMarketDataStruct = {
 	"ticker_status": "char",
 	"stk": "XTPMarketDataStockExData",
 	"opt": "XTPMarketDataOptionExData",
+
+
 	"data_type": "XTP_MARKETDATA_TYPE",
 	"r4": "int32_t",
 }
-
 XTPQuoteStaticInfo = {
 	"exchange_id": "enum",
 	"ticker": "char",
@@ -111,6 +112,7 @@ XTPTickByTickEntrust = {
 	"qty": "int64_t",
 	"side": "char",
 	"ord_type": "char",
+	"order_no": "int64_t",
 }
 
 XTPTickByTickTrade = {
@@ -167,6 +169,8 @@ XTPQuoteFullInfo = {
 	"market_ask_qty_upper_limit": "int32_t",
 	"market_ask_qty_lower_limit": "int32_t",
 	"market_ask_qty_unit": "int32_t",
+	"security_status": "enum",
+	"unknown1": "uint32_t",
 	"unknown": "uint64_t",
 }
 

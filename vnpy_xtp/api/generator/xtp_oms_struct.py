@@ -129,6 +129,8 @@ XTPQueryAssetRsp = {
 	"repay_stock_aval_banlance": "double",
 	"fund_order_data_charges": "double",
 	"fund_cancel_data_charges": "double",
+	"exchange_cur_risk_degree": "double",
+	"company_cur_risk_degree": "double",
 	"unknown": "uint64_t",
 }
 
@@ -148,7 +150,7 @@ XTPQueryStkPositionRsp = {
 	"yesterday_position": "int64_t",
 	"purchase_redeemable_qty": "int64_t",
 	"position_direction": "enum",
-	"reserved1": "uint32_t",
+	"position_security_type": "enum",
 	"executable_option": "int64_t",
 	"lockable_position": "int64_t",
 	"executable_underlying": "int64_t",
