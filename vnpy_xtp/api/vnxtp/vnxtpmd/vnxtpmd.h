@@ -20,7 +20,7 @@ using namespace XTP::API;
 class MdApi : public QuoteSpi
 {
 private:
-	QuoteApi* api;				//API对象
+	QuoteApi* api = NULL;				//API对象
 	bool active = false;		//工作状态
 
 public:

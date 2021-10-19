@@ -20,7 +20,7 @@ using namespace XTP::API;
 class TdApi : public TraderSpi
 {
 private:
-	TraderApi* api;            //API对象
+	TraderApi* api = NULL;            //API对象
 	bool active = false;       //工作状态
 
 public:
