@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-    <img src ="https://img.shields.io/badge/version-2.2.27.5-blueviolet.svg"/>
+    <img src ="https://img.shields.io/badge/version-2.2.30.6-blueviolet.svg"/>
     <img src ="https://img.shields.io/badge/platform-windows|linux-yellow.svg"/>
     <img src ="https://img.shields.io/badge/python-3.7-blue.svg" />
     <img src ="https://img.shields.io/github/license/vnpy/vnpy.svg?color=orange"/>
@@ -13,7 +13,7 @@
 
 ## 说明
 
-基于中泰证券XTP柜台的2.2.27.4接口封装开发。
+基于中泰证券XTP柜台的2.2.30.6接口封装开发。
 
 ## 安装
 
