@@ -20,7 +20,7 @@ using namespace XTP::API;
 class MdApi : public QuoteSpi
 {
 private:
-	QuoteApi* api;				//API����
+	QuoteApi* api = NULL;				//API����
 	bool active = false;		//����״̬
 
 public:

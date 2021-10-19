@@ -20,7 +20,7 @@ using namespace XTP::API;
 class TdApi : public TraderSpi
 {
 private:
-	TraderApi* api;            //API����
+	TraderApi* api = NULL;            //API����
 	bool active = false;       //����״̬
 
 public:
