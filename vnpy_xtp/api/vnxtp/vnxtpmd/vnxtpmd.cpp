@@ -97,8 +97,8 @@ void MdApi::OnDepthMarketData(XTPMD *market_data, int64_t bid1_qty[], int32_t bi
 		//data["data_type"] = market_data->data_type
 
 		//Solve UDP protocol error text
-		string status = market_data->ticker_status;
-		data["ticker_status"] = status.substr(0, 4);
+		//string status = market_data->ticker_status;
+		//data["ticker_status"] = status.substr(0, 4);
 
 		pybind11::list ask;
 		pybind11::list bid;
