@@ -411,7 +411,7 @@ class XtpMdApi(MdApi):
 
         # Create API object
         if not self.connect_status:
-            path = str(get_folder_path(self.gateway_name.lower()))
+            path = str(get_folder_path(self.gateway_name.lower())).encode("GBK")
             self.createQuoteApi(self.client_id, path, log_level)
             self.login_server()
         else:
@@ -735,7 +735,7 @@ class XtpTdApi(TdApi):
 
         # Create API object
         if not self.connect_status:
-            path = str(get_folder_path(self.gateway_name.lower()))
+            path = str(get_folder_path(self.gateway_name.lower())).encode("GBK")
             self.createTraderApi(self.client_id, path, log_level)
 
             self.setSoftwareKey(self.software_key)
