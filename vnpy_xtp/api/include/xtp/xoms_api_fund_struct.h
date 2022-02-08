@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////
-///@author 中泰证券股份有限公司
+///@author ��̩֤ȯ�ɷ����޹�˾
 ///@file xoms_api_fund_struct.h
-///@brief 定义资金划拨相关结构体类型
+///@brief �����ʽ𻮲���ؽṹ������
 /////////////////////////////////////////////////////////////////////////
 #ifndef XOMS_API_FUND_STRUCT_H_
 #define XOMS_API_FUND_STRUCT_H_
@@ -12,29 +12,29 @@
 
 #pragma pack(8)
 
-/// 用户资金账户的密码字符串长度
+/// �û��ʽ��˻��������ַ�������
 #define XTP_ACCOUNT_PASSWORD_LEN 64
 
 /////////////////////////////////////////////////////////////////////////
-///用户资金请求
+///�û��ʽ�����
 /////////////////////////////////////////////////////////////////////////
 struct XTPFundTransferReq
 {
-    ///资金内转编号，无需用户填写，类似于xtp_id
+    ///�ʽ���ת��ţ������û���д��������xtp_id
     uint64_t	serial_id;
-	///资金账户代码
+	///�ʽ��˻�����
 	char        fund_account[XTP_ACCOUNT_NAME_LEN];
-	///资金账户密码
+	///�ʽ��˻�����
 	char	    password[XTP_ACCOUNT_PASSWORD_LEN];
-	///金额
+	///���
 	double	    amount;
-	///内转类型
+	///��ת����
 	XTP_FUND_TRANSFER_TYPE	transfer_type;
 
 };
 
 /////////////////////////////////////////////////////////////////////////
-///用户资金划转请求的响应-复用资金通知结构体
+///�û��ʽ�ת�������Ӧ-�����ʽ�֪ͨ�ṹ��
 /////////////////////////////////////////////////////////////////////////
 typedef struct XTPFundTransferNotice XTPFundTransferAck ;
 
