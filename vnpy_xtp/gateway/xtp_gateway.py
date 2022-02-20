@@ -168,6 +168,8 @@ class XtpGateway(BaseGateway):
     vn.py用于对接中泰XTP柜台的交易接口。
     """
 
+    default_name: str = "XTP"
+
     default_setting: Dict[str, Any] = {
         "账号": "",
         "密码": "",
@@ -183,9 +185,9 @@ class XtpGateway(BaseGateway):
 
     exchanges: List[Exchange] = list(EXCHANGE_VT2XTP.keys())
 
-    def __init__(self, event_engine: EventEngine):
+    def __init__(self, event_engine: EventEngine, gateway_name: str):
         """构造函数"""
-        super().__init__(event_engine, "XTP")
+        super().__init__(event_engine, gateway_name)
 
         self.md_api = XtpMdApi(self)
         self.td_api = XtpTdApi(self)
