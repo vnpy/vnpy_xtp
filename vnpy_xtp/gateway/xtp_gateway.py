@@ -165,7 +165,7 @@ symbol_contract_map: Dict[str, ContractData] = {}
 
 class XtpGateway(BaseGateway):
     """
-    vn.py用于对接中泰XTP柜台的交易接口。
+    VeighNa用于对接中泰XTP柜台的交易接口。
     """
 
     default_name: str = "XTP"
