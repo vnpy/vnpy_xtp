@@ -90,10 +90,11 @@ void MdApi::OnDepthMarketData(XTPMD *market_data, int64_t bid1_qty[], int32_t bi
 		data["turnover"] = market_data->turnover;
 		data["avg_price"] = market_data->avg_price;
 		data["trades_count"] = market_data->trades_count;
-		data["r4"] = market_data->r4;
+		data["data_type_v2"] = (int)market_data->data_type_v2;
 
 		//data["stk"] = market_data->stk;
 		//data["opt"] = market_data->opt;
+		//data["bond"] = market_data->bond;
 		//data["data_type"] = market_data->data_type
 
 		//Solve UDP protocol error text
@@ -228,6 +229,7 @@ void MdApi::OnTickByTick(XTPTBT *tbt_data)
 
 		dict entrust;
 		dict trade;
+		dict state;
 
 		if (tbt_data->type == XTP_TBT_ENTRUST)
 		{
@@ -237,8 +239,9 @@ void MdApi::OnTickByTick(XTPTBT *tbt_data)
 			entrust["qty"] = tbt_data->entrust.qty;
 			entrust["side"] = tbt_data->entrust.side;
 			entrust["ord_type"] = tbt_data->entrust.ord_type;
+			entrust["order_no"] = tbt_data->entrust.order_no;
 		}
-		else
+		else if (tbt_data->type == XTP_TBT_TRADE)
 		{
 			trade["channel_no"] = tbt_data->trade.channel_no;
 			trade["seq"] = tbt_data->trade.seq;
@@ -248,6 +251,12 @@ void MdApi::OnTickByTick(XTPTBT *tbt_data)
 			trade["bid_no"] = tbt_data->trade.bid_no;
 			trade["ask_no"] = tbt_data->trade.ask_no;
 			trade["trade_flag"] = tbt_data->trade.trade_flag;
+		}
+		else
+		{
+			state["channel_no"] = tbt_data->state.channel_no;
+			state["seq"] = tbt_data->state.seq;
+			state["flag"] = tbt_data->state.flag;
 		}
 
 		data["entrust"] = entrust;
@@ -477,6 +486,8 @@ void MdApi::OnQueryAllTickersFullInfo(XTPQFI* ticker_info, XTPRI *error_info, bo
 		data["market_ask_qty_upper_limit"] = ticker_info->market_ask_qty_upper_limit;
 		data["market_ask_qty_lower_limit"] = ticker_info->market_ask_qty_lower_limit;
 		data["market_ask_qty_unit"] = ticker_info->market_ask_qty_unit;
+		data["security_status"] = (int)ticker_info->security_status;
+		data["unknown1"] = ticker_info->unknown1;
 		data["unknown"] = ticker_info->unknown;
 	}
 	dict error;
