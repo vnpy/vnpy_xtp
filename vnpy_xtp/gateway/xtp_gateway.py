@@ -317,6 +317,7 @@ class XtpMdApi(MdApi):
             exchange=EXCHANGE_XTP2VT[data["exchange_id"]],
             datetime=dt,
             volume=data["qty"],
+            turnover=data["turnover"],
             last_price=data["last_price"],
             limit_up=data["upper_limit_price"],
             limit_down=data["lower_limit_price"],
