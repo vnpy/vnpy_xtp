@@ -83,9 +83,9 @@
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)..\</OutDir>
     <TargetExt>.pyd</TargetExt>
-    <IncludePath>C:\miniconda3\include;$(SolutionDir);$(SolutionDir)..\include;$(SolutionDir)..\include\xtp;$(IncludePath)</IncludePath>
+    <IncludePath>C:\veighna_studio\include;$(SolutionDir);$(SolutionDir)..\include\xtp;$(SolutionDir)..\include;$(IncludePath)</IncludePath>
     <ReferencePath>$(ReferencePath)</ReferencePath>
-    <LibraryPath>$(SolutionDir)..\libs;C:\miniconda3\libs;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\veighna_studio\libs;$(SolutionDir)..\libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -152,7 +152,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\GitHub\vnpy\vnpy\api\xtp\libs;C:\miniconda3\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\veighna_studio\libs;$(SolutionDir)..\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>xtpquoteapi.lib;xtptraderapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

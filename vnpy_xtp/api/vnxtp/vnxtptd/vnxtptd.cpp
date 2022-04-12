@@ -112,7 +112,7 @@ void TdApi::OnCancelOrderError(XTPOrderCancelInfo *cancel_info, XTPRI *error_inf
 	this->onCancelOrderError(data, error, session_id);
 };
 
-void TdApi::OnQueryOrder(XTPQueryOrderRsp *order_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
+void TdApi::OnQueryOrderEx(XTPOrderInfoEx *order_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
@@ -143,6 +143,10 @@ void TdApi::OnQueryOrder(XTPQueryOrderRsp *order_info, XTPRI *error_info, int re
 		data["order_status"] = (int)order_info->order_status;
 		data["order_submit_status"] = (int)order_info->order_submit_status;
 		data["order_type"] = order_info->order_type;
+		data["order_exch_id"] = order_info->order_exch_id;
+		data["unknown"] = order_info->unknown;
+		data["error_id"] = order_info->order_err_t.error_id;
+		data["error_msg"] = order_info->order_err_t.error_msg;
 	}
 	dict error;
 	if (error_info)
@@ -150,10 +154,10 @@ void TdApi::OnQueryOrder(XTPQueryOrderRsp *order_info, XTPRI *error_info, int re
 		error["error_id"] = error_info->error_id;
 		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryOrder(data, error, request_id, is_last, session_id);
+	this->onQueryOrderEx(data, error, request_id, is_last, session_id);
 };
 
-void TdApi::OnQueryOrderByPage(XTPQueryOrderRsp *order_info, int64_t req_count, int64_t order_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id)
+void TdApi::OnQueryOrderByPageEx(XTPOrderInfoEx *order_info, int64_t req_count, int64_t order_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
@@ -184,8 +188,12 @@ void TdApi::OnQueryOrderByPage(XTPQueryOrderRsp *order_info, int64_t req_count, 
 		data["order_status"] = (int)order_info->order_status;
 		data["order_submit_status"] = (int)order_info->order_submit_status;
 		data["order_type"] = order_info->order_type;
+		data["order_exch_id"] = order_info->order_exch_id;
+		data["unknown"] = order_info->unknown;
+		data["error_id"] = order_info->order_err_t.error_id;
+		data["error_msg"] = order_info->order_err_t.error_msg;
 	}
-	this->onQueryOrderByPage(data, req_count, order_sequence, query_reference, request_id, is_last, session_id);
+	this->onQueryOrderByPageEx(data, req_count, order_sequence, query_reference, request_id, is_last, session_id);
 };
 
 void TdApi::OnQueryTrade(XTPQueryTradeRsp *trade_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
@@ -270,7 +278,7 @@ void TdApi::OnQueryPosition(XTPQueryStkPositionRsp *position, XTPRI *error_info,
 		data["yesterday_position"] = position->yesterday_position;
 		data["purchase_redeemable_qty"] = position->purchase_redeemable_qty;
 		data["position_direction"] = (int)position->position_direction;
-		data["reserved1"] = position->reserved1;
+		data["position_security_type"] = (int)position->position_security_type;
 		data["executable_option"] = position->executable_option;
 		data["lockable_position"] = position->lockable_position;
 		data["executable_underlying"] = position->executable_underlying;
@@ -320,6 +328,8 @@ void TdApi::OnQueryAsset(XTPQueryAssetRsp *asset, XTPRI *error_info, int request
 		data["repay_stock_aval_banlance"] = asset->repay_stock_aval_banlance;
 		data["fund_order_data_charges"] = asset->fund_order_data_charges;
 		data["fund_cancel_data_charges"] = asset->fund_cancel_data_charges;
+		data["exchange_cur_risk_degree"] = asset->exchange_cur_risk_degree;
+		data["company_cur_risk_degree"] = asset->company_cur_risk_degree;
 		data["unknown"] = asset->unknown;
 	}
 	dict error;
@@ -397,6 +407,25 @@ void TdApi::OnFundTransfer(XTPFundTransferNotice *fund_transfer_info, XTPRI *err
 		error["error_msg"] = error_info->error_msg;
 	}
 	this->onFundTransfer(data, error, session_id);
+};
+
+void TdApi::OnQueryOtherServerFund(XTPFundQueryRsp *fund_info, XTPRI *error_info, int request_id, uint64_t session_id)
+{
+	gil_scoped_acquire acquire;
+	dict data;
+	if (fund_info)
+	{
+		data["amount"] = fund_info->amount;
+		data["query_type"] = (int)fund_info->query_type;
+		data["unknown"] = fund_info->unknown;
+	}
+	dict error;
+	if (error_info)
+	{
+		error["error_id"] = error_info->error_id;
+		error["error_msg"] = error_info->error_msg;
+	}
+	this->onQueryOtherServerFund(data, error, request_id, session_id);
 };
 
 void TdApi::OnQueryETF(XTPQueryETFBaseRsp *etf_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
@@ -917,7 +946,7 @@ void TdApi::OnCancelOptionCombinedOrderError(XTPOptCombOrderCancelInfo *cancel_i
 	this->onCancelOptionCombinedOrderError(data, error, session_id);
 };
 
-void TdApi::OnQueryOptionCombinedOrders(XTPQueryOptCombOrderRsp *order_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
+void TdApi::OnQueryOptionCombinedOrdersEx(XTPOptCombOrderInfoEx *order_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
@@ -942,6 +971,10 @@ void TdApi::OnQueryOptionCombinedOrders(XTPQueryOptCombOrderRsp *order_info, XTP
 		data["order_submit_status"] = (int)order_info->order_submit_status;
 		data["order_type"] = order_info->order_type;
 		data["opt_comb_info"] = order_info->opt_comb_info;
+		data["order_exch_id"] = order_info->order_exch_id;
+		data["unknown"] = order_info->unknown;
+		data["error_id"] = order_info->order_err_t.error_id;
+		data["error_msg"] = order_info->order_err_t.error_msg;
 	}
 	dict error;
 	if (error_info)
@@ -949,10 +982,10 @@ void TdApi::OnQueryOptionCombinedOrders(XTPQueryOptCombOrderRsp *order_info, XTP
 		error["error_id"] = error_info->error_id;
 		error["error_msg"] = error_info->error_msg;
 	}
-	this->onQueryOptionCombinedOrders(data, error, request_id, is_last, session_id);
+	this->onQueryOptionCombinedOrdersEx(data, error, request_id, is_last, session_id);
 };
 
-void TdApi::OnQueryOptionCombinedOrdersByPage(XTPQueryOptCombOrderRsp *order_info, int64_t req_count, int64_t order_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id)
+void TdApi::OnQueryOptionCombinedOrdersByPageEx(XTPOptCombOrderInfoEx *order_info, int64_t req_count, int64_t order_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id)
 {
 	gil_scoped_acquire acquire;
 	dict data;
@@ -977,8 +1010,12 @@ void TdApi::OnQueryOptionCombinedOrdersByPage(XTPQueryOptCombOrderRsp *order_inf
 		data["order_submit_status"] = (int)order_info->order_submit_status;
 		data["order_type"] = order_info->order_type;
 		data["opt_comb_info"] = order_info->opt_comb_info;
+		data["order_exch_id"] = order_info->order_exch_id;
+		data["unknown"] = order_info->unknown;
+		data["error_id"] = order_info->order_err_t.error_id;
+		data["error_msg"] = order_info->order_err_t.error_msg;
 	}
-	this->onQueryOptionCombinedOrdersByPage(data, req_count, order_sequence, query_reference, request_id, is_last, session_id);
+	this->onQueryOptionCombinedOrdersByPageEx(data, req_count, order_sequence, query_reference, request_id, is_last, session_id);
 };
 
 void TdApi::OnQueryOptionCombinedTrades(XTPQueryOptCombTradeRsp *trade_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id)
@@ -1274,37 +1311,37 @@ uint64_t TdApi::cancelOrder(uint64_t order_xtp_id, uint64_t session_id)
 	return i;
 }
 
-int TdApi::queryOrderByXTPID(uint64_t order_xtp_id, uint64_t session_id, int request_id)
+int TdApi::queryOrderByXTPIDEx(const uint64_t order_xtp_id, uint64_t session_id, int request_id)
 {
-	int i = this->api->QueryOrderByXTPID(order_xtp_id, session_id, request_id);
+	int i = this->api->QueryOrderByXTPIDEx(order_xtp_id, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryOrders(const dict &req, uint64_t session_id, int request_id)
+int TdApi::queryOrdersEx(const dict &req, uint64_t session_id, int request_id)
 {
 	XTPQueryOrderReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
 	getString(req, "ticker", myreq.ticker);
 	getInt64_t(req, "begin_time", &myreq.begin_time);
 	getInt64_t(req, "end_time", &myreq.end_time);
-	int i = this->api->QueryOrders(&myreq, session_id, request_id);
+	int i = this->api->QueryOrdersEx(&myreq, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryUnfinishedOrders(uint64_t session_id, int request_id)
+int TdApi::queryUnfinishedOrdersEx(uint64_t session_id, int request_id)
 {
-	int i = this->api->QueryUnfinishedOrders(session_id, request_id);
+	int i = this->api->QueryUnfinishedOrdersEx(session_id, request_id);
 	return i;
 };
 
-int TdApi::queryOrdersByPage(const dict &req, uint64_t session_id, int request_id)
+int TdApi::queryOrdersByPageEx(const dict &req, uint64_t session_id, int request_id)
 {
 	XTPQueryOrderByPageReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
 	getInt64_t(req, "req_count", &myreq.req_count);
 	getInt64_t(req, "reference", &myreq.reference);
 	getInt64_t(req, "reserved", &myreq.reserved);
-	int i = this->api->QueryOrdersByPage(&myreq, session_id, request_id);
+	int i = this->api->QueryOrdersByPageEx(&myreq, session_id, request_id);
 	return i;
 };
 
@@ -1364,6 +1401,18 @@ int TdApi::queryFundTransfer(const dict &req, uint64_t session_id, int request_i
 	memset(&myreq, 0, sizeof(myreq));
 	getUint64_t(req, "serial_id", &myreq.serial_id);
 	int i = this->api->QueryFundTransfer(&myreq, session_id, request_id);
+	return i;
+};
+
+int TdApi::queryOtherServerFund(const dict &req, uint64_t session_id, int request_id)
+{
+	XTPFundQueryReq myreq;
+	memset(&myreq, 0, sizeof(myreq));
+	getString(req, "fund_account", myreq.fund_account);
+	getString(req, "password", myreq.password);
+	myreq.query_type = (XTP_FUND_QUERY_TYPE)getIntValue(req, "query_type");
+	getUint64_t(req, "unknown", myreq.unknown);
+	int i = this->api->QueryOtherServerFund(&myreq, session_id, request_id);
 	return i;
 };
 
@@ -1495,37 +1544,37 @@ int TdApi::queryCreditPositionExtraInfo(const dict &req, uint64_t session_id, in
 	return i;
 };
 
-int TdApi::queryOptionCombinedUnfinishedOrders(uint64_t session_id, int request_id)
+int TdApi::queryOptionCombinedUnfinishedOrdersEx(uint64_t session_id, int request_id)
 {
-	int i = this->api->QueryOptionCombinedUnfinishedOrders(session_id, request_id);
+	int i = this->api->QueryOptionCombinedUnfinishedOrdersEx(session_id, request_id);
 	return i;
 };
 
-int TdApi::queryOptionCombinedOrderByXTPID(uint64_t order_xtp_id, uint64_t session_id, int request_id)
+int TdApi::queryOptionCombinedOrderByXTPIDEx(uint64_t order_xtp_id, uint64_t session_id, int request_id)
 {
-	int i = this->api->QueryOptionCombinedOrderByXTPID(order_xtp_id, session_id, request_id);
+	int i = this->api->QueryOptionCombinedOrderByXTPIDEx(order_xtp_id, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryOptionCombinedOrders(const dict &req, uint64_t session_id, int request_id)
+int TdApi::queryOptionCombinedOrdersEx(const dict &req, uint64_t session_id, int request_id)
 {
 	XTPQueryOptCombOrderReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
 	getString(req, "comb_num", myreq.comb_num);
 	getInt64_t(req, "begin_time", &myreq.begin_time);
 	getInt64_t(req, "end_time", &myreq.end_time);
-	int i = this->api->QueryOptionCombinedOrders(&myreq, session_id, request_id);
+	int i = this->api->QueryOptionCombinedOrdersEx(&myreq, session_id, request_id);
 	return i;
 };
 
-int TdApi::queryOptionCombinedOrdersByPage(const dict &req, uint64_t session_id, int request_id)
+int TdApi::queryOptionCombinedOrdersByPageEx(const dict &req, uint64_t session_id, int request_id)
 {
 	XTPQueryOptCombOrderByPageReq myreq;
 	memset(&myreq, 0, sizeof(myreq));
 	getInt64_t(req, "req_count", &myreq.req_count);
 	getInt64_t(req, "reference", &myreq.reference);
 	getInt64_t(req, "reserved", &myreq.reserved);
-	int i = this->api->QueryOptionCombinedOrdersByPage(&myreq, session_id, request_id);
+	int i = this->api->QueryOptionCombinedOrdersByPageEx(&myreq, session_id, request_id);
 	return i;
 };
 
@@ -1654,11 +1703,11 @@ public:
 		}
 	};
 
-	void onQueryOrder(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) override
+	void onQueryOrderEx(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryOrder, data, error, request_id, is_last, session_id);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryOrderEx, data, error, request_id, is_last, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -1666,11 +1715,11 @@ public:
 		}
 	};
 
-	void onQueryOrderByPage(const dict &data, int64_t req_count, int64_t order_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id) override
+	void onQueryOrderByPageEx(const dict &data, int64_t req_count, int64_t order_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryOrderByPage, data, req_count, order_sequence, query_reference, request_id, is_last, session_id);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryOrderByPageEx, data, req_count, order_sequence, query_reference, request_id, is_last, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -1755,6 +1804,18 @@ public:
 		try
 		{
 			PYBIND11_OVERLOAD(void, TdApi, onFundTransfer, data, error, session_id);
+		}
+		catch (const error_already_set &e)
+		{
+			cout << e.what() << endl;
+		}
+	};
+
+	void onQueryOtherServerFund(const dict &data, const dict &error, int request_id, uint64_t session_id) override
+	{
+		try
+		{
+			PYBIND11_OVERLOAD(void, TdApi, onQueryOtherServerFund, data, error, request_id, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -2026,11 +2087,11 @@ public:
 		}
 	};
 
-	void onQueryOptionCombinedOrders(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) override
+	void onQueryOptionCombinedOrdersEx(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryOptionCombinedOrders, data, error, request_id, is_last, session_id);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryOptionCombinedOrdersEx, data, error, request_id, is_last, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -2038,11 +2099,11 @@ public:
 		}
 	};
 
-	void onQueryOptionCombinedOrdersByPage(const dict &data, int64_t req_count, int64_t order_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id) override
+	void onQueryOptionCombinedOrdersByPageEx(const dict &data, int64_t req_count, int64_t order_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, TdApi, onQueryOptionCombinedOrdersByPage, data, req_count, order_sequence, query_reference, request_id, is_last, session_id);
+			PYBIND11_OVERLOAD(void, TdApi, onQueryOptionCombinedOrdersByPageEx, data, req_count, order_sequence, query_reference, request_id, is_last, session_id);
 		}
 		catch (const error_already_set &e)
 		{
@@ -2137,10 +2198,10 @@ PYBIND11_MODULE(vnxtptd, m)
 		.def("insertOrder", &TdApi::insertOrder)
 		.def("cancelOrder", &TdApi::cancelOrder)
 
-		.def("queryOrderByXTPID", &TdApi::queryOrderByXTPID)
-		.def("queryOrders", &TdApi::queryOrders)
-		.def("queryUnfinishedOrders", &TdApi::queryUnfinishedOrders)
-		.def("queryOrdersByPage", &TdApi::queryOrdersByPage)
+		.def("queryOrderByXTPIDEx", &TdApi::queryOrderByXTPIDEx)
+		.def("queryOrdersEx", &TdApi::queryOrdersEx)
+		.def("queryUnfinishedOrdersEx", &TdApi::queryUnfinishedOrdersEx)
+		.def("queryOrdersByPageEx", &TdApi::queryOrdersByPageEx)
 		.def("queryTradesByXTPID", &TdApi::queryTradesByXTPID)
 		.def("queryTrades", &TdApi::queryTrades)
 		.def("queryTradesByPage", &TdApi::queryTradesByPage)
@@ -2148,6 +2209,7 @@ PYBIND11_MODULE(vnxtptd, m)
 		.def("queryAsset", &TdApi::queryAsset)
 		.def("queryStructuredFund", &TdApi::queryStructuredFund)
 		.def("queryFundTransfer", &TdApi::queryFundTransfer)
+		.def("queryOtherServerFund", &TdApi::queryOtherServerFund)
 		.def("queryETF", &TdApi::queryETF)
 		.def("queryETFTickerBasket", &TdApi::queryETFTickerBasket)
 		.def("queryIPOInfoList", &TdApi::queryIPOInfoList)
@@ -2164,10 +2226,10 @@ PYBIND11_MODULE(vnxtptd, m)
 		.def("queryCreditExtendDebtDateOrders", &TdApi::queryCreditExtendDebtDateOrders)
 		.def("queryCreditFundExtraInfo", &TdApi::queryCreditFundExtraInfo)
 		.def("queryCreditPositionExtraInfo", &TdApi::queryCreditPositionExtraInfo)
-		.def("queryOptionCombinedUnfinishedOrders", &TdApi::queryOptionCombinedUnfinishedOrders)
-		.def("queryOptionCombinedOrderByXTPID", &TdApi::queryOptionCombinedOrderByXTPID)
-		.def("queryOptionCombinedOrders", &TdApi::queryOptionCombinedOrders)
-		.def("queryOptionCombinedOrdersByPage", &TdApi::queryOptionCombinedOrdersByPage)
+		.def("queryOptionCombinedUnfinishedOrdersEx", &TdApi::queryOptionCombinedUnfinishedOrdersEx)
+		.def("queryOptionCombinedOrderByXTPIDEx", &TdApi::queryOptionCombinedOrderByXTPIDEx)
+		.def("queryOptionCombinedOrdersEx", &TdApi::queryOptionCombinedOrdersEx)
+		.def("queryOptionCombinedOrdersByPageEx", &TdApi::queryOptionCombinedOrdersByPageEx)
 		.def("queryOptionCombinedTradesByXTPID", &TdApi::queryOptionCombinedTradesByXTPID)
 		.def("queryOptionCombinedTrades", &TdApi::queryOptionCombinedTrades)
 		.def("queryOptionCombinedTradesByPage", &TdApi::queryOptionCombinedTradesByPage)
@@ -2180,8 +2242,8 @@ PYBIND11_MODULE(vnxtptd, m)
 		.def("onOrderEvent", &TdApi::onOrderEvent)
 		.def("onTradeEvent", &TdApi::onTradeEvent)
 		.def("onCancelOrderError", &TdApi::onCancelOrderError)
-		.def("onQueryOrder", &TdApi::onQueryOrder)
-		.def("onQueryOrderByPage", &TdApi::onQueryOrderByPage)
+		.def("onQueryOrderEx", &TdApi::onQueryOrderEx)
+		.def("onQueryOrderByPageEx", &TdApi::onQueryOrderByPageEx)
 		.def("onQueryTrade", &TdApi::onQueryTrade)
 		.def("onQueryTradeByPage", &TdApi::onQueryTradeByPage)
 		.def("onQueryPosition", &TdApi::onQueryPosition)
@@ -2189,6 +2251,7 @@ PYBIND11_MODULE(vnxtptd, m)
 		.def("onQueryStructuredFund", &TdApi::onQueryStructuredFund)
 		.def("onQueryFundTransfer", &TdApi::onQueryFundTransfer)
 		.def("onFundTransfer", &TdApi::onFundTransfer)
+		.def("onQueryOtherServerFund", &TdApi::onQueryOtherServerFund)
 		.def("onQueryETF", &TdApi::onQueryETF)
 		.def("onQueryETFBasket", &TdApi::onQueryETFBasket)
 		.def("onQueryIPOInfoList", &TdApi::onQueryIPOInfoList)
@@ -2211,8 +2274,8 @@ PYBIND11_MODULE(vnxtptd, m)
 		.def("onOptionCombinedOrderEvent", &TdApi::onOptionCombinedOrderEvent)
 		.def("onOptionCombinedTradeEvent", &TdApi::onOptionCombinedTradeEvent)
 		.def("onCancelOptionCombinedOrderError", &TdApi::onCancelOptionCombinedOrderError)
-		.def("onQueryOptionCombinedOrders", &TdApi::onQueryOptionCombinedOrders)
-		.def("onQueryOptionCombinedOrdersByPage", &TdApi::onQueryOptionCombinedOrdersByPage)
+		.def("onQueryOptionCombinedOrdersEx", &TdApi::onQueryOptionCombinedOrdersEx)
+		.def("onQueryOptionCombinedOrdersByPageEx", &TdApi::onQueryOptionCombinedOrdersByPageEx)
 		.def("onQueryOptionCombinedTrades", &TdApi::onQueryOptionCombinedTrades)
 		.def("onQueryOptionCombinedTradesByPage", &TdApi::onQueryOptionCombinedTradesByPage)
 		.def("onQueryOptionCombinedPosition", &TdApi::onQueryOptionCombinedPosition)

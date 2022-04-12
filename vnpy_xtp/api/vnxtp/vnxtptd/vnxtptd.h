@@ -71,16 +71,16 @@ public:
 	///@remark 此响应只会在撤单发生错误时被回调
 	virtual void OnCancelOrderError(XTPOrderCancelInfo *cancel_info, XTPRI *error_info, uint64_t session_id);
 
-	///请求查询报单响应
-	///@param order_info 查询到的一个报单
+	///请求查询报单响应-新版本接口
+	///@param order_info 查询到的一个报单信息
 	///@param error_info 查询报单时发生错误时，返回的错误信息，当error_info为空，或者error_info.error_id为0时，表明没有错误
 	///@param request_id 此消息响应函数对应的请求ID
 	///@param is_last 此消息响应函数是否为request_id这条请求所对应的最后一个响应，当为最后一个的时候为true，如果为false，表示还有其他后续消息响应
 	///@param session_id 资金账户对应的session_id，登录时得到
 	///@remark 由于支持分时段查询，一个查询请求可能对应多个响应，需要快速返回，否则会堵塞后续消息，当堵塞严重时，会触发断线
-	virtual void OnQueryOrder(XTPQueryOrderRsp *order_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id);
+	virtual void OnQueryOrderEx(XTPOrderInfoEx *order_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id);
 
-	///分页请求查询报单响应
+	///分页请求查询报单响应-新版本接口
 	///@param order_info 查询到的一个报单
 	///@param req_count 分页请求的最大数量
 	///@param order_sequence 分页请求的当前回报数量
@@ -89,7 +89,7 @@ public:
 	///@param is_last 此消息响应函数是否为request_id这条请求所对应的最后一个响应，当为最后一个的时候为true，如果为false，表示还有其他后续消息响应
 	///@param session_id 资金账户对应的session_id，登录时得到
 	///@remark 当order_sequence为0，表明当次查询没有查到任何记录，当is_last为true时，如果order_sequence等于req_count，那么表示还有报单，可以进行下一次分页查询，如果不等，表示所有报单已经查询完毕。一个查询请求可能对应多个响应，需要快速返回，否则会堵塞后续消息，当堵塞严重时，会触发断线。
-	virtual void OnQueryOrderByPage(XTPQueryOrderRsp *order_info, int64_t req_count, int64_t order_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id);
+	virtual void OnQueryOrderByPageEx(XTPOrderInfoEx *order_info, int64_t req_count, int64_t order_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id);
 
 	///请求查询成交响应
 	///@param trade_info 查询到的一个成交回报
@@ -153,6 +153,14 @@ public:
 	///@param session_id 资金账户对应的session_id，登录时得到
 	///@remark 当资金划拨订单有状态变化的时候，会被调用，需要快速返回，否则会堵塞后续消息，当堵塞严重时，会触发断线。所有登录了此用户的客户端都将收到此用户的资金划拨通知。
 	virtual void OnFundTransfer(XTPFundTransferNotice *fund_transfer_info, XTPRI *error_info, uint64_t session_id);
+
+	///请求查询其他节点可用资金的响应，需要快速返回，否则会堵塞后续消息，当堵塞严重时，会触发断线
+	///@param fund_info 查询到的其他节点可用资金情况
+	///@param error_info 查询其他节点可用资金发生错误时返回的错误信息，当error_info为空，或者error_info.error_id为0时，表明没有错误
+	///@param request_id 此消息响应函数对应的请求ID
+	///@param session_id 资金账户对应的session_id，登录时得到
+	///@remark 需要快速返回，否则会堵塞后续消息，当堵塞严重时，会触发断线
+	virtual void OnQueryOtherServerFund(XTPFundQueryRsp *fund_info, XTPRI *error_info, int request_id, uint64_t session_id);
 
 	///请求查询ETF清单文件的响应，需要快速返回，否则会堵塞后续消息，当堵塞严重时，会触发断线
 	///@param etf_info 查询到的ETF清单文件情况
@@ -335,16 +343,16 @@ public:
 	///@remark 此响应只会在撤单发生错误时被回调
 	virtual void OnCancelOptionCombinedOrderError(XTPOptCombOrderCancelInfo *cancel_info, XTPRI *error_info, uint64_t session_id);
 
-	///请求查询期权组合策略报单响应
+	///请求查询期权组合策略报单响应-新版本接口
 	///@param order_info 查询到的一个报单
 	///@param error_info 查询报单时发生错误时，返回的错误信息，当error_info为空，或者error_info.error_id为0时，表明没有错误
 	///@param request_id 此消息响应函数对应的请求ID
 	///@param is_last 此消息响应函数是否为request_id这条请求所对应的最后一个响应，当为最后一个的时候为true，如果为false，表示还有其他后续消息响应
 	///@param session_id 资金账户对应的session_id，登录时得到
 	///@remark 由于支持分时段查询，一个查询请求可能对应多个响应，需要快速返回，否则会堵塞后续消息，当堵塞严重时，会触发断线。此对应的请求函数不建议轮询使用，当报单量过多时，容易造成用户线路拥堵，导致api断线
-	virtual void OnQueryOptionCombinedOrders(XTPQueryOptCombOrderRsp *order_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id);
+	virtual void OnQueryOptionCombinedOrdersEx(XTPOptCombOrderInfoEx *order_info, XTPRI *error_info, int request_id, bool is_last, uint64_t session_id);
 
-	///分页请求查询期权组合策略报单响应
+	///分页请求查询期权组合策略报单响应-新版本接口
 	///@param order_info 查询到的一个报单
 	///@param req_count 分页请求的最大数量
 	///@param order_sequence 分页请求的当前回报数量
@@ -353,7 +361,7 @@ public:
 	///@param is_last 此消息响应函数是否为request_id这条请求所对应的最后一个响应，当为最后一个的时候为true，如果为false，表示还有其他后续消息响应
 	///@param session_id 资金账户对应的session_id，登录时得到
 	///@remark 当order_sequence为0，表明当次查询没有查到任何记录，当is_last为true时，如果order_sequence等于req_count，那么表示还有报单，可以进行下一次分页查询，如果不等，表示所有报单已经查询完毕。一个查询请求可能对应多个响应，需要快速返回，否则会堵塞后续消息，当堵塞严重时，会触发断线。
-	virtual void OnQueryOptionCombinedOrdersByPage(XTPQueryOptCombOrderRsp *order_info, int64_t req_count, int64_t order_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id);
+	virtual void OnQueryOptionCombinedOrdersByPageEx(XTPOptCombOrderInfoEx *order_info, int64_t req_count, int64_t order_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id);
 
 	///请求查询期权组合策略成交响应
 	///@param trade_info 查询到的一个成交回报
@@ -417,9 +425,9 @@ public:
 
 	virtual void onCancelOrderError(const dict &data, const dict &error, uint64_t session_id) {};
 
-	virtual void onQueryOrder(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
+	virtual void onQueryOrderEx(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
-	virtual void onQueryOrderByPage(const dict &data, int64_t req_count, int64_t order_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id) {};
+	virtual void onQueryOrderByPageEx(const dict &data, int64_t req_count, int64_t order_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id) {};
 
 	virtual void onQueryTrade(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
@@ -434,6 +442,8 @@ public:
 	virtual void onQueryFundTransfer(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
 	virtual void onFundTransfer(const dict &data, const dict &error, uint64_t session_id) {};
+
+	virtual void onQueryOtherServerFund(const dict &data, const dict &error, int request_id, uint64_t session_id) {};
 
 	virtual void onQueryETF(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
@@ -479,9 +489,9 @@ public:
 
 	virtual void onCancelOptionCombinedOrderError(const dict &data, const dict &error, uint64_t session_id) {};
 
-	virtual void onQueryOptionCombinedOrders(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
+	virtual void onQueryOptionCombinedOrdersEx(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
-	virtual void onQueryOptionCombinedOrdersByPage(const dict &data, int64_t req_count, int64_t order_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id) {};
+	virtual void onQueryOptionCombinedOrdersByPageEx(const dict &data, int64_t req_count, int64_t order_sequence, int64_t query_reference, int request_id, bool is_last, uint64_t session_id) {};
 
 	virtual void onQueryOptionCombinedTrades(const dict &data, const dict &error, int request_id, bool is_last, uint64_t session_id) {};
 
@@ -535,13 +545,13 @@ public:
 
 	uint64_t cancelOrder(uint64_t order_xtp_id, uint64_t session_id);
 
-	int queryOrderByXTPID(uint64_t order_xtp_id, uint64_t session_id, int request_id);
+	int queryOrderByXTPIDEx(const uint64_t order_xtp_id, uint64_t session_id, int request_id);
 
-	int queryOrders(const dict &req, uint64_t session_id, int request_id);
+	int queryOrdersEx(const dict &req, uint64_t session_id, int request_id);
 
-	int queryUnfinishedOrders(uint64_t session_id, int request_id);
+	int queryUnfinishedOrdersEx(uint64_t session_id, int request_id);
 
-	int queryOrdersByPage(const dict &req, uint64_t session_id, int request_id);
+	int queryOrdersByPageEx(const dict &req, uint64_t session_id, int request_id);
 
 	int queryTradesByXTPID(uint64_t order_xtp_id, uint64_t session_id, int request_id);
 
@@ -556,6 +566,8 @@ public:
 	int queryStructuredFund(const dict &req, uint64_t session_id, int request_id);
 
 	int queryFundTransfer(const dict &req, uint64_t session_id, int request_id);
+
+	int queryOtherServerFund(const dict &req, uint64_t session_id, int request_id);
 
 	int queryETF(const dict &req, uint64_t session_id, int request_id);
 
@@ -589,13 +601,13 @@ public:
 
 	int queryCreditPositionExtraInfo(const dict &req, uint64_t session_id, int request_id);
 
-	int queryOptionCombinedUnfinishedOrders(uint64_t session_id, int request_id);
+	int queryOptionCombinedUnfinishedOrdersEx(uint64_t session_id, int request_id);
 
-	int queryOptionCombinedOrderByXTPID(uint64_t order_xtp_id, uint64_t session_id, int request_id);
+	int queryOptionCombinedOrderByXTPIDEx(uint64_t order_xtp_id, uint64_t session_id, int request_id);
 
-	int queryOptionCombinedOrders(const dict &req, uint64_t session_id, int request_id);
+	int queryOptionCombinedOrdersEx(const dict &req, uint64_t session_id, int request_id);
 
-	int queryOptionCombinedOrdersByPage(const dict &req, uint64_t session_id, int request_id);
+	int queryOptionCombinedOrdersByPageEx(const dict &req, uint64_t session_id, int request_id);
 
 	int queryOptionCombinedTradesByXTPID(uint64_t order_xtp_id, uint64_t session_id, int request_id);
 
