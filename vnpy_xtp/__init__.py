@@ -20,12 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-try:
-    from .gateway import XtpGateway
-except ImportError:
-    pass
-
 import importlib_metadata
 
+from .gateway import XtpGateway
 
-__version__ = importlib_metadata.version("vnpy_xtp")
+try:
+    __version__ = importlib_metadata.version("vnpy_xtp")
+except ImportError:
+    __version__ = "dev"
