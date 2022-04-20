@@ -518,7 +518,7 @@ class XtpTdApi(TdApi):
 
         orderid: str = str(data["order_xtp_id"])
         if orderid not in self.orders:
-            order: OrderType = OrderData(
+            order: OrderData = OrderData(
                 symbol=symbol,
                 exchange=MARKET_XTP2VT[data["market"]],
                 orderid=orderid,
@@ -533,7 +533,7 @@ class XtpTdApi(TdApi):
             )
             self.orders[orderid] = order
         else:
-            order: OrderType = self.orders[orderid]
+            order: OrderData = self.orders[orderid]
             order.traded = data["qty_traded"]
             order.status = STATUS_XTP2VT[data["order_status"]]
 
@@ -695,7 +695,7 @@ class XtpTdApi(TdApi):
 
             position: PositionData = self.short_positions.get(symbol, None)
             if not position:
-                position: PositionData = PositionData(
+                position = PositionData(
                     symbol=symbol,
                     exchange=exchange,
                     direction=Direction.SHORT,
