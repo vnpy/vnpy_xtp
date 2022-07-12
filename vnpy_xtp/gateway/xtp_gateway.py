@@ -1,4 +1,3 @@
-import pytz
 from typing import Any, Dict, List
 from datetime import datetime
 from copy import copy
@@ -26,7 +25,7 @@ from vnpy.trader.object import (
     PositionData,
     AccountData
 )
-from vnpy.trader.utility import get_folder_path, round_to
+from vnpy.trader.utility import get_folder_path, round_to, ZoneInfo
 
 from ..api import MdApi, TdApi
 
@@ -157,7 +156,7 @@ LOGLEVEL_VT2XTP = {
 }
 
 # 其他常量
-CHINA_TZ = pytz.timezone("Asia/Shanghai")       # 中国时区
+CHINA_TZ = ZoneInfo("Asia/Shanghai")       # 中国时区
 
 # 合约数据全局缓存字典
 symbol_contract_map: Dict[str, ContractData] = {}
@@ -310,7 +309,7 @@ class XtpMdApi(MdApi):
         """行情推送回报"""
         timestamp: str = str(data["data_time"])
         dt: datetime = datetime.strptime(timestamp, "%Y%m%d%H%M%S%f")
-        dt: datetime = CHINA_TZ.localize(dt)
+        dt: datetime = dt.replace(tzinfo=CHINA_TZ)
 
         tick: TickData = TickData(
             symbol=data["ticker"],
@@ -540,7 +539,7 @@ class XtpTdApi(TdApi):
         if not order.datetime:
             timestamp: str = str(data["insert_time"])
             dt: datetime = datetime.strptime(timestamp, "%Y%m%d%H%M%S%f")
-            dt: datetime = CHINA_TZ.localize(dt)
+            dt: datetime = dt.replace(tzinfo=CHINA_TZ)
             order.datetime = dt
 
         self.gateway.on_order(copy(order))
@@ -556,7 +555,7 @@ class XtpTdApi(TdApi):
 
         timestamp: str = str(data["trade_time"])
         dt: datetime = datetime.strptime(timestamp, "%Y%m%d%H%M%S%f")
-        dt: datetime = CHINA_TZ.localize(dt)
+        dt: datetime = dt.replace(tzinfo=CHINA_TZ)
 
         trade: TradeData = TradeData(
             symbol=symbol,
