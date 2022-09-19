@@ -636,7 +636,8 @@ class XtpTdApi(TdApi):
         if data["account_type"] == 1:
             self.margin_trading = True
         elif data["account_type"] == 2:
-            account.frozen = round(account.balance - account.available, 2)
+            account.frozen = account.balance - account.available - data["security_asset"]
+            account.frozen = round(account.frozen, 2)
             self.option_trading = True
 
         self.gateway.on_account(account)
