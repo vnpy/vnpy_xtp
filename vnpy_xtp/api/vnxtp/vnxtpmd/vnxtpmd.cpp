@@ -684,7 +684,7 @@ int MdApi::queryTickersPriceInfo(string ticker, int count, int exchange_id)
 {
 	char* buffer = (char*)ticker.c_str();
 	char* myreq[1] = { buffer };
-	int i = this->api->UnSubscribeTickByTick(myreq, 1, (XTP_EXCHANGE_TYPE)exchange_id);
+	int i = this->api->QueryTickersPriceInfo(myreq, 1, (XTP_EXCHANGE_TYPE)exchange_id);
 	return i;
 };
 
