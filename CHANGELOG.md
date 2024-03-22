@@ -1,3 +1,8 @@
+# 2.2.32.2.2版本
+1. 调整账户冻结资金的计算逻辑
+2. 修复API封装中queryTickersPriceInfo底层调用错误
+3. 类型声明使用Python内置类型
+
 # 2.2.32.2.1版本
 1. 使用zoneinfo替换pytz库
 2. 调整安装脚本setup.cfg，添加Python版本限制
