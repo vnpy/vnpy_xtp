@@ -1,5 +1,4 @@
 """"""
-from typing import Dict, List
 import os
 
 type_dict = {
@@ -19,9 +18,9 @@ class StructGenerator:
     def __init__(self, filename: str):
         """Constructor"""
         self.filename: str = filename
-        self.full_name: List[str] = []
-        self.short_name: List[str] = []
-        self.SHORT2FULL: Dict[str, str] = {}
+        self.full_name: list[str] = []
+        self.short_name: list[str] = []
+        self.SHORT2FULL: dict[str, str] = {}
 
     def run(self):
         """运行生成"""

@@ -1,6 +1,5 @@
 """"""
 import importlib
-from typing import Dict
 
 
 class ApiGenerator:
@@ -13,11 +12,11 @@ class ApiGenerator:
         self.name = name
         self.class_name = class_name
 
-        self.callbacks: Dict[str, dict] = {}
-        self.functions: Dict[str, dict] = {}
-        self.lines: Dict[str, str] = {}
+        self.callbacks: dict[str, dict] = {}
+        self.functions: dict[str, dict] = {}
+        self.lines: dict[str, str] = {}
 
-        self.structs: Dict[str, dict] = {}
+        self.structs: dict[str, dict] = {}
         self.load_struct()
 
     def load_struct(self):

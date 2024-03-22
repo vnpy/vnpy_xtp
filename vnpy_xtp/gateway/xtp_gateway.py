@@ -1,4 +1,3 @@
-from typing import Any, Dict, List
 from datetime import datetime
 from copy import copy
 
@@ -31,20 +30,20 @@ from ..api import MdApi, TdApi
 
 
 # 交易所映射
-MARKET_XTP2VT: Dict[int, Exchange] = {
+MARKET_XTP2VT: dict[int, Exchange] = {
     1: Exchange.SZSE,
     2: Exchange.SSE
 }
-MARKET_VT2XTP: Dict[Exchange, int] = {v: k for k, v in MARKET_XTP2VT.items()}
+MARKET_VT2XTP: dict[Exchange, int] = {v: k for k, v in MARKET_XTP2VT.items()}
 
-EXCHANGE_XTP2VT: Dict[int, Exchange] = {
+EXCHANGE_XTP2VT: dict[int, Exchange] = {
     1: Exchange.SSE,
     2: Exchange.SZSE,
 }
-EXCHANGE_VT2XTP: Dict[Exchange, int] = {v: k for k, v in EXCHANGE_XTP2VT.items()}
+EXCHANGE_VT2XTP: dict[Exchange, int] = {v: k for k, v in EXCHANGE_XTP2VT.items()}
 
 # 多空和开平方向映射
-DIRECTION_STOCK_XTP2VT: Dict[int, Any] = {
+DIRECTION_STOCK_XTP2VT: dict[int, tuple] = {
     1: (Direction.LONG, Offset.NONE),
     2: (Direction.SHORT, Offset.NONE),
     21: (Direction.LONG, Offset.OPEN),
@@ -52,13 +51,13 @@ DIRECTION_STOCK_XTP2VT: Dict[int, Any] = {
     24: (Direction.LONG, Offset.CLOSE),
     23: (Direction.SHORT, Offset.CLOSE)
 }
-DIRECTION_STOCK_VT2XTP: Dict[Any, int] = {v: k for k, v in DIRECTION_STOCK_XTP2VT.items()}
+DIRECTION_STOCK_VT2XTP: dict[tuple, int] = {v: k for k, v in DIRECTION_STOCK_XTP2VT.items()}
 
-DIRECTION_OPTION_XTP2VT: Dict[int, Direction] = {
+DIRECTION_OPTION_XTP2VT: dict[int, Direction] = {
     1: Direction.LONG,
     2: Direction.SHORT
 }
-DIRECTION_OPTION_VT2XTP: Dict[Direction, int] = {v: k for k, v in DIRECTION_OPTION_XTP2VT.items()}
+DIRECTION_OPTION_VT2XTP: dict[Direction, int] = {v: k for k, v in DIRECTION_OPTION_XTP2VT.items()}
 
 # 持仓方向映射
 POSITION_DIRECTION_XTP2VT = {
@@ -69,35 +68,35 @@ POSITION_DIRECTION_XTP2VT = {
 }
 
 # 期权委托类型映射
-OPTION_ORDERTYPE_XTP2VT: Dict[int, OrderType] = {
+OPTION_ORDERTYPE_XTP2VT: dict[int, OrderType] = {
     1: OrderType.LIMIT,
     2: OrderType.MARKET,
     8: OrderType.FOK
 }
-OPTION_ORDERTYPE_VT2XTP: Dict[OrderType, int] = {v: k for k, v in OPTION_ORDERTYPE_XTP2VT.items()}
+OPTION_ORDERTYPE_VT2XTP: dict[OrderType, int] = {v: k for k, v in OPTION_ORDERTYPE_XTP2VT.items()}
 
 # 股票委托类型映射
-EQUITY_ORDERTYPE_XTP2VT: Dict[int, OrderType] = {
+EQUITY_ORDERTYPE_XTP2VT: dict[int, OrderType] = {
     1: OrderType.LIMIT,
     4: OrderType.MARKET
 }
-EQUITY_ORDERTYPE_VT2XTP: Dict[OrderType, int] = {v: k for k, v in EQUITY_ORDERTYPE_XTP2VT.items()}
+EQUITY_ORDERTYPE_VT2XTP: dict[OrderType, int] = {v: k for k, v in EQUITY_ORDERTYPE_XTP2VT.items()}
 
 # 科创板委托类型映射
-STAR_ORDERTYPE_XTP2VT: Dict[int, OrderType] = {
+STAR_ORDERTYPE_XTP2VT: dict[int, OrderType] = {
     1: OrderType.LIMIT,
     7: OrderType.MARKET
 }
-STAR_ORDERTYPE_VT2XTP: Dict[OrderType, int] = {v: k for k, v in STAR_ORDERTYPE_XTP2VT.items()}
+STAR_ORDERTYPE_VT2XTP: dict[OrderType, int] = {v: k for k, v in STAR_ORDERTYPE_XTP2VT.items()}
 
 # 通讯协议映射
-PROTOCOL_VT2XTP: Dict[str, int] = {
+PROTOCOL_VT2XTP: dict[str, int] = {
     "TCP": 1,
     "UDP": 2
 }
 
 # 委托状态映射
-STATUS_XTP2VT: Dict[int, Status] = {
+STATUS_XTP2VT: dict[int, Status] = {
     0: Status.SUBMITTING,
     1: Status.ALLTRADED,
     2: Status.PARTTRADED,
@@ -109,7 +108,7 @@ STATUS_XTP2VT: Dict[int, Status] = {
 }
 
 # 产品类型映射
-PRODUCT_XTP2VT: Dict[int, Product] = {
+PRODUCT_XTP2VT: dict[int, Product] = {
     0: Product.EQUITY,
     1: Product.INDEX,
     2: Product.FUND,
@@ -120,17 +119,17 @@ PRODUCT_XTP2VT: Dict[int, Product] = {
 }
 
 # 开平方向映射
-OFFSET_VT2XTP: Dict[Offset, int] = {
+OFFSET_VT2XTP: dict[Offset, int] = {
     Offset.NONE: 0,
     Offset.OPEN: 1,
     Offset.CLOSE: 2,
     Offset.CLOSETODAY: 4,
     Offset.CLOSEYESTERDAY: 5
 }
-OFFSET_XTP2VT: Dict[int, Offset] = {v: k for k, v in OFFSET_VT2XTP.items()}
+OFFSET_XTP2VT: dict[int, Offset] = {v: k for k, v in OFFSET_VT2XTP.items()}
 
 # 业务类型映射
-BUSINESS_VT2XTP: Dict[Any, int] = {
+BUSINESS_VT2XTP: dict[object, int] = {
     "CASH": 0,
     Offset.NONE: 0,
     "MARGIN": 4,
@@ -159,7 +158,7 @@ LOGLEVEL_VT2XTP = {
 CHINA_TZ = ZoneInfo("Asia/Shanghai")       # 中国时区
 
 # 合约数据全局缓存字典
-symbol_contract_map: Dict[str, ContractData] = {}
+symbol_contract_map: dict[str, ContractData] = {}
 
 
 class XtpGateway(BaseGateway):
@@ -169,7 +168,7 @@ class XtpGateway(BaseGateway):
 
     default_name: str = "XTP"
 
-    default_setting: Dict[str, Any] = {
+    default_setting: dict[str, object] = {
         "账号": "",
         "密码": "",
         "客户号": 1,
@@ -182,7 +181,7 @@ class XtpGateway(BaseGateway):
         "授权码": ""
     }
 
-    exchanges: List[Exchange] = list(EXCHANGE_VT2XTP.keys())
+    exchanges: list[Exchange] = list(EXCHANGE_VT2XTP.keys())
 
     def __init__(self, event_engine: EventEngine, gateway_name: str):
         """构造函数"""
@@ -481,8 +480,8 @@ class XtpTdApi(TdApi):
         self.connect_status: bool = False
         self.login_status: bool = False
 
-        self.short_positions: Dict[str, PositionData] = {}
-        self.orders: Dict[str, OrderData] = {}
+        self.short_positions: dict[str, PositionData] = {}
+        self.orders: dict[str, OrderData] = {}
 
     def onDisconnected(self, session: int, reason: int) -> None:
         """服务器连接断开回报"""
