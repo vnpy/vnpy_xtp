@@ -34,7 +34,7 @@ class StructGenerator:
 
         print("Struct生成成功")
 
-    def process_line(self, line: str):
+    def process_line(self, line: str) -> None:
         """处理每行"""
         # 忽略头部注释
         if line.startswith("///") or line.startswith("#"):
