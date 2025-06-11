@@ -1,7 +1,8 @@
 from datetime import datetime
 from copy import copy
+from pathlib import Path
 
-from vnpy.event import EventEngine
+from vnpy.event import EventEngine, Event
 from vnpy.trader.event import EVENT_TIMER
 from vnpy.trader.constant import (
     Exchange,
@@ -190,6 +191,8 @@ class XtpGateway(BaseGateway):
         self.md_api: XtpMdApi = XtpMdApi(self)
         self.td_api: XtpTdApi = XtpTdApi(self)
 
+        self.count: int = 0
+
     def connect(self, setting: dict) -> None:
         """连接交易接口"""
         userid: str = setting["账号"]
@@ -237,7 +240,7 @@ class XtpGateway(BaseGateway):
         """查询持仓"""
         self.td_api.query_position()
 
-    def process_timer_event(self, event) -> None:
+    def process_timer_event(self, event: Event) -> None:
         """定时事件处理"""
         self.count += 1
         if self.count < 2:
@@ -250,7 +253,7 @@ class XtpGateway(BaseGateway):
 
     def init_query(self) -> None:
         """初始化查询任务"""
-        self.count: int = 0
+        self.count = 0
         self.query_functions: list = [self.query_account, self.query_position]
         self.event_engine.register(EVENT_TIMER, self.process_timer_event)
 
@@ -258,7 +261,7 @@ class XtpGateway(BaseGateway):
         """输出错误信息"""
         error_id: int = error["error_id"]
         error_msg: str = error["error_msg"]
-        msg: str = f"{msg}，代码：{error_id}，信息：{error_msg}"
+        msg = f"{msg}，代码：{error_id}，信息：{error_msg}"
         self.write_log(msg)
 
 
@@ -308,7 +311,7 @@ class XtpMdApi(MdApi):
         """行情推送回报"""
         timestamp: str = str(data["data_time"])
         dt: datetime = datetime.strptime(timestamp, "%Y%m%d%H%M%S%f")
-        dt: datetime = dt.replace(tzinfo=CHINA_TZ)
+        dt = dt.replace(tzinfo=CHINA_TZ)
 
         tick: TickData = TickData(
             symbol=data["ticker"],
@@ -395,7 +398,7 @@ class XtpMdApi(MdApi):
         client_id: int,
         server_ip: str,
         server_port: int,
-        quote_protocol: int,
+        quote_protocol: str,
         log_level: int
     ) -> None:
         """连接服务器"""
@@ -407,8 +410,8 @@ class XtpMdApi(MdApi):
         self.protocol = PROTOCOL_VT2XTP[quote_protocol]
 
         if not self.connect_status:
-            path: str = str(get_folder_path(self.gateway_name.lower())).encode("GBK")
-            self.createQuoteApi(self.client_id, path, log_level)
+            path: Path = get_folder_path(self.gateway_name.lower())
+            self.createQuoteApi(self.client_id, str(path).encode("GBK"), log_level)
             self.login_server()
         else:
             self.gateway.write_log("行情接口已登录，请勿重复操作")
@@ -432,7 +435,7 @@ class XtpMdApi(MdApi):
             self.init()
         else:
             error: dict = self.getApiLastError()
-            msg: str = f"行情服务器登录失败，原因：{error['error_msg']}"
+            msg = f"行情服务器登录失败，原因：{error['error_msg']}"
 
         self.gateway.write_log(msg)
 
@@ -444,7 +447,7 @@ class XtpMdApi(MdApi):
     def subscribe(self, req: SubscribeRequest) -> None:
         """订阅行情"""
         if self.login_status:
-            xtp_exchange: int = EXCHANGE_VT2XTP.get(req.exchange, "")
+            xtp_exchange: int = EXCHANGE_VT2XTP.get(req.exchange, 0)
             self.subscribeMarketData(req.symbol, 1, xtp_exchange)
 
     def query_contract(self) -> None:
@@ -464,9 +467,9 @@ class XtpTdApi(TdApi):
 
         self.userid: str = ""
         self.password: str = ""
-        self.client_id: str = ""
+        self.client_id: int = 0
         self.server_ip: str = ""
-        self.server_port: str = ""
+        self.server_port: int = 0
         self.software_key: str = ""
 
         self.session_id: int = 0
@@ -511,8 +514,8 @@ class XtpTdApi(TdApi):
             if symbol.startswith("688"):
                 type_map: dict = STAR_ORDERTYPE_XTP2VT
             else:
-                type_map: dict = EQUITY_ORDERTYPE_XTP2VT
-            order_type: OrderType = type_map.get(data["price_type"], OrderType.MARKET)
+                type_map = EQUITY_ORDERTYPE_XTP2VT
+            order_type = type_map.get(data["price_type"], OrderType.MARKET)
 
         orderid: str = str(data["order_xtp_id"])
         if orderid not in self.orders:
@@ -531,14 +534,14 @@ class XtpTdApi(TdApi):
             )
             self.orders[orderid] = order
         else:
-            order: OrderData = self.orders[orderid]
+            order = self.orders[orderid]
             order.traded = data["qty_traded"]
             order.status = STATUS_XTP2VT[data["order_status"]]
 
         if not order.datetime:
             timestamp: str = str(data["insert_time"])
             dt: datetime = datetime.strptime(timestamp, "%Y%m%d%H%M%S%f")
-            dt: datetime = dt.replace(tzinfo=CHINA_TZ)
+            dt = dt.replace(tzinfo=CHINA_TZ)
             order.datetime = dt
 
         self.gateway.on_order(copy(order))
@@ -554,7 +557,7 @@ class XtpTdApi(TdApi):
 
         timestamp: str = str(data["trade_time"])
         dt: datetime = datetime.strptime(timestamp, "%Y%m%d%H%M%S%f")
-        dt: datetime = dt.replace(tzinfo=CHINA_TZ)
+        dt = dt.replace(tzinfo=CHINA_TZ)
 
         trade: TradeData = TradeData(
             symbol=symbol,
@@ -731,8 +734,8 @@ class XtpTdApi(TdApi):
         self.protocol = PROTOCOL_VT2XTP["TCP"]
 
         if not self.connect_status:
-            path: str = str(get_folder_path(self.gateway_name.lower())).encode("GBK")
-            self.createTraderApi(self.client_id, path, log_level)
+            path: Path = get_folder_path(self.gateway_name.lower())
+            self.createTraderApi(self.client_id, str(path).encode("GBK"), log_level)
 
             self.setSoftwareKey(self.software_key)
             self.subscribePublicTopic(0)
@@ -758,7 +761,7 @@ class XtpTdApi(TdApi):
             self.init()
         else:
             error: dict = self.getApiLastError()
-            msg: str = f"交易服务器登录失败，原因：{error['error_msg']}"
+            msg = f"交易服务器登录失败，原因：{error['error_msg']}"
 
         self.gateway.write_log(msg)
         self.query_option_info()
@@ -806,13 +809,13 @@ class XtpTdApi(TdApi):
                 type_map: dict = STAR_ORDERTYPE_VT2XTP
             # 其他
             else:
-                type_map: dict = EQUITY_ORDERTYPE_VT2XTP
+                type_map = EQUITY_ORDERTYPE_VT2XTP
 
             if req.type not in type_map:
                 self.gateway.write_log(f"委托失败，不支持的股票委托类型{req.type.value}")
                 return ""
 
-            xtp_req: dict = {
+            xtp_req = {
                 "ticker": req.symbol,
                 "market": MARKET_VT2XTP[req.exchange],
                 "price": req.price,
@@ -827,14 +830,14 @@ class XtpTdApi(TdApi):
                 xtp_req["side"] = DIRECTION_STOCK_VT2XTP.get((req.direction, Offset.NONE), "")
                 xtp_req["business_type"] = 0
 
-        orderid: int = self.insertOrder(xtp_req, self.session_id)
-        orderid: str = str(orderid)
+        orderid: str = str(self.insertOrder(xtp_req, self.session_id))
 
         order: OrderData = req.create_order_data(orderid, self.gateway_name)
         self.orders[orderid] = order
         self.gateway.on_order(copy(order))
 
-        return order.vt_orderid
+        vt_orderid: str = order.vt_orderid
+        return vt_orderid
 
     def cancel_order(self, req: CancelRequest) -> None:
         """委托撤单"""
@@ -863,14 +866,14 @@ class XtpTdApi(TdApi):
 
 def get_option_index(strike_price: float, exchange_instrument_id: str) -> str:
     """获取期权索引"""
-    exchange_instrument_id: str = exchange_instrument_id.replace(" ", "")
+    exchange_instrument_id = exchange_instrument_id.replace(" ", "")
 
     if "M" in exchange_instrument_id:
         n: int = exchange_instrument_id.index("M")
     elif "A" in exchange_instrument_id:
-        n: int = exchange_instrument_id.index("A")
+        n = exchange_instrument_id.index("A")
     elif "B" in exchange_instrument_id:
-        n: int = exchange_instrument_id.index("B")
+        n = exchange_instrument_id.index("B")
     else:
         return str(strike_price)
 
