@@ -23,7 +23,7 @@ class StructGenerator:
 
     def run(self) -> None:
         """运行生成"""
-        self.f_cpp = open(self.filename, "r", encoding="UTF-8")
+        self.f_cpp = open(self.filename, encoding="UTF-8")
         self.f_py = open(f"xtp_{self.prefix}_struct.py", "w", encoding="UTF-8")
 
         for line in self.f_cpp:

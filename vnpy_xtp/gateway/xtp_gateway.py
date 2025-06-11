@@ -187,8 +187,8 @@ class XtpGateway(BaseGateway):
         """构造函数"""
         super().__init__(event_engine, gateway_name)
 
-        self.md_api: "XtpMdApi" = XtpMdApi(self)
-        self.td_api: "XtpTdApi" = XtpTdApi(self)
+        self.md_api: XtpMdApi = XtpMdApi(self)
+        self.td_api: XtpTdApi = XtpTdApi(self)
 
     def connect(self, setting: dict) -> None:
         """连接交易接口"""

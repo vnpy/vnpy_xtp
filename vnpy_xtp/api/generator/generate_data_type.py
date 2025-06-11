@@ -12,7 +12,7 @@ class DataTypeGenerator:
 
     def run(self):
         """主函数"""
-        self.f_cpp = open(self.filename, "r", encoding="UTF-8")
+        self.f_cpp = open(self.filename, encoding="UTF-8")
         self.f_define = open(f"{self.prefix}_constant.py", "w", encoding="UTF-8")
         self.f_typedef = open(f"{self.prefix}_typedef.py", "w", encoding="UTF-8")
 

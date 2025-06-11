@@ -44,7 +44,7 @@ class ApiGenerator:
 
     def run(self):
         """运行生成"""
-        self.f_cpp = open(self.filename, "r", encoding="UTF-8")
+        self.f_cpp = open(self.filename, encoding="UTF-8")
 
         for line in self.f_cpp:
             self.process_line(line)
@@ -181,7 +181,7 @@ class ApiGenerator:
                         f.write("\t{\n")
 
                         struct_fields = self.structs[ptype]
-                        for struct_field, struct_type in struct_fields.items():
+                        for struct_field, _struct_type in struct_fields.items():
                             f.write(
                                 f"\t\terror[\"{struct_field}\"] = {pname}->{struct_field};\n")
 

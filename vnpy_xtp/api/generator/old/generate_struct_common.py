@@ -24,7 +24,7 @@ class StructGenerator:
 
     def run(self):
         """运行生成"""
-        self.f_cpp = open(self.filename, "r", encoding="UTF-8")
+        self.f_cpp = open(self.filename, encoding="UTF-8")
         self.f_struct = open("test_xtp_struct_common.py", "w", encoding="UTF-8")
 
         for line in self.f_cpp:
@@ -38,7 +38,7 @@ class StructGenerator:
         self.fix_bug()
 
     def fix_bug(self):
-        r_struct = open("test_xtp_struct_common.py", "r", encoding="UTF-8")
+        r_struct = open("test_xtp_struct_common.py", encoding="UTF-8")
         w_sturct = open("xtp_struct_common.py", "w", encoding="UTF-8")
 
         for line in r_struct:
@@ -58,7 +58,7 @@ class StructGenerator:
 
     def genreator_dict(self):
         """"""
-        self.SHORT2FULL = dict(zip(self.short_name, self.full_name))
+        self.SHORT2FULL = dict(zip(self.short_name, self.full_name, strict=False))
         for key, value in self.SHORT2FULL.items():
             new_line = f"{key} = {value}"
             self.f_struct.write(new_line)
