@@ -1,1 +1,0 @@
-recursive-include vnpy_xtp *.dll *.so *.pyd *.h *.cpp *.lib

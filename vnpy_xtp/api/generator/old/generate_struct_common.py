@@ -22,9 +22,9 @@ class StructGenerator:
         self.short_name: list[str] = []
         self.SHORT2FULL: dict[str, str] = {}
 
-    def run(self):
+    def run(self) -> None:
         """运行生成"""
-        self.f_cpp = open(self.filename, "r", encoding="UTF-8")
+        self.f_cpp = open(self.filename, encoding="UTF-8")
         self.f_struct = open("test_xtp_struct_common.py", "w", encoding="UTF-8")
 
         for line in self.f_cpp:
@@ -37,8 +37,8 @@ class StructGenerator:
         # 二次修改
         self.fix_bug()
 
-    def fix_bug(self):
-        r_struct = open("test_xtp_struct_common.py", "r", encoding="UTF-8")
+    def fix_bug(self) -> None:
+        r_struct = open("test_xtp_struct_common.py", encoding="UTF-8")
         w_sturct = open("xtp_struct_common.py", "w", encoding="UTF-8")
 
         for line in r_struct:
@@ -56,14 +56,14 @@ class StructGenerator:
         os.remove("test_xtp_struct_common.py")
         print("Struct生成成功")
 
-    def genreator_dict(self):
+    def genreator_dict(self) -> None:
         """"""
-        self.SHORT2FULL = dict(zip(self.short_name, self.full_name))
+        self.SHORT2FULL = dict(zip(self.short_name, self.full_name, strict=False))
         for key, value in self.SHORT2FULL.items():
             new_line = f"{key} = {value}"
             self.f_struct.write(new_line)
 
-    def process_line(self, line: str):
+    def process_line(self, line: str) -> None:
         """处理每行"""
         line = line.replace(";", "")
         line = line.replace("\n", "")

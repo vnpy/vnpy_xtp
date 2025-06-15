@@ -19,7 +19,7 @@ class ApiGenerator:
         self.structs: dict[str, dict] = {}
         self.load_struct()
 
-    def load_struct(self):
+    def load_struct(self) -> None:
         """加载Struct"""
         module_names = ["xtp_oms_struct", "xtp_quote_struct"]
 
@@ -42,9 +42,9 @@ class ApiGenerator:
             "error_msg": "char"
         }
 
-    def run(self):
+    def run(self) -> None:
         """运行生成"""
-        self.f_cpp = open(self.filename, "r", encoding="UTF-8")
+        self.f_cpp = open(self.filename, encoding="UTF-8")
 
         for line in self.f_cpp:
             self.process_line(line)
@@ -61,7 +61,7 @@ class ApiGenerator:
 
         print("API生成成功")
 
-    def process_line(self, line: str):
+    def process_line(self, line: str) -> None:
         """处理每行"""
         line = line.replace(";", "")
         line = line.replace("\n", "")
@@ -73,7 +73,7 @@ class ApiGenerator:
         elif "virtual int Query" in line:
             self.process_function(line)
 
-    def process_callback(self, line: str):
+    def process_callback(self, line: str) -> None:
         """处理回掉函数"""
         name = line[line.index("On"):line.index("(")]
         self.lines[name] = line
@@ -81,14 +81,14 @@ class ApiGenerator:
         d = self.generate_arg_dict(line)
         self.callbacks[name] = d
 
-    def process_function(self, line: str):
+    def process_function(self, line: str) -> None:
         """处理主动函数"""
         name = line[line.index("Query"):line.index("(")]
 
         d = self.generate_arg_dict(line)
         self.functions[name] = d
 
-    def generate_arg_dict(self, line: str):
+    def generate_arg_dict(self, line: str) -> dict[str, str]:
         """生成参数字典"""
         args_str = line[line.index("(") + 1:line.index(")")]
         if not args_str:
@@ -112,7 +112,7 @@ class ApiGenerator:
             d[name] = ptype
         return d
 
-    def generate_header_on(self):
+    def generate_header_on(self) -> None:
         """"""
         filename = f"{self.prefix}_{self.name}_header_on.h"
         with open(filename, "w") as f:
@@ -136,7 +136,7 @@ class ApiGenerator:
 
                 f.write(line)
 
-    def generate_header_function(self):
+    def generate_header_function(self) -> None:
         """"""
         filename = f"{self.prefix}_{self.name}_header_function.h"
         with open(filename, "w") as f:
@@ -157,7 +157,7 @@ class ApiGenerator:
                 line = f"int {name}({content});\n\n"
                 f.write(line)
 
-    def generate_source_callback(self):
+    def generate_source_callback(self) -> None:
         """"""
         filename = f"{self.prefix}_{self.name}_source_callback.cpp"
         with open(filename, "w") as f:
@@ -181,7 +181,7 @@ class ApiGenerator:
                         f.write("\t{\n")
 
                         struct_fields = self.structs[ptype]
-                        for struct_field, struct_type in struct_fields.items():
+                        for struct_field, _struct_type in struct_fields.items():
                             f.write(
                                 f"\t\terror[\"{struct_field}\"] = {pname}->{struct_field};\n")
 
@@ -211,7 +211,7 @@ class ApiGenerator:
 
                 f.write("};\n\n")
 
-    def generate_source_function(self):
+    def generate_source_function(self) -> None:
         """"""
         filename = f"{self.prefix}_{self.name}_source_function.cpp"
         with open(filename, "w") as f:
@@ -260,7 +260,7 @@ class ApiGenerator:
                 f.write("\treturn i;\n")
                 f.write("};\n\n")
 
-    def generate_source_on(self):
+    def generate_source_on(self) -> None:
         """"""
         filename = f"{self.prefix}_{self.name}_source_on.cpp"
         with open(filename, "w") as f:
@@ -299,7 +299,7 @@ class ApiGenerator:
                 f.write("\t}\n")
                 f.write("};\n\n")
 
-    def generate_source_module(self):
+    def generate_source_module(self) -> None:
         """"""
         filename = f"{self.prefix}_{self.name}_source_module.cpp"
         with open(filename, "w") as f:

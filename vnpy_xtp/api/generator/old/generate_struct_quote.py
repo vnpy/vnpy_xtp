@@ -25,7 +25,7 @@ class StructGenerator:
         self.typedefs = type_dict
         self.load_constant()
 
-    def load_constant(self):
+    def load_constant(self) -> None:
         """"""
         module_name = f"{self.prefix}_typedef"
         module = importlib.import_module(module_name)
@@ -34,9 +34,9 @@ class StructGenerator:
             if "__" not in name:
                 self.typedefs[name] = getattr(module, name)
 
-    def run(self):
+    def run(self) -> None:
         """运行生成"""
-        self.f_cpp = open(self.filename, "r", encoding="UTF-8")
+        self.f_cpp = open(self.filename, encoding="UTF-8")
         self.f_struct = open("test_xtp_struct_quote.py", "w", encoding="UTF-8")
 
         for line in self.f_cpp:
@@ -50,8 +50,8 @@ class StructGenerator:
         # 二次修改
         self.fix_bug()
 
-    def fix_bug(self):
-        r_struct = open("test_xtp_struct_quote.py", "r", encoding="UTF-8")
+    def fix_bug(self) -> None:
+        r_struct = open("test_xtp_struct_quote.py", encoding="UTF-8")
         w_sturct = open("xtp_struct_quote.py", "w", encoding="UTF-8")
 
         for line in r_struct:
@@ -76,7 +76,7 @@ class StructGenerator:
         os.remove("test_xtp_struct_quote.py")
         print("Struct生成成功")
 
-    def process_line(self, line: str):
+    def process_line(self, line: str) -> None:
         """处理每行"""
         line = line.replace(";", "")
         line = line.replace("\n", "")

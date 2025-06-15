@@ -24,6 +24,10 @@ import importlib_metadata
 
 from .gateway import XtpGateway
 
+
+__all__ = ["XtpGateway"]
+
+
 try:
     __version__ = importlib_metadata.version("vnpy_xtp")
 except ImportError:
