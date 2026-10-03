@@ -1,3 +1,5 @@
+"""实现中泰 XTP 交易接口。"""
+
 from datetime import datetime
 from copy import copy
 from pathlib import Path
@@ -266,6 +268,7 @@ class XtpGateway(BaseGateway):
 
 
 class XtpMdApi(MdApi):
+    """对接中泰 XTP 柜台的行情接口。"""
 
     def __init__(self, gateway: XtpGateway):
         """构造函数"""
@@ -457,9 +460,10 @@ class XtpMdApi(MdApi):
 
 
 class XtpTdApi(TdApi):
+    """对接中泰 XTP 柜台的交易接口。"""
 
     def __init__(self, gateway: XtpGateway):
-        """"""
+        """初始化交易接口状态。"""
         super().__init__()
 
         self.gateway: XtpGateway = gateway
