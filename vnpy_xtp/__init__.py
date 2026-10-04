@@ -21,7 +21,7 @@
 # SOFTWARE.
 """VeighNa 中泰 XTP 交易接口。"""
 
-import importlib_metadata
+from importlib import metadata
 
 from .gateway import XtpGateway
 
@@ -30,6 +30,6 @@ __all__ = ["XtpGateway"]
 
 
 try:
-    __version__ = importlib_metadata.version("vnpy_xtp")
-except ImportError:
+    __version__ = metadata.version("vnpy_xtp")
+except metadata.PackageNotFoundError:
     __version__ = "dev"
