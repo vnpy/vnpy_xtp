@@ -155,3 +155,10 @@ else  # Linux
     install_dir: py.get_install_dir() / 'vnpy_xtp/api'
   )
 endif
+
+# 可编辑安装的扩展在构建目录，厂商库仍在源码树。
+# 拷到扩展旁边后，Windows 在 .pyd 所在目录找 DLL，Linux 用扩展的 $ORIGIN 找 .so。
+# 这些拷贝不安装；正式安装仍由上面的 install_data 放到 site-packages。
+foreach lib : api_libs
+  fs.copyfile(lib)
+endforeach

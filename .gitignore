@@ -39,3 +39,8 @@ x64/
 dist/
 build/
 .egg-info/
+
+# Type checker / linter / test caches
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
