@@ -1,5 +1,6 @@
 """实现中泰 XTP 交易接口。"""
 
+from collections.abc import Callable
 from datetime import datetime
 from copy import copy
 from pathlib import Path
@@ -63,7 +64,7 @@ DIRECTION_OPTION_XTP2VT: dict[int, Direction] = {
 DIRECTION_OPTION_VT2XTP: dict[Direction, int] = {v: k for k, v in DIRECTION_OPTION_XTP2VT.items()}
 
 # 持仓方向映射
-POSITION_DIRECTION_XTP2VT = {
+POSITION_DIRECTION_XTP2VT: dict[int, Direction] = {
     0: Direction.NET,
     1: Direction.LONG,
     2: Direction.SHORT,
@@ -142,13 +143,13 @@ BUSINESS_VT2XTP: dict[object, int] = {
 }
 
 # 期权类型映射
-OPTIONTYPE_XTP2VT = {
+OPTIONTYPE_XTP2VT: dict[int, OptionType] = {
     1: OptionType.CALL,
     2: OptionType.PUT
 }
 
 # 日志级别映射
-LOGLEVEL_VT2XTP = {
+LOGLEVEL_VT2XTP: dict[str, int] = {
     "FATAL": 0,
     "ERROR": 1,
     "WARNING": 2,
@@ -158,7 +159,7 @@ LOGLEVEL_VT2XTP = {
 }
 
 # 其他常量
-CHINA_TZ = ZoneInfo("Asia/Shanghai")       # 中国时区
+CHINA_TZ: ZoneInfo = ZoneInfo("Asia/Shanghai")       # 中国时区
 
 # 合约数据全局缓存字典
 symbol_contract_map: dict[str, ContractData] = {}
@@ -187,7 +188,7 @@ class XtpGateway(BaseGateway):
 
     exchanges: list[Exchange] = list(EXCHANGE_VT2XTP.keys())
 
-    def __init__(self, event_engine: EventEngine, gateway_name: str):
+    def __init__(self, event_engine: EventEngine, gateway_name: str) -> None:
         """构造函数"""
         super().__init__(event_engine, gateway_name)
 
@@ -250,7 +251,7 @@ class XtpGateway(BaseGateway):
             return
         self.count = 0
 
-        func = self.query_functions.pop(0)
+        func: Callable[[], None] = self.query_functions.pop(0)
         func()
         self.query_functions.append(func)
 
@@ -271,7 +272,7 @@ class XtpGateway(BaseGateway):
 class XtpMdApi(MdApi):
     """对接中泰 XTP 柜台的行情接口。"""
 
-    def __init__(self, gateway: XtpGateway):
+    def __init__(self, gateway: XtpGateway) -> None:
         """构造函数"""
         super().__init__()
 
@@ -456,6 +457,7 @@ class XtpMdApi(MdApi):
 
     def query_contract(self) -> None:
         """查询合约信息"""
+        exchange_id: int
         for exchange_id in EXCHANGE_XTP2VT.keys():
             self.queryAllTickers(exchange_id)
 
@@ -463,7 +465,7 @@ class XtpMdApi(MdApi):
 class XtpTdApi(TdApi):
     """对接中泰 XTP 柜台的交易接口。"""
 
-    def __init__(self, gateway: XtpGateway):
+    def __init__(self, gateway: XtpGateway) -> None:
         """初始化交易接口状态。"""
         super().__init__()
 
@@ -482,8 +484,8 @@ class XtpTdApi(TdApi):
         self.protocol: int = 0
 
         # 账户是否支持两融或者期权交易
-        self.margin_trading = False
-        self.option_trading = False
+        self.margin_trading: bool = False
+        self.option_trading: bool = False
 
         self.connect_status: bool = False
         self.login_status: bool = False
