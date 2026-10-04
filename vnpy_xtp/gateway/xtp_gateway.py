@@ -171,7 +171,8 @@ class XtpGateway(BaseGateway):
 
     default_name: str = "XTP"
 
-    default_setting: dict[str, object] = {
+    # 行情协议和日志级别的值是 list[str]，不在基类值类型里，字典内容保持不变
+    default_setting: dict[str, str | int | float | bool] = {
         "账号": "",
         "密码": "",
         "客户号": 1,
@@ -179,8 +180,8 @@ class XtpGateway(BaseGateway):
         "行情端口": 0,
         "交易地址": "",
         "交易端口": 0,
-        "行情协议": ["TCP", "UDP"],
-        "日志级别": ["FATAL", "ERROR", "WARNING", "INFO", "DEBUG", "TRACE"],
+        "行情协议": ["TCP", "UDP"],  # type: ignore[dict-item]
+        "日志级别": ["FATAL", "ERROR", "WARNING", "INFO", "DEBUG", "TRACE"],  # type: ignore[dict-item]
         "授权码": ""
     }
 
@@ -338,7 +339,7 @@ class XtpMdApi(MdApi):
         tick.ask_volume_1, tick.ask_volume_2, tick.ask_volume_3, tick.ask_volume_4, tick.ask_volume_5 = data["ask_qty"][0:5]
 
         # 基于合约的最小价格跳动，对浮点数价格进行四舍五入
-        contract: ContractData = symbol_contract_map.get(tick.vt_symbol, None)
+        contract: ContractData | None = symbol_contract_map.get(tick.vt_symbol, None)
         if contract:
             pricetick: float = contract.pricetick
             tick.last_price = round_to(data["last_price"], pricetick)
@@ -699,7 +700,7 @@ class XtpTdApi(TdApi):
             symbol: str = data["ticker"]
             exchange: Exchange = MARKET_XTP2VT[data["market"]]
 
-            position: PositionData = self.short_positions.get(symbol, None)
+            position: PositionData | None = self.short_positions.get(symbol, None)
             if not position:
                 position = PositionData(
                     symbol=symbol,
