@@ -1,7 +1,7 @@
 project(
   'vnpy_xtp',
   'cpp',
-  version: '2.2.32.2.3',
+  version: '2.2.32.2.4',
   license: 'MIT',
   meson_version: '>=1.7.0',
   default_options: [

@@ -1,6 +1,6 @@
 [project]
 name = "vnpy_xtp"
-version = "2.2.32.2.3"
+version = "2.2.32.2.4"
 description = "XTP gateway for vn.py quant trading framework."
 readme = "README.md"
 license = {text = "MIT"}
